@@ -1,0 +1,26 @@
+menu "CSI transmitter"
+    config TX_CHANNEL
+        int "Wi-Fi channel"
+        range 5 13
+        default 11
+        help
+            Primary channel. With HT40 the secondary channel is BELOW, so 5..13.
+
+    config TX_HT40
+        bool "Transmit HT40 (40 MHz); off = HT20"
+        default y
+
+    config TX_RATE_HZ
+        int "Packets per second"
+        range 10 1000
+        default 200
+
+    config TX_POWER_QDBM
+        int "Start-up TX power in 0.25 dBm units (8 = 2 dBm, the minimum)"
+        range 8 80
+        default 8
+
+    config TX_LED_GPIO
+        int "Status LED GPIO (NodeMCU-32 boards: usually 2)"
+        default 2
+endmenu

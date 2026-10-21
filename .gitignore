@@ -1,0 +1,23 @@
+# ESP-IDF build outputs
+build/
+build_*/
+sdkconfig
+sdkconfig.old
+managed_components/
+# Python
+__pycache__/
+*.pyc
+.venv/
+# Recordings stay local (privacy + size); never commit raw CSI
+csi_runs/
+data/raw/
+data/processed/
+*.log
+data/
+data_synth/
+models_synth/
+results_synth/
+logs/
+# trained model binaries are rebuilt by ml/train.py (metadata is committed)
+models/**/*.joblib
+models/**/*.pt

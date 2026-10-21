@@ -1,0 +1,16 @@
+menu "A0 antenna check"
+    config A0_LED_WS2812
+        bool "Status LED is an addressable RGB LED (WS2812)"
+        default n if IDF_TARGET_ESP32
+        default y
+        help
+            S3 DevKit boards: RGB LED. Classic ESP32 NodeMCU boards: plain LED.
+
+    config A0_LED_GPIO
+        int "Status LED GPIO"
+        default 2 if IDF_TARGET_ESP32
+        default 48
+        help
+            NodeMCU-32 (classic ESP32): usually 2. ESP32-S3-DevKitC-1: 48 on
+            v1.0 boards, 38 on v1.1 boards. YD-style S3 boards: 48.
+endmenu

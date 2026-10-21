@@ -1,0 +1,3 @@
+# A0 antenna check: shared settings for every target.
+# 4 MB works on every module we use (4, 8 or 16 MB flash).
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y

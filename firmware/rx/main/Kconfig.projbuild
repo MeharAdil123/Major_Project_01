@@ -1,0 +1,50 @@
+menu "CSI receiver"
+    config RX_ID
+        int "Receiver number (1 = RX1, 2 = RX2)"
+        range 1 2
+        default 1
+
+    choice RX_LINK
+        prompt "Link to the host"
+        default RX_LINK_USB_JTAG
+        config RX_LINK_USB_JTAG
+            bool "Native USB (USB-Serial-JTAG)"
+        config RX_LINK_UART
+            bool "UART0 via the board's UART/COM port"
+    endchoice
+
+    config RX_UART_BAUD
+        int "UART baud rate"
+        depends on RX_LINK_UART
+        default 2000000
+
+    config RX_UART_TX_GPIO
+        int "UART TX pin to the host (ESP32-S3 UART0 default: 43)"
+        depends on RX_LINK_UART
+        default 43
+
+    config RX_UART_RX_GPIO
+        int "UART RX pin from the host (ESP32-S3 UART0 default: 44)"
+        depends on RX_LINK_UART
+        default 44
+
+    config RX_TX_MAC
+        string "TX MAC to accept (AA:BB:CC:DD:EE:FF); empty = accept any csi_tx frame"
+        default "20:9B:A9:68:F3:F0"
+
+    config RX_CHANNEL
+        int "Wi-Fi channel"
+        default 11
+
+    config RX_HT40
+        bool "Listen at HT40 (secondary below); off = HT20"
+        default y
+
+    config RX_EXPECTED_RATE_HZ
+        int "TX packet rate the TX was built with (for radio_id check)"
+        default 200
+
+    config RX_LED_GPIO
+        int "WS2812 RGB LED GPIO"
+        default 48
+endmenu
