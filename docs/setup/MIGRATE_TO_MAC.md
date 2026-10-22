@@ -5,7 +5,7 @@
 **Rules that still apply:** copy, never move; the Linux laptop keeps its copy until the Mac copy is verified. **No cloud upload of recordings** (CLAUDE.md rule 4): use a USB drive or the local network, not iCloud, Google Drive or GitHub.
 
 ## Step A — the archive (already made on 2026-10-22, 20:18)
-`~/WiFi_CSI_Final/transfer/wifi_csi_move.tar` (710 MB: `CLAUDE.md` + the whole repo except `data/processed` and `__pycache__`; it contains 534 raw `.bin` files) and `wifi_csi_move.tar.sha256` (`f743d9b0d32653ba8e0bba8f21ceb6e74f39a50c6e400b2c550ecd14ff6b75ef`).
+`~/WiFi_CSI_Final/transfer/wifi_csi_move.tar` (710 MB: `CLAUDE.md` + the whole repo except `data/processed` and `__pycache__`; it contains 534 raw `.bin` files) and its checksum file `wifi_csi_move.tar.sha256` (the hash changes whenever the archive is remade; always check against the .sha256 file made with it).
 Remake it if the repo changed since then:
 ```bash
 cd ~/WiFi_CSI_Final && tar --exclude='wifi-csi-har/data/processed' --exclude='__pycache__' -cf transfer/wifi_csi_move.tar CLAUDE.md wifi-csi-har && cd transfer && sha256sum wifi_csi_move.tar > wifi_csi_move.tar.sha256
