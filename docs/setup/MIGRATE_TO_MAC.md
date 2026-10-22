@@ -1,6 +1,6 @@
 # Moving the project to a MacBook (written 2026-10-22, end of Phase 3)
 
-**What moves:** the repo (`~/WiFi_CSI_Final/wifi-csi-har`, including `.git` and `data/raw`) and `~/WiFi_CSI_Final/CLAUDE.md`.
+**What moves:** the repo (`~/WiFi_CSI_Final/wifi-csi-har`, including `.git`, `data/raw`, `data/features` and the untracked `results/**/*.log` evidence) and `~/WiFi_CSI_Final/CLAUDE.md`.
 **What does not move:** `hostenv/` (Linux binaries; recreate it), `esp/` (Linux ESP-IDF; only needed for flashing), `data/processed` (2 GB; rebuild on the Mac so all Phase 4 results come from one machine).
 **Rules that still apply:** copy, never move; the Linux laptop keeps its copy until the Mac copy is verified. **No cloud upload of recordings** (CLAUDE.md rule 4): use a USB drive or the local network, not iCloud, Google Drive or GitHub.
 
@@ -8,7 +8,7 @@
 1. Everything is committed on `cc/phase3` / `cc/phase4`. Check: `git -C ~/WiFi_CSI_Final/wifi-csi-har status`.
 2. Plug in a USB drive (exFAT, ≥ 2 GB free) and copy:
    ```bash
-   tar -C ~/WiFi_CSI_Final -cf /media/$USER/<DRIVE>/wifi_csi_move.tar CLAUDE.md wifi-csi-har/.git wifi-csi-har/data/raw wifi-csi-har/data/features $(cd ~/WiFi_CSI_Final && git -C wifi-csi-har ls-files | sed 's|^|wifi-csi-har/|')
+   tar -C ~/WiFi_CSI_Final --exclude='wifi-csi-har/data/processed' --exclude='__pycache__' -cf /media/$USER/<DRIVE>/wifi_csi_move.tar CLAUDE.md wifi-csi-har
    ```
    (Alternative over Wi-Fi: `rsync -a --exclude data/processed --exclude __pycache__ ~/WiFi_CSI_Final/wifi-csi-har <mac-user>@<mac-ip>:~/WiFi_CSI_Final/` after enabling Remote Login on the Mac.)
 3. Raw-data checksum manifest (made 2026-10-22): `results/audit/raw_sha256.txt`, 801 files; its own SHA-256 is `949d2a3b3aa9e1b00e61ed0a470388883ae17af6e82dccf99cdd77721fbb84b6`.
