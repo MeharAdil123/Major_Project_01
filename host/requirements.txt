@@ -10,5 +10,9 @@ scikit-learn==1.9.1
 joblib==1.6.0
 streamlit==1.66.1
 PyYAML==6.0.3
+# Phase 4 models (D-043); torch from https://download.pytorch.org/whl/cpu
+xgboost-cpu==3.4.1
+lightgbm==4.7.0
+torch==2.14.1+cpu
 # tests
 pytest==9.1.1

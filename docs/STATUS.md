@@ -1,28 +1,32 @@
-# STATUS — 2026-10-22 ~18:45 IST · Phase 2 done · **waiting at Gate 2**
+# STATUS — 2026-10-22 ~20:15 IST · Phase 3 done (Gate 3 passed without stop, D-044) · Phase 4 running
 
-## Phase 1 (closed, commit b5eb4c0)
-Firmware review + v2.1 (built, not flashed), recorder bugs 1–5 fixed, S5/S6 audit (202 takes = `config/dataset_expected.yaml`), RF hygiene D-032. Details: `docs/firmware/REVIEW_phase1.md`, `results/audit/`.
+## Phase 3: what was done (branch `cc/phase3`)
+- **Onset o2** (Gate 2 notes): the end may run to cue + 6 s; detections < 0.6 s are flagged (7). Updated overlays: `results/signal/onset_*.png`; log `results/signal/onset_validation_o2.log`. 92 % of event takes have their onset in [cue, cue+4 s] and end ≤ cue+6 s.
+- **D-023 gate diagnosis** (`results/dataset/gate_diag.log`): no bug. Gap counts agree, there are no duplicates or seq wraps, and alignment is clean. The three zero-window takes have 18–22 % scattered loss on one RX. Rejected share at 10 / 15 / 20 % missing: 21.5 / 9.8 / 3.9 % (3 s windows). At 10 %, S1 loses 67 % of its windows. **Gate = 20 % + 100 ms** (D-039); 15 % is the sensitivity check.
+- **Preprocess v2** (`pipeline/preprocess.py`): anti-alias decimation, sanitised-phase channel, window margins (live = offline, tested), window length and gate as parameters.
+- **Labels** (`pipeline/labels.py`, D-040), **features f2** (`ml/features.py`, `docs/FEATURES.md`, D-041: 83 features, 33 static / 50 dynamic), **Format 2 v2** (D-042, `docs/CONTRACTS.md`).
+- **Datasets** (`results/dataset/build_{2,3,4}s.log`, summary `results/dataset/summary.log`):
 
-## Phase 2: what was done (branch `cc/phase2`)
-Signal inspection on all 202 real takes (read-only). Full report: **`docs/analysis/phase2_signal_inspection.md`**. Decisions: D-034 … D-038 in `docs/decisions/DECISIONS.md`.
-- **Empty carriers:** 802.11n layout confirmed on 396/404 receiver-takes (114 used) → `USED_SC` unchanged, no PREPROC bump.
-- **L-LTF:** upper 20 MHz; not used.
-- **AGC:** no RSSI-linked gain steps. Per-packet −6.1 dB scale shifts, equal on all carriers, on 188/202 (RX1) and 201/202 (RX2) takes. Normalisation removes them; the share is reported per take and never a feature.
-- **Phase:** raw phase is random (2.8 rad); sanitised phase is stable (0.13–0.16 rad) and responds to motion (contrast 1.85 / 2.04 vs amplitude 2.09 / 2.58). 2π slips near deep fades → amplitude-weighted phase features in Phase 3.
-- **Body shadowing:** spot A → RX1 loss 4.6 %; spot B → RX2 −44 dBm, 7 % loss (up to 35 %). Position confound confirmed.
-- **Event timing:** the old 200 Hz frame-difference peak is unreliable (ratio 1.23). The new onset/end detector `pipeline/onset.py` (o1) detects 95 %, 85 % inside [cue, cue+4 s], RX agreement median 0.21 s.
-- **Walking-start falls:** 7 keep, 3 exclude (S2_E57, S5_E39, S6_E39).
-- `host/csi_inspect.py` was run with its new default output (`results/signal/<sid>/`); nothing was written under `data/`.
+  | | 2 s | 3 s | 4 s |
+  | --- | --- | --- | --- |
+  | kept / candidates | 2972 / 3915 | 2602 / 3562 | 2401 / 3209 |
+  | gate-rejected | 4.0 % | 3.9 % | 3.6 % |
+  | dropped as transition | 20.1 % | 23.0 % | 21.6 % |
+  | fall / sit_down / stand_up / bend_pick windows | 179 / 178 / 193 / 85 | 226 / 237 / 246 / 98 | 279 / 301 / 312 / 113 |
 
-## Verified results (logs, all in `results/signal/` unless stated)
-`inspect_<sid>.log` · `phase2_signal.log` + `phase2_summary.json` + `phase2_takes.csv` + `low_scale_per_take.csv` · `phase2_figures.log` · `phase2_peaks.log` · `onset_validation.log` + `onset_takes.csv` · `body_shadowing.log` · `results/audit/pytest_phase2.log` (tests).
-Figures: `class_*.png` (9), `onset_*.png` (4 × 10 takes), `phase_raw_vs_sanitised.png`, `csi_scaling.png`, `body_shadowing.png`.
+  Gate rejection per subject (3 s): S1 12.3 %, S2 8.3 %, S3 5.4 %, S4–S6 ≤ 0.5 %. Falls with a detected onset: **41 of 42**; usable for event training: fall 36, sit_down 39, stand_up 42, bend_pick 15.
+- Leakage check (3 s): the within-class correlation of missing share with dynamic features is low (median |ρ| 0.08–0.23). The exception is bend_pick, where it is up to 0.76 with a *positive* sign. That is body position (near RX2), not interpolation smoothing.
+- Feature distributions: `results/dataset/feature_distributions_3s.png`.
+- Tests: `results/audit/pytest_phase3.log`.
+
+## Phase 4 (in progress)
+Code: `ml/evaluate.py` (folds, tasks, feature sets, nested LOSO, metrics), `ml/models_classical.py` (8 models), `ml/minirocket.py` (NumPy MiniRocket, D-043), `ml/deep.py` (10 PyTorch models), runners `scripts/phase4_track_{a,b,c}.py`, `scripts/build_stream.py`, `scripts/phase4_pertake.py`.
+Run order: Track A at 3 s (all models × 3 tasks × {dynamic, all}) → Track A at 2/4 s (dynamic) → best window → Track B + C at that window → ablations → per-take live chain → REPORT → **Gate 4**.
 
 ## Open problems
-1. 8 event takes have no detectable action (bend_pick ×5 at A/C, stand_up ×2 at C, one fall). They give no event windows in Phase 3 and will be reported.
-2. There is no video ground truth; onset validation rests on proxies (RX agreement, overlays).
-3. The sanitised phase has 2π slips near fades (~3 % of packets); mitigated by amplitude weighting, not removed.
-4. `/home/mohith/rec_s5` worktree: user removes it.
+1. `ml/predict.py`, `app/engine.py` and `scripts/pipeline.sh synth` still use the v1 interface; rewritten in Phase 4.4 / 5.
+2. 4 s windows leave almost no pre-action windows (the onset is ~4 s into a 10 s take).
+3. bend_pick is the weakest class (98 windows at 3 s; 5 takes undetected).
 
 ## Next step
-Waiting for your "go" at Gate 2. Then Phase 3: D-023 gate diagnosis first (the three zero-window takes have 18–21 % loss on one RX), preprocess v2 (anti-alias, phase channel, parameterised windows), labelling from onset o1, features f2 (static vs dynamic groups), datasets for 2/3/4 s windows.
+Phase 4 runs in the background; stop at Gate 4 with the comparison table, ablations and the chosen model.

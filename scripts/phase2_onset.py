@@ -29,7 +29,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
 RAW, OUT = ROOT / "data" / "raw", ROOT / "results" / "signal"
-WINS = (0.25, 0.5)
+WINS = (0.25,)
 
 
 def starts_still(meta):
@@ -74,6 +74,7 @@ def run(takes, win):
                          pre_level_vs_still=float(np.max(pr / still_base)),
                          detected=d["detected"], inside_search=d["inside_search"], peak_ratio=d["peak_ratio"],
                          onset_clipped_to_cue=d["early"], end_threshold=d["end_threshold"],
+                         end_capped=d["end_capped"], short=d["short"],
                          onset_s=to_rec(d["onset"]), end_s=to_rec(d["end"]),
                          reaction_s=to_rec(d["onset"]) - meta["cue_s"], duration_s=d["end"] - d["onset"],
                          rx1_onset_s=to_rec(d["rx1_onset"]), rx2_onset_s=to_rec(d["rx2_onset"]),
@@ -90,7 +91,7 @@ def report(rows, win, still_base):
     for name, R in (("all", rows), ("start still", S)):
         det = np.mean([r["detected"] for r in R])
         ins = np.mean([r["inside_search"] for r in R])
-        print(f"  {name:<12} detected {det:.2f}; interval inside [cue, cue+4 s] {ins:.2f}")
+        print(f"  {name:<12} detected {det:.2f}; onset in [cue, cue+4 s] and end <= cue+6 s: {ins:.2f}")
     both = [r for r in rows if r["rx1_detected"] and r["rx2_detected"]]
     dd = [abs(r["rx1_onset_s"] - r["rx2_onset_s"]) for r in both]
     print(f"  RX1 and RX2 both detect: {len(both)}/{len(rows)}; |onset RX1 - RX2| {stat(dd)}; "
@@ -103,6 +104,10 @@ def report(rows, win, still_base):
         n = sum(r["activity"] == act for r in rows)
         print(f"    {act:<10} detected {len(R)}/{n}  reaction {stat([r['reaction_s'] for r in R])}")
         print(f"    {'':<10} duration {stat([r['duration_s'] for r in R])}  peak ratio {stat([r['peak_ratio'] for r in R])}")
+    sh = [r for r in rows if r["short"]]
+    print(f"  detections shorter than {od.SHORT_S} s ({len(sh)}): "
+          + ", ".join(f"{r['session_id'][9:]} {r['duration_s']:.2f}s" for r in sh))
+    print(f"  end capped at cue+6 s: {sum(r['end_capped'] for r in rows)}")
     miss = [r for r in rows if not r["detected"] or not r["inside_search"]]
     print(f"  not detected or outside the search window ({len(miss)}):")
     for r in miss:
@@ -129,6 +134,7 @@ def overlays(rows, win):
             a.plot(r["_t"], rel[1], lw=0.9, label="RX2")
             a.axvline(3.0, color="k", ls="--", lw=1)
             a.axvspan(3.0, 7.0, color="0.92", zorder=0)
+            a.axvspan(7.0, 9.0, color="0.96", zorder=0)
             a.axhline(od.THR_HI, color="r", ls=":", lw=0.8)
             a.axhline(od.THR_LO, color="orange", ls=":", lw=0.8)
             if r["detected"]:
@@ -137,10 +143,11 @@ def overlays(rows, win):
             a.set_ylim(0.3, max(20, np.nanmax(rel) * 1.2))
             a.text(0.005, 0.92, f"{r['session_id'][9:]} @{r['position']}  "
                    + (f"onset +{r['reaction_s']:.2f} s, dur {r['duration_s']:.2f} s" if r["detected"] else "NOT DETECTED")
-                   + ("" if r["starts_still"] else "  [starts walking: global baseline]"),
+                   + ("" if r["starts_still"] else "  [starts walking: global baseline]")
+                   + ("  SHORT (<0.6 s)" if r["short"] else ""),
                    transform=a.transAxes, fontsize=8, va="top")
         np.atleast_1d(ax)[0].legend(loc="upper right", fontsize=7)
-        np.atleast_1d(ax)[-1].set_xlabel("time in take (s); dashed = cue; grey = search [cue, cue+4 s]; green = detected action")
+        np.atleast_1d(ax)[-1].set_xlabel("time in take (s); dashed = cue; grey = onset search [cue, cue+4 s]; light grey = end may run to cue+6 s; green = detected action")
         fig.suptitle(f"{act}: motion / baseline (log), WIN_S {win} s, red = THR_HI {od.THR_HI:g}, orange = THR_LO {od.THR_LO:g}",
                      fontsize=10)
         fig.tight_layout()

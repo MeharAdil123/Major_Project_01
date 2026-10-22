@@ -62,6 +62,24 @@ A window is rejected if any receiver misses more than 10 % of its packets or has
 
 State windows: every 1 s, skipping the first and last second. Event windows: 5 windows centred on the movement peak after the cue (−0.3, −0.15, 0, +0.15, +0.3 s). `data/processed/index.csv` lists windows kept and rejected per take.
 
+
+## Format 2 v2 (2026-10-22, D-042) — replaces the v1 windows above
+
+`data/processed/windows_<len>s.npz` for len = 2, 3, 4 s (3 s default):
+
+| Key | Shape / type | Meaning |
+| --- | --- | --- |
+| `X` | float16 [N, 2, T, 114] | gain-normalised amplitude, anti-alias decimated to 100 Hz (T = 100 × len) |
+| `P` | float16 [N, 2, T, 114] | sanitised phase (rad) |
+| `rssi` | float16 [N, 2, T] | RSSI |
+| `y`, `source` | str [N] | window label; `state` / `event` / `event_pre` / `event_post` |
+| `session_id`, `subject`, `position`, `take_id`, `activity`, `kind` | str [N] | ids (**split by subject; never random windows**) |
+| `t_start` | float32 [N] | window start in take time (s from the first packet) |
+| `miss_frac`, `max_gap` | [N, 2] | missing share and longest gap per RX (gate inputs; never features) |
+| `preproc_version`, `features_version`, `onset_version`, `dataset_version`, `win_s`, `gate_max_miss`, `gate_max_gap`, `used_sc`, `fs`, `synthetic` | — | metadata |
+
+`data/features/features_<len>s.csv`: `session_id, subject, take_id, activity_label, window_label, position, t_start, rx1_miss, rx2_miss, source, kind`, then the 83 f2 features (`docs/FEATURES.md`). Per-take and per-window indexes: `data/processed/index_<len>s.csv`, `windows_<len>s_index.csv`; event intervals: `onsets.csv`.
+
 ## Format 3: models (Track C → D)
 
 `models/<task>_rf/model.joblib` + `model_meta.json` (`task`, `classes`, `features_version`, `preproc_version`, `synthetic`, `trained_at`, top features, extra keys such as `live_motion_threshold`).

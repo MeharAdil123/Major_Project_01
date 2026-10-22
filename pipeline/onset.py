@@ -20,8 +20,9 @@ Detection:
   search window and within MERGE_BURST_S of the interval are merged into it, so a two-part action
   (bend_pick: down, pause, up) is one interval. The window smear is corrected by half a window.
   An onset before the cue (motion already going on) is clipped to the cue and flagged.
-  Version history: v1 (2026-10-22) WIN_S 0.25 chosen over 0.5 on 151 event takes
-  (results/signal/onset_validation.log).
+  Version history: o1 (2026-10-22) WIN_S 0.25 chosen over 0.5 on 151 event takes
+  (results/signal/onset_validation.log). o2 (Gate 2 notes): the end (and burst merging) may run to
+  cue + END_SEARCH_S = 6 s, capped there; detections shorter than SHORT_S = 0.6 s are flagged.
 """
 from __future__ import annotations
 
@@ -34,7 +35,9 @@ Q = 4                      # 200 Hz -> 50 Hz
 FS = pp.FS_IN // Q
 N_PC = 3
 WIN_S = 0.25
-SEARCH_S = 4.0
+SEARCH_S = 4.0             # onset / peak search: [cue, cue + 4 s]
+END_SEARCH_S = 6.0         # end may run to cue + 6 s (o2)
+SHORT_S = 0.6              # detections shorter than this are flagged for inspection
 PRE_FROM_S = 0.8
 PRE_GUARD_S = 0.5
 THR_HI = 3.0               # peak must be >= 3x the baseline motion level
@@ -43,7 +46,7 @@ MERGE_S = 0.4
 MERGE_BURST_S = 1.5
 POST_S = 2.0
 POST_K = 1.5
-ONSET_VERSION = "o1"
+ONSET_VERSION = "o2"
 
 
 def motion_signal(grid: dict, win_s: float = WIN_S, n_pc: int = N_PC) -> tuple[np.ndarray, np.ndarray]:
@@ -77,12 +80,15 @@ def _runs(mask: np.ndarray) -> list[tuple[int, int]]:
 
 
 def _interval(c: np.ndarray, t: np.ndarray, lo: int, hi: int, win_s: float, lo_end: float = THR_LO,
-              cue_s: float | None = None):
+              cue_s: float | None = None, hi_end: int | None = None):
     """Peak in [lo, hi) and the run around it. Returns dict (times in s on t)."""
     if hi <= lo:
-        return dict(detected=False, peak_ratio=np.nan, peak_t=np.nan, onset=np.nan, end=np.nan, early=False)
+        return dict(detected=False, peak_ratio=np.nan, peak_t=np.nan, onset=np.nan, end=np.nan, early=False,
+                    end_capped=False)
     pk = lo + int(np.argmax(c[lo:hi]))
-    res = dict(peak_ratio=float(c[pk]), peak_t=float(t[pk]), detected=bool(c[pk] >= THR_HI), early=False)
+    res = dict(peak_ratio=float(c[pk]), peak_t=float(t[pk]), detected=bool(c[pk] >= THR_HI), early=False,
+               end_capped=False)
+    hi_end = len(c) if hi_end is None else min(len(c), hi_end)
     if not res["detected"]:
         return dict(res, onset=np.nan, end=np.nan)
     gap = int(MERGE_S * FS)
@@ -111,13 +117,15 @@ def _interval(c: np.ndarray, t: np.ndarray, lo: int, hi: int, win_s: float, lo_e
     changed = True
     while changed:
         changed = False
-        for s0, s1 in _runs(m2[lo:hi]):
+        for s0, s1 in _runs(m2[lo:hi_end]):
             s0, s1 = s0 + lo, s1 + lo
             if s1 - 1 < a - far or s0 > b + far or (a <= s0 and s1 - 1 <= b):
                 continue
             if c[s0:s1].max() >= THR_HI:
                 a, b = min(a, s0), max(b, s1 - 1)
                 changed = True
+    if b >= hi_end:
+        b, res["end_capped"] = hi_end - 1, True
     half = win_s / 2
     on, end = float(t[a] + half), float(t[b] - half)
     if cue_s is not None and on < cue_s:
@@ -144,15 +152,18 @@ def detect(t: np.ndarray, m: np.ndarray, cue_s: float, baseline: np.ndarray | No
     comb = rel.max(axis=0)
     post = t >= t[-1] - POST_S
     lo_end = max(THR_LO, POST_K * float(np.median(comb[post])))
-    out = _interval(comb, t, lo, hi, win_s, lo_end, cue_s)
+    hi_end = int(np.searchsorted(t, cue_s + END_SEARCH_S))
+    out = _interval(comb, t, lo, hi, win_s, lo_end, cue_s, hi_end)
     out["end_threshold"] = lo_end
     out["pre_level"] = [float(x) for x in own / base] if baseline is not None else [1.0] * len(own)
     out["pre_raw"] = [float(x) for x in own]
     for r in range(m.shape[0]):
-        x = _interval(rel[r], t, lo, hi, win_s, max(THR_LO, POST_K * float(np.median(rel[r][post]))), cue_s)
+        x = _interval(rel[r], t, lo, hi, win_s, max(THR_LO, POST_K * float(np.median(rel[r][post]))), cue_s, hi_end)
         out[f"rx{r + 1}_onset"] = x["onset"]
         out[f"rx{r + 1}_end"] = x["end"]
         out[f"rx{r + 1}_detected"] = x["detected"]
         out[f"rx{r + 1}_peak_ratio"] = x["peak_ratio"]
-    out["inside_search"] = bool(out["detected"] and not out["early"] and out["end"] <= cue_s + SEARCH_S)
+    out["inside_search"] = bool(out["detected"] and not out["early"] and out["end"] <= cue_s + END_SEARCH_S)
+    out["duration"] = out["end"] - out["onset"] if out["detected"] else np.nan
+    out["short"] = bool(out["detected"] and out["duration"] < SHORT_S)
     return out
