@@ -1,4 +1,4 @@
-# STATUS — 2026-10-22 ~20:15 IST · Phase 3 done (Gate 3 passed without stop, D-044) · Phase 4 running
+# STATUS — 2026-10-22 ~20:45 IST · Phase 3 done (Gate 3 passed without stop, D-044) · Phase 4 running on this laptop (D-045)
 
 ## Phase 3: what was done (branch `cc/phase3`)
 - **Onset o2** (Gate 2 notes): the end may run to cue + 6 s; detections < 0.6 s are flagged (7). Updated overlays: `results/signal/onset_*.png`; log `results/signal/onset_validation_o2.log`. 92 % of event takes have their onset in [cue, cue+4 s] and end ≤ cue+6 s.
@@ -27,6 +27,9 @@ Run order: Track A at 3 s (all models × 3 tasks × {dynamic, all}) → Track A 
 1. `ml/predict.py`, `app/engine.py` and `scripts/pipeline.sh synth` still use the v1 interface; rewritten in Phase 4.4 / 5.
 2. 4 s windows leave almost no pre-action windows (the onset is ~4 s into a 10 s take).
 3. bend_pick is the weakest class (98 windows at 3 s; 5 takes undetected).
+
+## Machine
+The move to a MacBook was cancelled (D-045); Phase 4 runs on this laptop. Track A stage 1+2 started 20:45 (`results/phase4/track_a.log`).
 
 ## Next step
 Phase 4 runs in the background; stop at Gate 4 with the comparison table, ablations and the chosen model.
