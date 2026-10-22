@@ -1,0 +1,2 @@
+session_id,use,reason
+20261022_S1_T29_walk,true,"meta.valid=false with empty notes; recorder was most likely stopped at the keep/redo prompt (bug R5). Check passes D-017 (RX1 186.4/s 7.05 % loss, RX2 167.8/s 16.31 % loss, max gap 55 ms). Kept by user decision at Gate 0, 2026-10-22."

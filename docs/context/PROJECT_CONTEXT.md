@@ -76,7 +76,9 @@ Changing a format = bump the version string (PREPROC_VERSION / FEATURES_VERSION)
 **Place:** a library hall (large room, tile floor, big glass windows, glass wall to an adjacent room, metal chairs). Layout name `layout_library`, `setting same_room`, plywood NOT used. TX power **5 dBm** for every take. Channel 11 HT40.
 
 **Geometry (metres; origin = floor under TX; +y towards the receivers; operator sits behind the receivers on the RX2 side):**
-TX (0, 0) h 0.9 · RX1 (−1.3, 4.5) h 1.0 · RX2 (+1.3, 4.5) h 0.5 · chair spots A (−0.9, 3.2), B (+1.0, 1.5), C (0, 1.2) · mattress M x −0.5..1.5, y 2.9..3.8 (falls and lie) · path1 y = 2.55, x −2..2 (across the link) · path2 x = −1.5, y 1.0..3.5 (along the link) · free walk = taped area x −2.2..2.2, y −0.3..4.8 · operator O ≈ (3.0, 5.0) · spotter ≈ (2.0, 3.3). Boards were mounted on metal chairs.
+TX (0, 0) h 0.9 · RX1 (−1.3, 4.5) h 1.0 · RX2 (+1.3, 4.5) h 0.5 · chair spots A (−0.9, 3.2), B (+1.0, 1.5), C (0, 1.2) · mattress M x −0.5..1.5, y 2.9..3.8 (falls and lie; in front of RX1/RX2, slightly toward RX2) · **path1 x = −1.5, y 1.2..4.0 (ALONG the link, vertical)** · **path2 y = 2.55, x −2..2 (ACROSS the link, horizontal)** · free walk = taped area x −2.2..2.2, y −0.3..4.8 · operator O ≈ (3.0, 5.0) · spotter ≈ (2.0, 3.3). Boards were mounted on metal chairs.
+
+> **Correction 2026-10-22 (Gate 0, from the operator's sketch `docs/setup/layout_library_sketch.jpg`):** earlier versions of this file had path1 and path2 swapped. The values above are corrected. The machine-readable source is `config/position_map.yaml` (version 2); `meta.json` files are unchanged (they only store the names `path1`/`path2`).
 
 **Protocol (D-014):** state takes 30 s; event takes 10 s with an audio cue ("beep" + "now") at 3 s; subject still before the cue, one action, still until the end. Plans: `protocol/plan_subject_lib.csv` (39 takes: fall 10 incl. 2 optional backward falls, sit_down 8, stand_up 9, bend_pick 4, walk 3 [path1, path2, free], stand 2, sit 2, lie 1; interleaved order), `protocol/plan_short.csv` (22 takes: fall 5, sit_down 5, stand_up 5, bend_pick 2, walk 2, stand/sit/lie 1), `plan_empty.csv` (120 s), `plan_empty_short.csv` (30 s). Fall directions are in the `instruction` text (forward via knees, left side, right side, from walking).
 
@@ -113,6 +115,9 @@ All 125 have CSI on both receivers (checked via `meta.json` 13:24). Bad/redone t
 - Environment change between rooms can collapse accuracy (reported 99 % → 12 % in one study) → the live demo in a new room needs at least an empty-room baseline and ideally a few labelled calibration takes.
 
 ## 8. Decision register (in force)
+
+Full register with later decisions: `docs/decisions/DECISIONS.md`.
+
 
 D-006c boards · D-010 raw CSI (no merge/smoothing) · D-011 UART CRC rejects < 0.5 % · D-012 RX2 loss limit 3 % (bench) · D-013 scope · D-014 protocol (state 30 s, event 10 s, cue 3 s) · D-015 LOSO evaluation · D-016 keep the random forest unless a CNN is clearly better on LOSO · D-017 record on ch 11 at 5 dBm with relaxed keep rule (RX1 ≥ 180/s, ≥ 165 at spot A; RX2 ≥ 160/s, ≥ 150 at spot B; no gap > 100 ms).
 

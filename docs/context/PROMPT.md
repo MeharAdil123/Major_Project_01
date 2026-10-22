@@ -166,7 +166,7 @@ Report fall detection separately as fall vs everything else.
 1. Apply the approved folder structure, moving obsolete files to `_archive/`. Delete nothing.
 2. Write:
    - a `README.md` a stranger can follow: hardware, flashing, install, record, process, train, evaluate, run the dashboard, with one command per step in `scripts/pipeline.sh` or a `Makefile`
-   - `docs/DECISIONS.md` (merged decision register)
+   - `docs/decisions/DECISIONS.md` (merged decision register)
    - `docs/STATUS.md`
    - `docs/setup/host_linux.md`
 3. Pin dependencies. A fresh clone plus `pip install -r requirements.txt` plus the README steps must reproduce the results from the raw data.

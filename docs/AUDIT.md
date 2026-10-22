@@ -152,3 +152,8 @@ Missing tests that PROMPT asks for (Phase 1/3/5): decoder round-trip, alignment,
 - `results/audit/raw_audit.log`, `results/audit/raw_takes.csv` — dataset audit
 - `results/audit/synthetic_tests.log` — T1–T5 (SYNTHETIC)
 - `results/audit/v1_dryrun_real.log` — T6
+
+---
+
+## 6. Resolutions at Gate 0 (2026-10-22)
+D1 → D-018 (`config/take_overrides.csv`). Decision-log path → D-019. `releases/**/*.bin` stay tracked → D-020. I1 → fixed in Phase 1 (D-022). P4 → diagnosis first (D-023). D6/F1 → D-024. T3 → D-025. Layout: PROJECT_CONTEXT had path1/path2 swapped → corrected (D-027). New subjects S5 and S6 → D-028. See `docs/decisions/DECISIONS.md`.

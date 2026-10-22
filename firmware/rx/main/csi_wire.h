@@ -1,4 +1,4 @@
-/* csi_rx wire protocol v2. Mirror: tools/rx_check.py.
+/* csi_rx wire protocol v2. Mirror: host/csiwire.py (and host/rx_check.py).
  * Frame: A5 5A | type u8 | len u16 | payload | crc16 (CCITT-FALSE over type,len,payload)
  * All integers little-endian. */
 #pragma once

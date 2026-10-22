@@ -21,7 +21,8 @@ Result per class: 9 takes per state (≈ 240 windows), 9 takes per event, empty 
 ## Room set-up (layout_A): draw it, photograph it, put the photo in `docs/setup/layout_A.jpg`
 
 - TX (patch antenna) on one side of the room at about 1 m height, facing the open area. RX1 and RX2 (omnis vertical) on the other side or the adjacent wall at about 1 m, about 1.5–2 m apart. The person moves in the area between them.
-- Mark with tape: chair spots **A, B, C** (different distances and angles), mat spot **L** (for lying), mattress spot **M** (for falls), and walking **path1** (across the TX–RX line) and **path2** (along it).
+- Mark with tape: chair spots **A, B, C** (different distances and angles), mat spot **L** (for lying), mattress spot **M** (for falls), and walking **path1** and **path2**.
+  *Library recording, 22 Oct (corrected 2026-10-22 from the operator's sketch):* **path1 runs ALONG the link** (x ≈ −1.5, y 1.2→4.0) and **path2 runs ACROSS it** (y ≈ 2.55, x −2→+2); falls and lying were on mattress M (no separate mat L). The pre-recording plan here had them the other way round. Coordinates: `config/position_map.yaml`.
 - Operator seat **O**: one fixed spot behind the receivers, outside the marked area. The operator sits still there during every take except empty ones. The laptop sits on a fixed table.
 - Do not move furniture, boards, cables or the laptop once recording starts. If something moves, note it in `notes` and record a new empty take.
 - The door stays in the same state (closed) for all takes.

@@ -1,70 +1,53 @@
-# STATUS — 2026-10-22 14:45 IST · Phase 0 (set-up and audit) · waiting at Gate 0
+# STATUS — 2026-10-22 ~17:00 IST · Phase 1 done (Gate 1) · waiting for "S5/S6 finished" before Phase 2
 
-## Done
-1. The handover (`claude_code_handover.zip`, identical to `~/WiFi_CSI_Final/claude_code_handover/`) was copied to `docs/context/`. `~/WiFi_CSI_Final/CLAUDE.md` was already present and identical.
-2. `git status`: the tree was clean on `main` (HEAD `e765966 before claude code`, 1 commit ahead of `origin/main`, not pushed). Nothing was uncommitted, so no `cc/baseline` branch was needed. Phase 0 work is committed on `cc/phase0`.
-3. Read-only data audit: **125 takes: S1 37, S2 25, S3 22, S4 37, none 4**, as expected. All have both RX with CSI > 0, and decoded counts equal the meta counts. Details and anomalies are in `docs/AUDIT.md` §1.
-4. Tree map and proposals: below.
-5. `docs/AUDIT.md` written. The existing synthetic checks pass; there is no unit-test suite.
+## Done in this phase
+**Gate 0 decisions applied** (log: `docs/decisions/DECISIONS.md`, D-018 … D-028; the folder `docs/decisions/` did not exist yet and was created):
+- `config/take_overrides.csv`: S1_T29_walk is used; its `meta.json` is untouched (D-018).
+- CLAUDE.md rule 4 clarified (both copies): `releases/**/*.bin` stay tracked (D-020).
+- PROMPT now points to `docs/decisions/DECISIONS.md` (D-019).
+- **Layout correction (D-027):** path1 = ALONG the link (x ≈ −1.5, y 1.2→4.0), path2 = ACROSS (y ≈ 2.55, x −2→+2). PROJECT_CONTEXT had them swapped. Corrected in `docs/context/PROJECT_CONTEXT.md` and `docs/PROTOCOL.md`. The single source is `config/position_map.yaml` (v2), read via `pipeline/positions.py`. The sketch is committed at `docs/setup/layout_library_sketch.jpg` and agrees with the correction (the mattress is not drawn on it; its coordinates come from your message). No `meta.json` was edited.
+- `host/csi_inspect.py`: default output is `results/signal/<session_id>/`, and any output path inside `data/raw` (also through symlinks) is refused before anything is read (D-022).
+- Item 9 checked: the three B01 empty-short takes are distinct folders (`B01_empty`, `_r2`, `_r4`), and `ml/train.groups_for` puts each empty take on its own fold (test `test_empty_takes_dealt_to_folds_take_by_take`).
+
+**Phase 1** (details: `docs/firmware/REVIEW_phase1.md`):
+- Firmware review against `wire_protocol_v2.md`: all spec items match; a test now enforces the C/Python header contract.
+- v2 rebuilt from e765966 → **bit-identical to `releases/v2`** (TX, RX1, RX2).
+- v2.1 patches (on this branch, **not flashed**):
+  - F1: RX link driver and ISR moved to core 1.
+  - F2: TX build-default power 2 → 5 dBm.
+  - F3: TX task watchdog.
+  - F4: reset reason + uptime in HELLO.
+  - All six images build with **0 warnings, 0 errors**.
+- ESP-IDF: the repair is `cd ~/WiFi_CSI_Final/esp/esp-idf-v5.5.5 && ./install.sh esp32,esp32s3` (downloads; **not run**). It was not needed: `scripts/fw_build.sh` builds with the installed compilers (only the RISC-V debugger is missing).
+- Recorder v1.1: bugs 1–5 fixed. Takes are staged in `data/raw/_incoming/`, and `meta.json` is written only after the decision.
+- pytest suite started (`tests/`, 40 tests).
+- `pyyaml 6.0.3` and `pytest 9.1.1` installed in the venv; every host package is pinned in `host/requirements.txt`.
 
 ## Verified results (logs)
-- `results/audit/raw_audit.log`, `results/audit/raw_takes.csv`: dataset counts and per-take link stats
-- `results/audit/synthetic_tests.log`: T1–T5, SYNTHETIC
-- `results/audit/v1_dryrun_real.log`: the v1 gate rejects 383 of 1377 real windows (27.8 %)
+- `results/audit/pytest_phase1.log`: **40 passed** (decoder round trip, wire contract, csi_inspect output rules + end-to-end on SYNTHETIC data, config/position map/overrides/folds, recorder with simulated ports: bugs 1–5)
+- `results/firmware/BUILDS.md` + `v2_rebuild_*.log`, `v21_build_*.log`: build hashes, warnings, sizes
 
-(`*.log` is git-ignored, so the logs stay on this laptop only.)
-
-## Tree of `~/WiFi_CSI_Final` (sizes)
-```
-~/WiFi_CSI_Final                       5.3 G
-├── CLAUDE.md                          4 K
-├── claude_code_handover/              40 K   duplicate of the zip, now also in docs/context/
-├── esp/esp-idf-v5.5.5/                4.2 G  toolchain (export.sh broken; keep)
-├── hostenv/                           726 M  Python 3.12.3 venv (keep)
-└── wifi-csi-har/                      398 M  git repo
-    ├── data/raw/                      389 M  125 takes + _rejected/ (51) — READ-ONLY
-    ├── data/processed/                empty
-    ├── releases/v2/                   4.9 M  6 firmware images (committed to git)
-    ├── docs/ 136 K · host/ 128 K (incl. __pycache__ 31 K) · firmware/ 100 K · tools/ 52 K
-    ├── protocol/ 28 K · app/ 24 K · ml/ 24 K · pipeline/ 20 K · scripts/ 16 K · results/ 36 K
-    └── .git/                          3.9 M
-```
-Outside the folder (not touched, listed for completeness): `~/csi_runs/{e0_first,e0_second,e0_v2,e0_swap,lib_empty,lib_person}` (bench runs); `~/Downloads/*.zip` (6 zips incl. two old repo snapshots) and the unpacked `~/Downloads/wifi-csi-har_2026-10-21_v2`.
-
-The folder is already lean. There are no `data_synth`, `models_synth`, `build/` or stray scripts inside it.
-
-## Proposed target structure (applied in Phase 6, after your approval)
-```
-wifi-csi-har/
-  requirements.txt          single pinned file (moved from host/requirements.txt)
-  host/                     csiwire, rx_check, record_session, csi_inspect
-  pipeline/                 preprocess (shared), labelling, build_dataset, build_features
-  ml/                       features, models/ (one file per track), train, evaluate, predict
-  app/                      engine, dashboard
-  firmware/{tx,rx}/ · tools/a0_antenna_check/ · releases/
-  tests/                    pytest unit tests; tests/synthetic/ = generators moved from host/tests/
-  scripts/                  pipeline.sh (or Makefile), audit_raw.py
-  protocol/                 plan CSVs + take_overrides.csv (new, see D1)
-  docs/  README-level: CONTRACTS, FEATURES, DECISIONS, STATUS, AUDIT, setup/, firmware/, context/, history/
-  data/{raw (ro), processed, features} · models/ · results/ · logs/      (all git-ignored except metadata)
-```
-
-## Proposed moves (nothing moved yet)
-| What | From | To | Why |
+## Gate 1 findings table
+| Issue | Severity | Fix | Status |
 | --- | --- | --- | --- |
-| `claude_code_handover/` | `~/WiFi_CSI_Final/` | `~/WiFi_CSI_Final/_archive/20261022/` | duplicate of `docs/context/` |
-| `PROJECT_STATE.md`, `TEAM_PLAN.md`, `tracks/` | `wifi-csi-har/docs/` | `wifi-csi-har/docs/history/` (git mv, stays in repo) | superseded by PROJECT_CONTEXT + STATUS; kept as the project record |
-| `host/tests/make_synthetic_*.py` | `host/tests/` | `tests/synthetic/` (git mv) | separate test fixtures from host tools |
-| `host/requirements.txt` | `host/` | repo root (git mv) | one pinned file |
-| `host/__pycache__/` | — | leave (git-ignored, regenerated) | no value in archiving |
+| F1 UART/USB ISR on core 0 with Wi-Fi (RX2 loss, D-012) | M | link init on core 1 | built, not flashed, effect unmeasured |
+| F2 TX default power 2 dBm, 5 dBm only in NVS | M | default 5 dBm | built, not flashed |
+| F3 no TX watchdog | M | task WDT 5 s → reboot | built, not flashed |
+| F4 no reset reason | L | `reset`, `uptime_s` in HELLO | built, not flashed |
+| F5/R4 dead or silent serial port → silent empty takes | H | abort + reconnect | done, tested |
+| R2 0-CSI take keepable | H | auto-reject | done, tested |
+| R3 `q` keeps the take | H | strict prompts, `q` quits without keeping | done, tested |
+| R5 meta written before the decision | M | `_incoming` staging | done, tested |
+| R6/bug 4 file size as emptiness test | L | decoded CSI count only | done, tested |
+| W3 RX1 USB drops | M | host reconnect (recorder now, engine in Phase 5); optional udev autosuspend rule (needs sudo, ask) | partly done |
+| F6 WDT panic also reboots on idle starvation | L | accept or disable the idle check | your call |
+| csi_inspect writes into raw folders | H | `results/signal/<sid>` default + refusal | done, tested |
 
-Keep as they are: `protocol/plan_subject.csv` (used by the synthetic generator), `plan_s3_fix.csv` (provenance of S3 E50–E52), `tools/a0_antenna_check` (spare board still to test), `releases/v2` (depends on question 3 below), `esp/` and `hostenv/`.
-
-## Open problems / questions for you at Gate 0
-1. **D1 `S1_T29_walk` is `valid:false`** (passes D-017; probably the recorder was stopped at the prompt). Keep it via a `protocol/take_overrides.csv` override? I'd recommend yes. `meta.json` stays untouched either way.
-2. **Decision-log path**: CLAUDE.md says `docs/decisions/DECISIONS.md`, PROMPT says `docs/DECISIONS.md`. Which one?
-3. **`releases/v2/*.bin` are committed to git.** CLAUDE.md rule 4 literally forbids committing `.bin`. Keep them tracked (they are firmware, not data), or untrack them and keep SHA256SUMS?
-4. Position/activity confound (D6) and the 27.8 % window rejection (P4) shape Phase 2–4; no action needed now, flagged for awareness.
+## Open problems / questions
+1. **Fold count:** you wrote "5 LOSO folds", but with S5 *and* S6 that is 6 folds (S1–S6). D-028 records 6, pending your confirmation.
+2. **Empty takes vs folds:** 4 empty-room takes for 6 folds means two folds have no empty take, so presence specificity is undefined there. Are S5/S6 also recording empty takes?
+3. **Today's S5/S6 session runs the old recorder** (e765966), so bugs 1–5 can still occur there; the post-recording audit will catch them. `git worktree list` here shows no second worktree, so it is presumably a separate clone.
+4. Flashing v2.1: your decision. If yes: bench test first (rx_check 120 s, compare RX2 loss v2 vs v2.1), then copy the images to `releases/v2.1/`.
 
 ## Next step
-On "go": Phase 1, the firmware review (read and build only; nothing flashed). The ESP-IDF repair `./install.sh esp32,esp32s3` downloads toolchains, so I will ask before running it. Then the recorder bug fixes with simulated-port tests.
+Phase 2 (signal inspection) needs `data/raw`. Per D-028 I wait for your "S5/S6 finished". Then: re-run the Phase 0 audit on the new takes, update the expected counts, and start Phase 2 (stopping at Gate 2).
