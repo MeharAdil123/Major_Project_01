@@ -1,4 +1,4 @@
-# STATUS — 2026-10-22 ~17:00 IST · Phase 1 done (Gate 1) · waiting for "S5/S6 finished" before Phase 2
+# STATUS — 2026-10-22 ~16:30 IST · Phase 1 done (Gate 1, incl. follow-ups) · waiting for "S5/S6 finished" before Phase 2
 
 ## Done in this phase
 **Gate 0 decisions applied** (log: `docs/decisions/DECISIONS.md`, D-018 … D-028; the folder `docs/decisions/` did not exist yet and was created):
@@ -24,7 +24,7 @@
 - `pyyaml 6.0.3` and `pytest 9.1.1` installed in the venv; every host package is pinned in `host/requirements.txt`.
 
 ## Verified results (logs)
-- `results/audit/pytest_phase1.log`: **40 passed** (decoder round trip, wire contract, csi_inspect output rules + end-to-end on SYNTHETIC data, config/position map/overrides/folds, recorder with simulated ports: bugs 1–5)
+- `results/audit/pytest_phase1.log`: **43 passed** (decoder round trip, wire contract, csi_inspect output rules + end-to-end on SYNTHETIC data, config/position map/overrides/folds, recorder with simulated ports: bugs 1–5)
 - `results/firmware/BUILDS.md` + `v2_rebuild_*.log`, `v21_build_*.log`: build hashes, warnings, sizes
 
 ## Gate 1 findings table
@@ -43,11 +43,18 @@
 | F6 WDT panic also reboots on idle starvation | L | accept or disable the idle check | your call |
 | csi_inspect writes into raw folders | H | `results/signal/<sid>` default + refusal | done, tested |
 
+## Phase 1 follow-ups (user, 2026-10-22)
+- **6 LOSO folds (S1–S6)** confirmed → D-028 updated. The S5/S6 recording checkout (to be created at e765966) is left alone.
+- **TX build-default 5 dBm** → D-029. Already part of v2.1 (F2); the built TX sdkconfig has `CONFIG_TX_POWER_QDBM=20`. Built, not flashed.
+- **USB autosuspend** → D-030: `setup/linux/99-wifi-csi-usb-power.rules` (RX1 303a:1001, RX2 1a86:55d3; `power/control=on`). It passes `udevadm verify`. **Not installed**; install commands are in `setup/linux/README.md`.
+- **S5/S6 audit prepared** → D-031: `scripts/audit_raw.py --baseline-csv results/audit/raw_takes.csv --rssi-tol 3` flags new takes whose RSSI differs from the 22 Oct baseline (same activity and position) by > 3 dB, and reports a per-subject median. Tested on synthetic rows (`tests/test_audit_raw.py`). Calibration on 22 Oct data (`results/audit/rssi_drift_calibration.log`): per-take flags fire on 22 % (S4) / 18 % (S3) of same-day takes; per-subject medians ≤ 1.2 dB. So the subject median is the real indicator.
+- Tests: **43 passed** (`results/audit/pytest_phase1.log`).
+
 ## Open problems / questions
-1. **Fold count:** you wrote "5 LOSO folds", but with S5 *and* S6 that is 6 folds (S1–S6). D-028 records 6, pending your confirmation.
-2. **Empty takes vs folds:** 4 empty-room takes for 6 folds means two folds have no empty take, so presence specificity is undefined there. Are S5/S6 also recording empty takes?
-3. **Today's S5/S6 session runs the old recorder** (e765966), so bugs 1–5 can still occur there; the post-recording audit will catch them. `git worktree list` here shows no second worktree, so it is presumably a separate clone.
-4. Flashing v2.1: your decision. If yes: bench test first (rx_check 120 s, compare RX2 loss v2 vs v2.1), then copy the images to `releases/v2.1/`.
+1. Empty takes vs 6 folds: 4 empty-room takes for 6 folds leaves two folds without one (presence specificity undefined there). An empty-room take before and after the S5/S6 session would fill this and is also the cleanest set-up-drift check.
+2. The S5/S6 session runs the old recorder (e765966); bugs 1–5 can still occur there. The post-recording audit catches them.
+3. Flashing v2.1: your decision (bench test first: rx_check 120 s, RX2 loss v2 vs v2.1).
+4. F6: the TX watchdog also reboots on idle starvation; accept or disable the idle check.
 
 ## Next step
 Phase 2 (signal inspection) needs `data/raw`. Per D-028 I wait for your "S5/S6 finished". Then: re-run the Phase 0 audit on the new takes, update the expected counts, and start Phase 2 (stopping at Gate 2).

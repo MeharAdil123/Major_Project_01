@@ -6,6 +6,15 @@
 Counts takes per subject x activity from meta.json, checks the `check` block (records > 0 on
 RX1 and RX2), flags folders without meta.json, name/meta mismatches and _rN duplicates.
 With --decode it also decodes every RXn.bin (host/csiwire.py) and counts CSI records itself.
+
+Set-up drift check (D-031), for takes recorded after the 22 Oct baseline:
+    python3 scripts/audit_raw.py --decode --baseline-csv results/audit/raw_takes.csv --rssi-tol 3 \
+        --csv results/audit/raw_takes_s5s6.csv > results/audit/raw_audit_s5s6.log
+Takes whose session_id is not in the baseline CSV are "new". For each new take and receiver, its
+RSSI median is compared with the median of the baseline takes of the same activity and position
+(empty room with empty room); |difference| > tol dB is flagged. A per-subject median of the
+differences is also reported (one take can differ through body shadowing; a whole subject
+shifting is the sign that the set-up moved).
 """
 from __future__ import annotations
 
@@ -20,6 +29,55 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from host import csiwire as cw  # noqa: E402
 
+RXS = ("RX1", "RX2")
+
+
+def _f(x):
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return None
+
+
+def rssi_drift(new_rows, base_rows, tol=3.0):
+    """Compare RSSI medians of new takes with the baseline. Returns (per_take, per_subject).
+
+    per_take:    list of dict(session_id, subject, key, RXn_rssi, RXn_ref, RXn_diff, RXn_ref_range, flag)
+    per_subject: dict subject -> {RXn: median diff, "flag": bool, "n": takes compared}
+    """
+    import statistics as st
+    ref = collections.defaultdict(lambda: {rx: [] for rx in RXS})
+    for r in base_rows:
+        for rx in RXS:
+            v = _f(r.get(f"{rx}_rssi_med"))
+            if v is not None:
+                ref[(r["activity"], r["position"])][rx].append(v)
+    per_take, diffs = [], collections.defaultdict(lambda: {rx: [] for rx in RXS})
+    for r in new_rows:
+        key = (r["activity"], r["position"])
+        out = dict(session_id=r["session_id"], subject=r["subject"], key=f"{key[0]}@{key[1]}", flag=False)
+        for rx in RXS:
+            v, b = _f(r.get(f"{rx}_rssi_med")), ref.get(key, {}).get(rx, [])
+            out[f"{rx}_rssi"] = v
+            if v is None or not b:
+                out[f"{rx}_ref"] = out[f"{rx}_diff"] = None
+                out[f"{rx}_ref_range"] = "no reference"
+                continue
+            d = v - st.median(b)
+            out.update({f"{rx}_ref": st.median(b), f"{rx}_diff": round(d, 1),
+                        f"{rx}_ref_range": f"{min(b):g}..{max(b):g} (n={len(b)})"})
+            diffs[r["subject"]][rx].append(d)
+            if abs(d) > tol:
+                out["flag"] = True
+        per_take.append(out)
+    per_subject = {}
+    for subj, dd in diffs.items():
+        m = {rx: round(st.median(v), 1) if v else None for rx, v in dd.items()}
+        per_subject[subj] = dict(m, n=max(len(v) for v in dd.values()),
+                                 flag=any(x is not None and abs(x) > tol for x in m.values()))
+    return per_take, per_subject
+
+
 NAME_RE = re.compile(r"^(\d{8})_(S\d|none)_([A-Z]\d{2})_([a-z_]+?)(?:_r(\d+))?$")
 
 
@@ -28,6 +86,8 @@ def main() -> int:
     ap.add_argument("--raw", type=Path, default=ROOT / "data" / "raw")
     ap.add_argument("--decode", action="store_true")
     ap.add_argument("--csv", type=Path, help="write a per-take table here")
+    ap.add_argument("--baseline-csv", type=Path, help="per-take table of the baseline takes (D-031)")
+    ap.add_argument("--rssi-tol", type=float, default=3.0, help="dB; flag |RSSI - baseline| above this")
     a = ap.parse_args()
 
     folders = sorted(p for p in a.raw.iterdir() if p.is_dir() and not p.name.startswith("_"))
@@ -113,6 +173,31 @@ def main() -> int:
     print(f"\nproblems: {len(problems)}")
     for p in problems:
         print("  " + p)
+    if a.baseline_csv:
+        import csv
+        with open(a.baseline_csv, newline="") as fh:
+            base = list(csv.DictReader(fh))
+        base_ids = {r["session_id"] for r in base}
+        new = [r for r in rows if r["session_id"] not in base_ids]
+        gone = sorted(base_ids - {r["session_id"] for r in rows})
+        print(f"\n== set-up drift check vs {a.baseline_csv} (tol {a.rssi_tol:g} dB) ==")
+        print(f"baseline takes: {len(base)}; new takes: {len(new)}; baseline takes missing now: {gone or 'none'}")
+        nc = collections.Counter((r["subject"], r["activity"]) for r in new)
+        print("new takes per subject:", dict(sorted(collections.Counter(r["subject"] for r in new).items())))
+        for (sj, act), n in sorted(nc.items()):
+            print(f"  {sj:<5} {act:<10} {n}")
+        per_take, per_subject = rssi_drift(new, base, a.rssi_tol)
+        print("\nper subject (median of new-minus-baseline RSSI over its takes):")
+        for sj, v in sorted(per_subject.items()):
+            print(f"  {sj}: RX1 {v['RX1']:+} dB, RX2 {v['RX2']:+} dB over {v['n']} takes"
+                  + ("   <-- FLAG: set-up may have moved" if v["flag"] else ""))
+        flagged = [t for t in per_take if t["flag"]]
+        print(f"\ntakes with |diff| > {a.rssi_tol:g} dB: {len(flagged)} of {len(per_take)}")
+        for t in per_take:
+            if t["flag"] or t["RX1_ref"] is None or t["RX2_ref"] is None:
+                print(f"  {t['session_id']:<40} {t['key']:<16} "
+                      + "  ".join(f"{rx} {t[rx + '_rssi']} vs {t[rx + '_ref']} ({t[rx + '_diff']}; base {t[rx + '_ref_range']})"
+                                  for rx in RXS) + ("  FLAG" if t["flag"] else "  (no reference)"))
     if a.csv:
         import csv
         keys = list(dict.fromkeys(k for r in rows for k in r))
