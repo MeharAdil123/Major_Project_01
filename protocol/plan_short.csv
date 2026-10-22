@@ -1,0 +1,23 @@
+take_id,kind,activity,position,duration_s,cue_s,pre_delay_s,say
+T41,state,stand,A,30,,3,Stand at spot A. Stand naturally.
+E42,event,sit_down,A,10,3,3,Stand in front of the chair at A. On the beep sit down normally.
+T43,state,sit,A,30,,3,Stay seated on the chair at A. Sit naturally.
+E44,event,stand_up,A,10,3,3,Sit still on the chair at A. On the beep stand up.
+E45,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall forward onto the mattress via your knees and stay down.
+T46,state,walk,path1,30,,3,Walk back and forth along path 1 at normal speed.
+E47,event,sit_down,B,10,3,3,Stand in front of the chair at B. On the beep sit down quickly.
+E48,event,stand_up,B,10,3,3,Sit still on the chair at B. On the beep stand up.
+E49,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall onto your left side on the mattress and stay down.
+E50,event,bend_pick,C,10,3,3,Stand at C. On the beep bend down and pick up the book.
+E51,event,sit_down,C,10,3,3,Stand in front of the chair at C. On the beep sit down normally.
+E52,event,stand_up,C,10,3,3,Sit still on the chair at C. On the beep stand up.
+E53,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall onto your right side on the mattress and stay down.
+T54,state,walk,path2,30,,3,Walk back and forth along path 2.
+E55,event,sit_down,A,10,3,3,Stand in front of the chair at A. On the beep sit down quickly.
+E56,event,stand_up,A,10,3,3,Sit still on the chair at A. On the beep stand up.
+E57,event,fall,M,10,3,5,Walk slowly toward the mattress. On the beep fall forward onto it via your knees and stay down.
+E58,event,bend_pick,B,10,3,3,Stand at B. On the beep bend down and pick up the book.
+E59,event,sit_down,B,10,3,3,Stand in front of the chair at B. On the beep sit down normally.
+E60,event,stand_up,B,10,3,3,Sit still on the chair at B. On the beep stand up.
+E61,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall forward onto the mattress via your knees and stay down.
+T62,state,lie,M,30,,5,Lie on your back on the mattress. Stay still.

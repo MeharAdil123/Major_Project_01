@@ -1,0 +1,40 @@
+take_id,kind,activity,position,duration_s,cue_s,pre_delay_s,say
+T01,state,stand,A,30,,3,Stand at spot A. Stand naturally.
+E02,event,sit_down,A,10,3,3,Stand in front of the chair at A. On the beep sit down normally.
+T03,state,sit,A,30,,3,Stay seated on the chair at A. Sit naturally.
+E04,event,stand_up,A,10,3,3,Sit still on the chair at A. On the beep stand up.
+E05,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall forward onto the mattress via your knees and stay down.
+T06,state,walk,path1,30,,3,Walk back and forth along path 1 at normal speed.
+E07,event,bend_pick,B,10,3,3,Stand at B. On the beep bend down and pick up the book from the floor.
+E08,event,sit_down,B,10,3,3,Stand in front of the chair at B. On the beep sit down quickly.
+E09,event,stand_up,B,10,3,3,Sit still on the chair at B. On the beep stand up.
+E10,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall onto your left side on the mattress and stay down.
+T11,state,lie,M,30,,5,Lie on your back on the mattress. Stay still.
+E12,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall onto your right side on the mattress and stay down.
+T13,state,stand,B,30,,3,Stand at spot B. Stand naturally.
+E14,event,sit_down,C,10,3,3,Stand in front of the chair at C. On the beep sit down normally.
+E15,event,stand_up,C,10,3,3,Sit still on the chair at C. On the beep stand up.
+T16,state,walk,path2,30,,3,Walk back and forth along path 2.
+E17,event,fall,M,10,3,5,Stand next to the mattress with your back to it. On the beep sit back onto the mattress then roll onto your back and stay down.
+E18,event,bend_pick,C,10,3,3,Stand at C. On the beep bend down and pick up the book.
+E19,event,sit_down,A,10,3,3,Stand in front of the chair at A. On the beep sit down quickly.
+E20,event,stand_up,A,10,3,3,Sit still on the chair at A. On the beep stand up.
+E21,event,fall,M,10,3,5,Walk slowly toward the mattress. On the beep fall forward onto it via your knees and stay down.
+T22,state,sit,B,30,,3,Sit on the chair at B. Sit naturally.
+E23,event,stand_up,B,10,3,3,Sit still on the chair at B. On the beep stand up.
+E24,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall forward onto the mattress via your knees and stay down.
+E25,event,bend_pick,A,10,3,3,Stand at A. On the beep bend down and pick up the book.
+E26,event,sit_down,B,10,3,3,Stand in front of the chair at B. On the beep sit down normally.
+E27,event,stand_up,B,10,3,3,Sit still on the chair at B. On the beep stand up.
+E28,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall onto your left side on the mattress and stay down.
+T29,state,walk,free,30,,3,Walk freely around the open area.
+E30,event,sit_down,C,10,3,3,Stand in front of the chair at C. On the beep sit down quickly.
+E31,event,stand_up,C,10,3,3,Sit still on the chair at C. On the beep stand up.
+E32,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall onto your right side on the mattress and stay down.
+E33,event,bend_pick,C,10,3,3,Stand at C. On the beep bend down and pick up the book.
+E34,event,sit_down,A,10,3,3,Stand in front of the chair at A. On the beep sit down normally.
+E35,event,stand_up,A,10,3,3,Sit still on the chair at A. On the beep stand up.
+E36,event,fall,M,10,3,5,Stand next to the mattress with your back to it. On the beep sit back onto the mattress then roll onto your back and stay down.
+E37,event,sit_down,B,10,3,3,Stand in front of the chair at B. On the beep sit down quickly.
+E38,event,stand_up,B,10,3,3,Sit still on the chair at B. On the beep stand up.
+E39,event,fall,M,10,3,5,Walk slowly toward the mattress. On the beep fall forward onto it via your knees and stay down.

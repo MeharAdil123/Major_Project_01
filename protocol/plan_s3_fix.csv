@@ -1,0 +1,4 @@
+take_id,kind,activity,position,duration_s,cue_s,pre_delay_s,say
+E50,event,bend_pick,C,10,3,3,Stand at C. On the beep bend down and pick up the book.
+E51,event,sit_down,C,10,3,3,Stand in front of the chair at C. On the beep sit down normally.
+E52,event,stand_up,C,10,3,3,Sit still on the chair at C. On the beep stand up.
