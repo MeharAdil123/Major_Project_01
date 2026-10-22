@@ -4,7 +4,7 @@
 
 You are taking over the engineering of a Wi-Fi CSI human activity recognition (HAR) project on my Ubuntu laptop. The folder `~/WiFi_CSI_Final` is open. You may read and manage everything in it, within the rules in `CLAUDE.md`. I uploaded `claude_code_handover.zip`, containing `PROJECT_CONTEXT.md` (the full history, hardware, data and decisions), `CLAUDE.md` (standing rules) and this prompt.
 
-**Goal:** turn the 125 labelled takes recorded today into a validated model and a live monitoring dashboard, with an honest evaluation and a clean, reproducible repository. Teach me as you go: for every major choice, explain the problem in a few lines, the options you considered, why you chose one, and how we verify it. I am an ECE student and must defend this work to a panel.
+**Goal:** turn the 125 labelled takes recorded today *(202 after S5/S6, D-033)* into a validated model and a live monitoring dashboard, with an honest evaluation and a clean, reproducible repository. Teach me as you go: for every major choice, explain the problem in a few lines, the options you considered, why you chose one, and how we verify it. I am an ECE student and must defend this work to a panel.
 
 Work in the phases below. **At the end of each phase, stop, show me the evidence (commands run, key output, figures) and wait for my "go".** If something in this prompt is wrong once you see the real code or data, tell me and propose a fix rather than silently following the prompt.
 
@@ -12,7 +12,7 @@ Work in the phases below. **At the end of each phase, stop, show me the evidence
 
 1. Unzip the handover into `~/WiFi_CSI_Final/wifi-csi-har/docs/context/`. Copy `CLAUDE.md` to `~/WiFi_CSI_Final/CLAUDE.md` if it is not already there.
 2. Check `git status` in the repo. If anything is uncommitted, show me and commit it to a branch `cc/baseline` before you change anything.
-3. Verify the data **read-only**: count takes per subject and activity from `data/raw/*/meta.json` (expected: S1 37, S2 25, S3 22, S4 37, none 4 = 125). Confirm every take has a `check` block with CSI records > 0 on both RX. Report anything unexpected (extra folders, missing `meta.json`, `_rN` duplicates of the same take_id). Do not touch `_rejected/`.
+3. Verify the data **read-only**: count takes per subject and activity from `data/raw/*/meta.json` (expected: S1 37, S2 25, S3 22, S4 37, none 4 = 125; *after S5/S6: + S5 37, S6 37, none 3 = 202, `config/dataset_expected.yaml`*). Confirm every take has a `check` block with CSI records > 0 on both RX. Report anything unexpected (extra folders, missing `meta.json`, `_rN` duplicates of the same take_id). Do not touch `_rejected/`.
 4. Map the whole `~/WiFi_CSI_Final` tree (sizes included). List what looks obsolete, duplicated or generated (old zips, `__pycache__`, `data_synth`, `models_synth`, stray scripts, build folders). **Propose** a target folder structure and a move-to-`_archive` list. Do not move anything yet.
 5. Read all code in `host/`, `pipeline/`, `ml/`, `app/`, `scripts/`, `firmware/` and the docs. Produce `docs/AUDIT.md`: what each module does, whether it matches `docs/CONTRACTS.md`, bugs and risks found, and tests that exist and whether they pass (run them).
 
@@ -86,7 +86,7 @@ Use the **tasks** below. Hierarchical is fine if it helps.
 
 Report fall detection separately as fall vs everything else.
 
-1. **Evaluation protocol:** leave-one-subject-out over S1–S4 (4 folds). Hyper-parameter search is nested inside the training subjects. Report per fold and mean ± std.
+1. **Evaluation protocol:** leave-one-subject-out over S1–S6 (6 folds; D-028). Hyper-parameter search is nested inside the training subjects. Report per fold and mean ± std.
    - **Primary metric:** macro-F1.
    - **Also report:** per-class precision, recall and F1; confusion matrices; presence sensitivity and specificity; fall sensitivity per window **and per take** ("falls detected k of 26"); false alarms on look-alike takes; latency per window.
 2. **Models to compare.** Every model uses the same LOSO folds and the same labelled windows, and reports results the same way. There are three tracks:
@@ -128,7 +128,7 @@ Report fall detection separately as fall vs everything else.
    - window length 2 / 3 / 4 s
    - feature groups removed one at a time
 4. Select the final model with me, based on the evidence. Retrain it on all subjects and save it in Format 3 (`models/<task>/model.joblib` + `model_meta.json` with classes, versions, window length, features, LOSO scores, trained_at, `synthetic: false`). Keep `Predictor.predict` compatible, or version the interface and update the live engine.
-5. Write `results/REPORT.md` with every number, figure and limitation: 1 room, 1 layout, 4 volunteers, simulated falls on a mattress, no video ground truth, not clinical.
+5. Write `results/REPORT.md` with every number, figure and limitation: 1 room, 1 layout, 6 volunteers, simulated falls on a mattress, no video ground truth, not clinical.
 
 **Gate 4:** comparison table, ablations, chosen model and its justification.
 

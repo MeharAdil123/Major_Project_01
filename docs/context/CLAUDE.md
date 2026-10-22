@@ -3,7 +3,7 @@
 Put this file at `~/WiFi_CSI_Final/CLAUDE.md`. Claude Code reads it at the start of every session.
 
 ## Where things are
-- Working repo: `~/WiFi_CSI_Final/wifi-csi-har` (git). Raw data: `wifi-csi-har/data/raw/` (125 takes, irreplaceable).
+- Working repo: `~/WiFi_CSI_Final/wifi-csi-har` (git). Raw data: `wifi-csi-har/data/raw/` (202 takes from 22 Oct incl. S5/S6, irreplaceable).
 - Python venv: `~/WiFi_CSI_Final/hostenv`. ESP-IDF v5.5.5: `~/WiFi_CSI_Final/esp/esp-idf-v5.5.5` (`export.sh` broken).
 - Full project background: `docs/context/PROJECT_CONTEXT.md` (copied from the handover zip). Read it before planning.
 
@@ -13,7 +13,7 @@ Put this file at `~/WiFi_CSI_Final/CLAUDE.md`. Claude Code reads it at the start
 3. **Never flash, erase or reconfigure a board, and never send `power ... save` to the TX,** unless the user says so in this session. Reading a serial port is fine; tell the user first, because opening the TX port resets it.
 4. **Never commit recorded data or trained artefacts:** nothing under `data/**`, no raw `.bin` recordings (`RX1.bin`/`RX2.bin`), no `.npz`, `.joblib` or other model weights, and no token/password. *Clarified 2026-10-22:* firmware images under `releases/**/*.bin` are build artefacts, not recordings, and stay tracked. Never push to GitHub without the user asking. Never upload recordings to any online service.
 5. **Never fabricate results.** Every number in a report comes from a script that ran in this session; keep the command and its output (log file) next to the result.
-6. **Evaluation:** leave-one-subject-out only (S1–S4). Never random window splits. Scalers, feature selection and hyper-parameter search live inside the training folds (nested). Empty-room takes are dealt to folds take by take.
+6. **Evaluation:** leave-one-subject-out only (S1–S6, 6 folds; D-028). Never random window splits. Scalers, feature selection and hyper-parameter search live inside the training folds (nested). Empty-room takes are dealt to folds take by take.
 7. **Synthetic data** is labelled SYNTHETIC everywhere and never mixed with real results.
 8. **Frozen interfaces** (`Predictor.predict(X, rssi)` output dict, `pipeline/preprocess.py` used by both offline and live, Format 1/2/3 in `docs/CONTRACTS.md`): change only with a version bump (`PREPROC_VERSION`, `FEATURES_VERSION`) and a note in `docs/decisions/DECISIONS.md`.
 9. Work in phases; stop at each gate listed in the prompt and wait for the user's "go".

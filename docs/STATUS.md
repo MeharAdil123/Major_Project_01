@@ -1,4 +1,4 @@
-# STATUS — 2026-10-22 ~16:30 IST · Phase 1 done (Gate 1, incl. follow-ups) · waiting for "S5/S6 finished" before Phase 2
+# STATUS — 2026-10-22 18:20 IST · Phase 1 CLOSED · S5/S6 audited · Phase 2 starting
 
 ## Done in this phase
 **Gate 0 decisions applied** (log: `docs/decisions/DECISIONS.md`, D-018 … D-028; the folder `docs/decisions/` did not exist yet and was created):
@@ -50,11 +50,20 @@
 - **S5/S6 audit prepared** → D-031: `scripts/audit_raw.py --baseline-csv results/audit/raw_takes.csv --rssi-tol 3` flags new takes whose RSSI differs from the 22 Oct baseline (same activity and position) by > 3 dB, and reports a per-subject median. Tested on synthetic rows (`tests/test_audit_raw.py`). Calibration on 22 Oct data (`results/audit/rssi_drift_calibration.log`): per-take flags fire on 22 % (S4) / 18 % (S3) of same-day takes; per-subject medians ≤ 1.2 dB. So the subject median is the real indicator.
 - Tests: **43 passed** (`results/audit/pytest_phase1.log`).
 
+## S5/S6 audit (2026-10-22 18:05, `results/audit/raw_audit_s5s6.log`, `results/audit/empty_compare.log`)
+- **202 takes = `config/dataset_expected.yaml` (MATCH)**: S1 37, S2 25, S3 22, S4 37, S5 37, S6 37, none 7. All 404 files decode; CSI counts equal `meta.json`; 0 CRC errors; no new invalid takes (only S1_T29, overridden).
+- Drift check (D-031): per-subject median RSSI shift S5 RX1 +0.0 / RX2 −1.0 dB, S6 −0.5 / −1.0 dB, afternoon empties +1.0 / −0.5 dB → **no set-up move by RSSI**. 18 of 77 new takes have a per-take flag (> 3 dB); in 22 Oct calibration this rate is 18–22 %. Listed in the log for your inspection.
+- Afternoon vs morning empty takes: RSSI and loss equal or better, but the **static amplitude profile differs by 3.4 / 4.4 dB RMS** (RX1/RX2), vs 0.8 / 1.2 dB within the afternoon (likely the TX re-aim). This is recorded as a session effect (D-033).
+- Link loss median per subject, RX1/RX2 %: S1 2.4/12.5, S2 5.8/7.6, S3 2.3/6.9, S4 1.5/2.0, S5 1.1/3.0, S6 3.0/4.1.
+- Docs updated: PROJECT_CONTEXT (6 subjects, 202 takes, 6 folds, afternoon notes), CLAUDE.md (both copies: S1–S6, 202), PROMPT, CONTRACTS, DECISIONS D-028 (6 folds), D-032 (RF hygiene: laptop Wi-Fi + Bluetooth off when recording and live), D-033 (dataset).
+- `git worktree list` still lists `/home/mohith/rec_s5` (folder present), so the worktree is not fully removed. Left alone; remove it with `git worktree remove /home/mohith/rec_s5` when you want.
+- Tests: 44 passed.
+
 ## Open problems / questions
-1. Empty takes vs 6 folds: 4 empty-room takes for 6 folds leaves two folds without one (presence specificity undefined there). An empty-room take before and after the S5/S6 session would fill this and is also the cleanest set-up-drift check.
-2. The S5/S6 session runs the old recorder (e765966); bugs 1–5 can still occur there. The post-recording audit catches them.
+1. (resolved) 7 empty takes now, so every fold gets one.
+2. (resolved) S5/S6 audit found no recorder-bug artefacts.
 3. Flashing v2.1: your decision (bench test first: rx_check 120 s, RX2 loss v2 vs v2.1).
 4. F6: the TX watchdog also reboots on idle starvation; accept or disable the idle check.
 
 ## Next step
-Phase 2 (signal inspection) needs `data/raw`. Per D-028 I wait for your "S5/S6 finished". Then: re-run the Phase 0 audit on the new takes, update the expected counts, and start Phase 2 (stopping at Gate 2).
+Phase 2: signal inspection on real data (branch `cc/phase2`), stopping at Gate 2.

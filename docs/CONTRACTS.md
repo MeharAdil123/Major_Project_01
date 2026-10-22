@@ -86,4 +86,4 @@ See the docstring in `app/engine.py`: `status` (`ok|degraded|no_signal|error`), 
 1. Never split windows randomly. Neighbouring windows overlap and look alike, so random splits inflate accuracy.
 2. The main result is **leave-one-subject-out**: test on a person the model never saw. Empty-room takes are dealt to folds take by take.
 3. Report per-class precision, recall, F1, the confusion matrix, presence sensitivity and specificity, fall sensitivity, and the false-alarm share.
-4. Every result says that it comes from one room, one layout, 3 volunteers, and simulated falls.
+4. Every result says that it comes from one room, one layout, 6 volunteers (S1–S6), and simulated falls.

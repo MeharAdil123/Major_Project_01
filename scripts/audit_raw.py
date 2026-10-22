@@ -78,6 +78,19 @@ def rssi_drift(new_rows, base_rows, tol=3.0):
     return per_take, per_subject
 
 
+def compare_expected(counts, path) -> list[str]:
+    """counts: Counter[(subject, activity)] -> list of differences against the YAML file."""
+    import yaml
+    exp = yaml.safe_load(Path(path).read_text())
+    want = {(s, a): n for s, acts in exp["per_subject_activity"].items() for a, n in acts.items()}
+    diffs = [f"{s}/{a}: expected {want.get((s, a), 0)}, found {counts.get((s, a), 0)}"
+             for s, a in sorted(set(want) | {k for k, v in counts.items() if v})
+             if want.get((s, a), 0) != counts.get((s, a), 0)]
+    if sum(counts.values()) != exp["total"]:
+        diffs.append(f"total: expected {exp['total']}, found {sum(counts.values())}")
+    return diffs
+
+
 NAME_RE = re.compile(r"^(\d{8})_(S\d|none)_([A-Z]\d{2})_([a-z_]+?)(?:_r(\d+))?$")
 
 
@@ -87,6 +100,8 @@ def main() -> int:
     ap.add_argument("--decode", action="store_true")
     ap.add_argument("--csv", type=Path, help="write a per-take table here")
     ap.add_argument("--baseline-csv", type=Path, help="per-take table of the baseline takes (D-031)")
+    ap.add_argument("--expected", type=Path, default=ROOT / "config" / "dataset_expected.yaml",
+                    help="expected counts (YAML); compared and reported")
     ap.add_argument("--rssi-tol", type=float, default=3.0, help="dB; flag |RSSI - baseline| above this")
     a = ap.parse_args()
 
@@ -162,6 +177,11 @@ def main() -> int:
         print(s.ljust(8) + "".join(str(counts[(s, x)]).rjust(10) for x in acts) + str(by_subject[s]).rjust(10))
     print("total".ljust(8) + "".join(str(sum(counts[(s, x)] for s in subs)).rjust(10) for x in acts)
           + str(sum(by_subject.values())).rjust(10))
+    if a.expected and a.expected.exists():
+        diffs = compare_expected(counts, a.expected)
+        print(f"\nexpected counts ({a.expected.name}): " + ("MATCH" if not diffs else f"{len(diffs)} DIFFERENCES"))
+        for d in diffs:
+            print("  " + d)
     dup = {k: v for k, v in seen.items() if len(v) > 1}
     print(f"\nsame (subject, take_id) kept more than once: {len(dup)}")
     for k, v in sorted(dup.items()):

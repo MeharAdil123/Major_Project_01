@@ -1,4 +1,4 @@
-# WiFi-CSI HAR — consolidated project context (as of 2026-10-22, 13:50 IST)
+# WiFi-CSI HAR — consolidated project context (as of 2026-10-22, 13:50 IST; updated 18:15 IST with S5/S6 and Gate 0 corrections)
 
 This file merges ~20 planning/handover notes written between 18 and 22 Oct 2026. Where older notes disagreed, the resolution is already applied here. **Facts marked (verified) come from pasted tool output. Everything else is a plan, an assumption or an open question — check it on the machine.**
 
@@ -10,7 +10,7 @@ Camera-free human activity recognition (HAR) with Wi-Fi Channel State Informatio
 
 - **In scope (D-013):** presence (empty vs occupied); states sit / stand / walk / lie; events **fall, sit_down, stand_up** (targets) and **bend_pick** (fall look-alike, negative class); a live monitor with uncertainty.
 - **Out of scope / future work (say so openly):** through-wall sensing, breathing rate, people counting, automatic calibration to new rooms, sleep detection, clinical use.
-- **Every claim states its limits:** one room, one layout, 4 volunteers, simulated falls on a mattress, not clinically validated.
+- **Every claim states its limits:** one room, one layout, 6 volunteers, simulated falls on a mattress, not clinically validated.
 
 ## 2. Hardware (verified, decision D-006c)
 
@@ -71,7 +71,7 @@ Camera-free human activity recognition (HAR) with Wi-Fi Channel State Informatio
 
 Changing a format = bump the version string (PREPROC_VERSION / FEATURES_VERSION) and record it in the decision log.
 
-## 6. The dataset recorded on 22 Oct 2026 (verified counts)
+## 6. The dataset recorded on 22 Oct 2026 (verified counts: Phase 0 audit + S5/S6 audit, `results/audit/raw_audit_s5s6.log`)
 
 **Place:** a library hall (large room, tile floor, big glass windows, glass wall to an adjacent room, metal chairs). Layout name `layout_library`, `setting same_room`, plywood NOT used. TX power **5 dBm** for every take. Channel 11 HT40.
 
@@ -88,10 +88,18 @@ TX (0, 0) h 0.9 · RX1 (−1.3, 4.5) h 1.0 · RX2 (+1.3, 4.5) h 0.5 · chair spo
 | S2 | 25 | 5 | 6 | 5 | 2 | 2 | 2 | 2 | 1 | 3 takes full + short |
 | S3 | 22 | 5 | 5 | 5 | 2 | 2 | 1 | 1 | 1 | short |
 | S4 | 37 | 8 | 8 | 9 | 4 | 3 | 2 | 2 | 1 | full (backward falls skipped) |
-| none | 4 empty | | | | | | | | | 120 s + 3 × 30 s |
-| **Total** | **125** | **26** | **27** | **28** | **12** | **10** | **7** | **7** | **4** | |
+| S5 | 37 | 8 | 8 | 9 | 4 | 3 | 2 | 2 | 1 | full (afternoon session) |
+| S6 | 37 | 8 | 8 | 9 | 4 | 3 | 2 | 2 | 1 | full (afternoon session) |
+| none | 7 empty | | | | | | | | | morning: 120 s + 3 × 30 s; afternoon: 3 × 30 s (before S5, between S5/S6, after S6) |
+| **Total** | **202** | **42** | **43** | **46** | **20** | **16** | **11** | **11** | **6** | + 7 empty |
 
-All 125 have CSI on both receivers (checked via `meta.json` 13:24). Bad/redone takes are in `data/raw/_rejected/`.
+All 202 have CSI on both receivers (decoded CSI record counts equal `meta.json` for all 404 files; 0 CRC errors; 100 % HT40). Bad/redone takes are in `data/raw/_rejected/`. Expected counts are in `config/dataset_expected.yaml`. `S1_T29_walk` is `valid:false` and is used through `config/take_overrides.csv` (D-018).
+
+**Sessions.** Morning (10:35–13:19): B00 → S1 → B01 → S2 → B01_r2 → S3 (S4 recorded 12:53–13:12 between S3's takes and S3's fix-up E50–E52) → B01_r4. Afternoon (16:50–17:48): B01_r5 → S5 → B01_r6 → S6 → B01_r8. The three afternoon empty takes are named `B01_empty_r5/_r6/_r8` (same plan row, so the `_rN` suffix does not mean "redo" for empty takes).
+
+**Afternoon session (S5/S6), user notes.** Same library set-up and flags, old recorder (e765966). The first link check read RX1 −41.5 / RX2 −45.4 dBm (the TX aim had drifted); after re-aiming the TX: RX1 −37.0 / RX2 −38.4 dBm. RX2 then lost 41.5 % with strong RSSI, caused by **the laptop's own Wi-Fi and Bluetooth**. With both off: RX1 −36.4 dBm 1.1 % loss, RX2 −38.1 dBm 4.7 % loss (morning level). The laptop radios stayed off for all S5/S6 takes → RF hygiene rule D-032.
+
+**Afternoon vs morning (measured).** RSSI per subject differs by 0 to −1 dB from the morning baseline (median over takes, same activity and position); link loss is lower (median RX1 1.1–3.0 %, RX2 3.0–4.1 %). But the **static channel shape changed**: the gain-normalised mean amplitude profile of the afternoon empty takes differs from the morning ones by 3.4 (RX1) / 4.4 dB (RX2) RMS, versus 0.8 / 1.2 dB among the afternoon takes (`results/audit/empty_compare.log`). The morning takes also differ among themselves (up to 3.6 dB; cables pulled 11:20, TX power cycle 12:40). The TX re-aim most likely explains the afternoon shift. Consequence: static/shape features carry a session signature (morning S1–S4 vs afternoon S5/S6), another reason for the dynamic-only analysis (D-024).
 
 **Link quality notes:** phones on → RX2 loss 14 %; with phones in airplane mode RX1 ~2–6 %, RX2 ~4–10 %, gaps mostly ≤ 60 ms. **Body shadowing:** at spot A RX1 RSSI drops (−36 → −46 dBm); at spot B RX2 loss rises up to 35 % (S2 E58/E59/E60, S3 E47/E48, RX2 13–35 % loss). After the TX power cycle at ~12:45 loss fell to ~1–2 % on both (S4). Empty-room RSSI ≈ −36 (RX1), −38 (RX2).
 
@@ -99,7 +107,7 @@ All 125 have CSI on both receivers (checked via `meta.json` 13:24). Bad/redone t
 
 **No video ground truth.** Event timing = cue time + motion peak.
 
-**Usage plan:** the 14:00 review model used S1–S3 only. The full analysis should use **S1–S4 with leave-one-subject-out (4 folds)**.
+**Usage plan:** the 14:00 review model used S1–S3 only. The full analysis uses **S1–S6 with leave-one-subject-out (6 folds)** (D-028); the 7 empty-room takes are dealt to folds take by take, so every fold gets at least one.
 
 **Demo room ≠ recording room.** No data from the demo room was recorded.
 
@@ -119,7 +127,7 @@ All 125 have CSI on both receivers (checked via `meta.json` 13:24). Bad/redone t
 Full register with later decisions: `docs/decisions/DECISIONS.md`.
 
 
-D-006c boards · D-010 raw CSI (no merge/smoothing) · D-011 UART CRC rejects < 0.5 % · D-012 RX2 loss limit 3 % (bench) · D-013 scope · D-014 protocol (state 30 s, event 10 s, cue 3 s) · D-015 LOSO evaluation · D-016 keep the random forest unless a CNN is clearly better on LOSO · D-017 record on ch 11 at 5 dBm with relaxed keep rule (RX1 ≥ 180/s, ≥ 165 at spot A; RX2 ≥ 160/s, ≥ 150 at spot B; no gap > 100 ms).
+D-006c boards · D-010 raw CSI (no merge/smoothing) · D-011 UART CRC rejects < 0.5 % · D-012 RX2 loss limit 3 % (bench) · D-013 scope · D-014 protocol (state 30 s, event 10 s, cue 3 s) · D-015 LOSO evaluation · D-016 keep the random forest unless a CNN is clearly better on LOSO · D-017 record on ch 11 at 5 dBm with relaxed keep rule (RX1 ≥ 180/s, ≥ 165 at spot A; RX2 ≥ 160/s, ≥ 150 at spot B; no gap > 100 ms) · D-018 … D-033 (Gate 0 onwards: overrides, layout correction, 6 folds, TX default 5 dBm, udev, drift check, RF hygiene) in `docs/decisions/DECISIONS.md`.
 
 ## 9. Still open (not done)
 

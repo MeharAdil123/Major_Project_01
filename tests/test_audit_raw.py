@@ -41,3 +41,20 @@ def test_whole_subject_shift_is_flagged():
 def test_exactly_tol_is_not_flagged():
     per_take, _ = audit.rssi_drift([row("n", "S5", "fall", "M", -41, -40)], BASE, tol=3.0)
     assert not per_take[0]["flag"]
+
+
+def test_expected_counts_file_is_consistent():
+    import collections
+    import yaml
+    exp = yaml.safe_load((ROOT / "config" / "dataset_expected.yaml").read_text())
+    c = collections.Counter({(s, a): n for s, acts in exp["per_subject_activity"].items() for a, n in acts.items()})
+    assert audit.compare_expected(c, ROOT / "config" / "dataset_expected.yaml") == []
+    assert sum(c.values()) == 202 and len([s for s in exp["per_subject_activity"] if s != "none"]) == 6
+    per_act = collections.Counter()
+    for (s, a), n in c.items():
+        per_act[a] += n
+    assert per_act == {"fall": 42, "sit_down": 43, "stand_up": 46, "bend_pick": 20, "walk": 16,
+                       "stand": 11, "sit": 11, "lie": 6, "empty": 7}
+    c[("S5", "fall")] -= 1
+    assert audit.compare_expected(c, ROOT / "config" / "dataset_expected.yaml") == [
+        "S5/fall: expected 8, found 7", "total: expected 202, found 201"]
