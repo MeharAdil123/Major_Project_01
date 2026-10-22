@@ -96,6 +96,8 @@ def main():
                 r["alarm_latency_after_onset_s"] = round(al[0] - float(o["onset_s"]), 2)
         rows.append(r)
     R = pd.DataFrame(rows)
+    if "onset_detected" in R:
+        R["onset_detected"] = R["onset_detected"].map(lambda v: v is True or v == "True").astype(bool)
     falls = R[R.activity == "fall"]
     look = R[R.activity.isin(LOOKALIKE)]
     other = R[R.kind == "state"]

@@ -80,3 +80,13 @@ One entry per decision: id, date, decision, why, consequences. Earlier entries (
 **D-044 Gate 3 not stopped (2026-10-22).** The user asked to stop at Gate 3 only if the loss-tolerance test, labelling or the dataset summary showed something unexpected. None did (`results/dataset/summary.log`; STATUS has the details), so Phase 4 started directly.
 
 **D-045 Phase 4 stays on the Linux laptop (2026-10-22, user).** The planned move to a MacBook was cancelled: the laptop hotspot did not appear on the Mac, and the Mac's USB networking does not bind on Linux (`cdc_ncm … bind() failure`). The archive had been copied to the user's phone (size verified, 710,328,320 bytes) but is not used; the user removes it from the phone. `docs/setup/MIGRATE_TO_MAC.md` and `~/WiFi_CSI_Final/transfer/` stay for a later move. GitHub cannot carry the recordings (CLAUDE.md rule 4). Phase 4 runs here: Intel i3-7020U (2 cores / 4 threads), 7 GB RAM, so runs are long and staged.
+
+## Phase 4 (2026-10-23; evidence `results/REPORT.md`, `results/phase4/`)
+
+**D-046 Window length 4 s**, by the rule fixed in advance (`scripts/phase4_choose_window.py`): mean best-model macro-F1 over the three tasks, dynamic features. 2 s 0.533 / 3 s 0.582 / 4 s 0.603. The user expected 3 s; the rule chose 4 s (outside the 0.005 tie margin).
+
+**D-047 Selection rule for 6 folds.** "Wins or ties on ≥ 3 of 4 folds" becomes ≥ 5 of 6 folds (75 %), with a tie meaning within 0.02 macro-F1 of the best on that fold. A 4-of-6 reading is reported too and gives the same picks. Results: events → MiniRocket, state → extra trees, presence → MiniRocket. Final choice made with the user at Gate 4.
+
+**D-048 Deep models reported as run.** All 10 overfit under the fixed budget (train loss ↓, inner-validation loss ↑ from about epoch 3). They were not re-tuned after seeing results.
+
+**D-049 Per-take bug fix.** `phase4_pertake.py` reported `falls_detected_among_onset_missed` wrongly: an object-typed bool column was inverted with `~`. Fixed and rerun. The headline numbers were unaffected. The old JSONs are kept as `*.superseded_bug_onset_missed`.

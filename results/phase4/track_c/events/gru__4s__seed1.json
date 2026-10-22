@@ -1,0 +1,197 @@
+{
+ "model": "gru",
+ "task": "events",
+ "window": "4s",
+ "seed": 1,
+ "result": {
+  "macro_f1_mean": 0.27231804078088956,
+  "macro_f1_std": 0.02788934854640983,
+  "macro_f1_per_fold": {
+   "S1": 0.2931,
+   "S2": 0.3212,
+   "S3": 0.2501,
+   "S4": 0.2622,
+   "S5": 0.2703,
+   "S6": 0.237
+  },
+  "pooled": {
+   "macro_f1": 0.27678934939288335,
+   "accuracy": 0.4306538942107455,
+   "n": 2401,
+   "per_class": {
+    "bend_pick": {
+     "precision": 0.059880239520958084,
+     "recall": 0.17699115044247787,
+     "f1": 0.0894854586129754,
+     "support": 113
+    },
+    "fall": {
+     "precision": 0.18072289156626506,
+     "recall": 0.21505376344086022,
+     "f1": 0.19639934533551553,
+     "support": 279
+    },
+    "none": {
+     "precision": 0.749770009199632,
+     "recall": 0.583810888252149,
+     "f1": 0.6564639548932742,
+     "support": 1396
+    },
+    "sit_down": {
+     "precision": 0.23024054982817868,
+     "recall": 0.22259136212624583,
+     "f1": 0.22635135135135134,
+     "support": 301
+    },
+    "stand_up": {
+     "precision": 0.20168067226890757,
+     "recall": 0.23076923076923078,
+     "f1": 0.21524663677130046,
+     "support": 312
+    }
+   },
+   "confusion": {
+    "labels": [
+     "bend_pick",
+     "fall",
+     "none",
+     "sit_down",
+     "stand_up"
+    ],
+    "matrix": [
+     [
+      20,
+      34,
+      17,
+      15,
+      27
+     ],
+     [
+      101,
+      60,
+      70,
+      15,
+      33
+     ],
+     [
+      111,
+      178,
+      815,
+      132,
+      160
+     ],
+     [
+      41,
+      25,
+      103,
+      67,
+      65
+     ],
+     [
+      61,
+      35,
+      82,
+      62,
+      72
+     ]
+    ]
+   },
+   "fall_vs_rest": {
+    "sensitivity": 0.21505376344086022,
+    "precision": 0.18072289156626506,
+    "f1": 0.19639934533551553,
+    "false_alarm_rate": 0.1281809613572102
+   }
+  },
+  "epochs": {
+   "S1": {
+    "best_epoch": 5,
+    "epochs_run": 11,
+    "inner_val_subject": "S2"
+   },
+   "S2": {
+    "best_epoch": 24,
+    "epochs_run": 30,
+    "inner_val_subject": "S3"
+   },
+   "S3": {
+    "best_epoch": 5,
+    "epochs_run": 11,
+    "inner_val_subject": "S4"
+   },
+   "S4": {
+    "best_epoch": 30,
+    "epochs_run": 30,
+    "inner_val_subject": "S5"
+   },
+   "S5": {
+    "best_epoch": 13,
+    "epochs_run": 19,
+    "inner_val_subject": "S6"
+   },
+   "S6": {
+    "best_epoch": 5,
+    "epochs_run": 11,
+    "inner_val_subject": "S1"
+   }
+  },
+  "per_fold": {
+   "S1": {
+    "macro_f1": 0.29309378190408364,
+    "fall_vs_rest": {
+     "sensitivity": 0.3090909090909091,
+     "precision": 0.2125,
+     "f1": 0.2518518518518518,
+     "false_alarm_rate": 0.1351931330472103
+    }
+   },
+   "S2": {
+    "macro_f1": 0.32119776406799316,
+    "fall_vs_rest": {
+     "sensitivity": 0.5833333333333334,
+     "precision": 0.34146341463414637,
+     "f1": 0.4307692307692308,
+     "false_alarm_rate": 0.09712230215827339
+    }
+   },
+   "S3": {
+    "macro_f1": 0.25014855139442643,
+    "fall_vs_rest": {
+     "sensitivity": 0.03225806451612903,
+     "precision": 0.021739130434782608,
+     "f1": 0.025974025974025976,
+     "false_alarm_rate": 0.1939655172413793
+    }
+   },
+   "S4": {
+    "macro_f1": 0.26220357824066604,
+    "fall_vs_rest": {
+     "sensitivity": 0.30357142857142855,
+     "precision": 0.22972972972972974,
+     "f1": 0.26153846153846155,
+     "false_alarm_rate": 0.1393643031784841
+    }
+   },
+   "S5": {
+    "macro_f1": 0.27027458338008803,
+    "fall_vs_rest": {
+     "sensitivity": 0.17543859649122806,
+     "precision": 0.13157894736842105,
+     "f1": 0.15037593984962405,
+     "false_alarm_rate": 0.17553191489361702
+    }
+   },
+   "S6": {
+    "macro_f1": 0.2369899856980801,
+    "fall_vs_rest": {
+     "sensitivity": 0.017857142857142856,
+     "precision": 0.06666666666666667,
+     "f1": 0.028169014084507043,
+     "false_alarm_rate": 0.038781163434903045
+    }
+   }
+  }
+ },
+ "train_s": 352.4531104564667,
+ "predict_ms_per_window": 0.4108658091178317
+}
