@@ -28,12 +28,17 @@ from ml import models_classical as mc  # noqa: E402
 OUT = ROOT / "results" / "phase4" / "track_a"
 
 
-def run(df, task, model, featset, tag, force=False, state_sources=None, out_name=None):
-    path = OUT / task / (out_name or f"{model}__{featset}__{tag}.json")
+def run(df, task, model, featset, tag, force=False, state_sources=None, out_name=None, out_dir=None, rows=None):
+    """One nested-LOSO run; writes <name>.json and <name>.pred.csv (per-window predictions).
+    rows: optional boolean mask over df (e.g. the 15 % gate subset)."""
+    path = (out_dir or OUT) / task / (out_name or f"{model}__{featset}__{tag}.json")
     if path.exists() and not force:
         return json.loads(path.read_text())
     kw = {} if state_sources is None else dict(state_sources=state_sources)
     m, y = ev.task_view(df, task, **kw)
+    if rows is not None:
+        y = y[rows[m]] if len(y) == m.sum() else y
+        m = m & rows
     cols = ev.feature_set(featset)
     X = df.loc[m, cols].to_numpy(np.float64)
     folds = ev.assign_folds(df)[m]
@@ -45,7 +50,12 @@ def run(df, task, model, featset, tag, force=False, state_sources=None, out_name
                predict_ms_per_window=round(r.predict_ms_per_window, 4), wall_s=round(time.time() - t0, 1),
                cross_session_folds=sorted(ev.CROSS_SESSION), state_sources=list(state_sources) if state_sources else None)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(res, indent=1))
+    pd.DataFrame(dict(session_id=df.loc[m, "session_id"].to_numpy(), t_start=df.loc[m, "t_start"].to_numpy(),
+                      position=df.loc[m, "position"].to_numpy(), activity=df.loc[m, "activity_label"].to_numpy(),
+                      fold=folds, y=y, pred=r.pred)).to_csv(path.with_suffix(".pred.csv"), index=False)
+    tmp = path.with_suffix(".json.partial")
+    tmp.write_text(json.dumps(res, indent=1))
+    tmp.rename(path)                                   # the JSON only exists once the run is complete
     return res
 
 

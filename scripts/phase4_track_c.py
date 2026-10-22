@@ -66,8 +66,19 @@ def main():
         t_all = time.time()
         pms = []
         for seed in a.seeds:
+            sp = OUT / a.task / f"{name}__{tag}__seed{seed}.json"
+            if sp.exists():                                    # resumable: one file per (model, seed)
+                done = json.loads(sp.read_text())
+                res["per_seed"][str(seed)] = done["result"]
+                res["train_s"] += done["train_s"]
+                pms.append(done["predict_ms_per_window"])
+                if "curves_fold_S1" in done:
+                    res["curves_fold_S1_seed0"] = done["curves_fold_S1"]
+                print(f"{name:<11} seed {seed}: loaded {sp.name}", flush=True)
+                continue
             pred = np.empty(len(y), dtype=object)
-            per_fold, epochs = {}, {}
+            per_fold, epochs, train_s, pm = {}, {}, 0.0, []
+            seed_curves = None
             for test in ev.SUBJECTS:
                 train_subj = [s for s in ev.SUBJECTS if s != test]
                 val = train_subj[(ev.SUBJECTS.index(test)) % len(train_subj)]
@@ -77,26 +88,38 @@ def main():
                 norm = lambda x: ((x - mu) / sd).astype(np.float32)  # noqa: E731
                 t0 = time.time()
                 mdl, hist, best_ep = dp.train_one(name, norm(C[tr]), yi[tr], norm(C[va]), yi[va], k, seed)
-                res["train_s"] += time.time() - t0
+                train_s += time.time() - t0
                 t0 = time.perf_counter()
                 p = dp.predict_proba(mdl, norm(C[te]))
-                pms.append((time.perf_counter() - t0) / max(te.sum(), 1) * 1000)
+                pm.append((time.perf_counter() - t0) / max(te.sum(), 1) * 1000)
                 pred[te] = np.array(classes)[p.argmax(1)]
                 per_fold[test] = ev.metrics(y[te], pred[te].astype(str), classes)
                 epochs[test] = dict(best_epoch=best_ep, epochs_run=len(hist), inner_val_subject=val)
                 if seed == a.seeds[0] and test == "S1":
-                    res["curves_fold_S1_seed0"] = hist
+                    seed_curves = hist
             s = ev.summarise_folds(per_fold)
-            res["per_seed"][str(seed)] = dict(**s, pooled=ev.metrics(y, pred.astype(str), classes), epochs=epochs,
-                                              per_fold={f: dict(macro_f1=v["macro_f1"],
-                                                                fall_vs_rest=v.get("fall_vs_rest")) for f, v in per_fold.items()})
+            result = dict(**s, pooled=ev.metrics(y, pred.astype(str), classes), epochs=epochs,
+                          per_fold={f: dict(macro_f1=v["macro_f1"], fall_vs_rest=v.get("fall_vs_rest")) for f, v in per_fold.items()})
+            rec = dict(model=name, task=a.task, window=tag, seed=seed, result=result, train_s=train_s,
+                       predict_ms_per_window=float(np.mean(pm)))
+            if seed_curves is not None:
+                rec["curves_fold_S1"] = seed_curves
+                res["curves_fold_S1_seed0"] = seed_curves
+            tmp = sp.with_suffix(".json.partial")
+            tmp.write_text(json.dumps(rec, indent=1))
+            tmp.rename(sp)
+            res["per_seed"][str(seed)] = result
+            res["train_s"] += train_s
+            pms.append(rec["predict_ms_per_window"])
             print(f"{name:<11} seed {seed}: macro-F1 {s['macro_f1_mean']:.3f} ± {s['macro_f1_std']:.3f} {s['macro_f1_per_fold']}", flush=True)
         means = [v["macro_f1_mean"] for v in res["per_seed"].values()]
         fold_means = {f: float(np.mean([v["macro_f1_per_fold"][f] for v in res["per_seed"].values()])) for f in ev.SUBJECTS}
         res.update(macro_f1_mean=float(np.mean(list(fold_means.values()))), macro_f1_std=float(np.std(list(fold_means.values()))),
                    macro_f1_seed_std=float(np.std(means)), macro_f1_per_fold={f: round(v, 4) for f, v in fold_means.items()},
                    predict_ms_per_window=float(np.mean(pms)), wall_s=round(time.time() - t_all, 1), train_s=round(res["train_s"], 1))
-        path.write_text(json.dumps(res, indent=1))
+        tmp = path.with_suffix(".json.partial")
+        tmp.write_text(json.dumps(res, indent=1))
+        tmp.rename(path)
         try:
             import matplotlib
             matplotlib.use("Agg")

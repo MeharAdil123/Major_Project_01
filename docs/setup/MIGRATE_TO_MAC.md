@@ -1,5 +1,7 @@
 # Moving the project to a MacBook (written 2026-10-22, end of Phase 3)
 
+> **NOT IN USE (2026-10-22, user decision D-045):** there is no Mac move; Phase 4 runs on the Linux laptop. Kept only as a record; do not follow.
+
 **What moves:** the repo (`~/WiFi_CSI_Final/wifi-csi-har`, including `.git`, `data/raw`, `data/features` and the untracked `results/**/*.log` evidence) and `~/WiFi_CSI_Final/CLAUDE.md`.
 **What does not move:** `hostenv/` (Linux binaries; recreate it), `esp/` (Linux ESP-IDF; only needed for flashing), `data/processed` (2 GB; rebuild on the Mac so all Phase 4 results come from one machine).
 **Rules that still apply:** copy, never move; the Linux laptop keeps its copy until the Mac copy is verified. **No cloud upload of recordings** (CLAUDE.md rule 4): use a USB drive or the local network, not iCloud, Google Drive or GitHub.

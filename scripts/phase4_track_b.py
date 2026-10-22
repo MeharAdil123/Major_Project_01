@@ -35,6 +35,10 @@ def main():
     ap.add_argument("--win", default="3")
     a = ap.parse_args()
     tag = f"{a.win}s"
+    out = ROOT / "results" / "phase4" / "track_b" / a.task
+    if (out / f"minirocket__{tag}.json").exists():
+        print("exists, skip:", out / f"minirocket__{tag}.json")
+        return
     df = pd.read_csv(ROOT / "data" / "features" / f"features_{tag}.csv", usecols=ev.META_COLS)
     z = np.load(ROOT / "data" / "processed" / f"windows_{tag}.npz", allow_pickle=False)
     assert (z["session_id"] == df["session_id"].to_numpy()).all()
@@ -62,7 +66,6 @@ def main():
                n_kernel_features=int(Ftr.shape[1]), input_channels=int(Xc.shape[1]),
                predict_ms_per_window_excl_transform=float(np.mean(pms)), wall_s=round(time.time() - t_all, 1),
                note="MiniRocket NumPy re-implementation (D-043), not the reference code")
-    out = ROOT / "results" / "phase4" / "track_b" / a.task
     out.mkdir(parents=True, exist_ok=True)
     (out / f"minirocket__{tag}.json").write_text(json.dumps(res, indent=1))
     print(f"MiniRocket {a.task} {tag}: {res['macro_f1_mean']:.3f} ± {res['macro_f1_std']:.3f} {res['macro_f1_per_fold']}")

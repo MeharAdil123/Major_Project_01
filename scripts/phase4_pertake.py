@@ -56,6 +56,10 @@ def main():
     ap.add_argument("--win", default="3")
     a = ap.parse_args()
     tag = f"{a.win}s"
+    done = ROOT / "results" / "phase4" / "pertake" / f"{a.model}__{a.featset}__{tag}.json"
+    if done.exists():
+        print("exists, skip:", done)
+        return
     df = pd.read_csv(ROOT / "data" / "features" / f"features_{tag}.csv")
     st = pd.read_csv(ROOT / "data" / "features" / f"stream_{tag}.csv")
     on = pd.read_csv(ROOT / "data" / "processed" / "onsets.csv").set_index("session_id")
@@ -64,8 +68,7 @@ def main():
     folds = ev.assign_folds(df)[m]
     X = df.loc[m, cols].to_numpy(np.float64)
     # stream rows -> fold ids (empty takes dealt as in assign_folds)
-    st_fold = ev.assign_folds(st.rename(columns={}))
-    st["fold"] = st_fold
+    st["fold"] = ev.assign_folds(st)
     p_fall = np.full(len(st), np.nan)
     make = mc.make_search_factory(a.model)
     for test in ev.SUBJECTS:

@@ -39,7 +39,11 @@ def main():
     folders = sorted(p.parent for p in (ROOT / "data" / "raw").glob("*/meta.json") if not p.parent.name.startswith("_"))
     names = fx.feature_names()
     out = ROOT / "data" / "features" / f"stream_{a.win:g}s.csv"
-    with open(out, "w", newline="") as fh:
+    if out.exists():
+        print(f"{out} exists (complete); nothing to do")
+        return
+    part = out.with_suffix(".csv.partial")
+    with open(part, "w", newline="") as fh:
         wr = csv.writer(fh)
         wr.writerow(["session_id", "subject", "take_id", "activity", "kind", "position", "t_start", "t_end",
                      "gate_ok", "rx1_miss", "rx2_miss"] + names)
@@ -69,6 +73,7 @@ def main():
                     row += [""] * len(names)
                 wr.writerow(row)
             print(f"{meta['session_id']:<36} windows {len(starts):>3} gate-ok {int(w['ok'].sum()):>3}", flush=True)
+    part.rename(out)                                   # only a complete file gets the final name
     print(f"done in {time.time() - t0:.0f} s -> {out}")
 
 
