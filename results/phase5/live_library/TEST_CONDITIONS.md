@@ -132,3 +132,51 @@ Six takes (empty, stand A, walk path1, walk path2, sit_down A, fall M), all GOOD
   - The model is fragile on empty rooms even in its own evaluation: LOSO occupied share on the 22 Oct empty takes was 0.00–0.42 per take, 0.17 overall (`presence_empty_loso.log`, from `results/phase4/track_a/presence/logreg__dynamic__4s.pred.csv`).
 - **Verdict:** after the swap the hardware senses motion again on both RX. The empty room now falls on the "occupied" side of a presence boundary that already sat inside the 22 Oct empty distribution. That is the documented weakness of the presence model (LOSO macro-F1 0.70; "a still person can look like an empty room", and here the reverse) meeting a changed antenna/board pairing. It is not a sensing failure. The live re-run would most likely fail its empty-room check (presence "occupied" > 20 %).
 - **Proposed next step:** swap the antennas **back to the 22 Oct pairing (A → RX1, B → RX2)**, firmly clicked. The swap showed both antennas are fine, so the original fault was most likely the mating at RX2. Then record walk path1 + empty again. If both RX respond to motion and the empty take is empty, do the live re-run.
+
+## Path naming settled (user, final plan, ~11:33)
+**path1 = vertical, path2 = horizontal, as in `config/position_map.yaml` v2.** So the takes recorded as "walk path1" on the horizontal line, **E03 and F01, were in fact walk path2**. Their comparison in rounds 2–3 was made against the 22 Oct path1 (vertical) windows. Their RX2 percentiles are therefore relative to the wrong reference; the RX2 conclusion below rests on G02, which is labelled correctly. The meta.json files were left as recorded.
+
+## Option A, round 5: antennas back to the 22 Oct pairing (11:33–11:38)
+- User: antenna **A → RX1, B → RX2** (22 Oct pairing), each U.FL clicked firmly and rotate-checked; RX2 antenna vertical, 0.5 m, on its marked spot.
+- Takes (`protocol/plan_diag_live4.csv`, `diag4_record.log`, `diag4b_record.log`, `data/live_library/diag_takes4/`):
+  - G01 empty: **two attempts rejected by the recorder** (RX1 −45/−47 dBm, RX2 −54/−41 dBm, loss 18–47 %). The motion timeline showed continuous walk-level variation on both RX (amplitude SD 7–16): people were moving near the receivers. Kept in `_rejected/`, not used.
+  - **G02 walk path2 (horizontal), 11:36:** GOOD. **walk 51/53** (22 Oct LOSO 0.96). RSSI RX1 −36, RX2 −37 (22 Oct walk path2 −37 / −39). **RX2 motion features 72nd–97th percentile, RX1 45th–84th** (`diag4_analysis.log`). RX2 amplitude SD 5.0–8.9 (`diag4_motion_timeline.log`). One fall alarm during the walk (10.5 s, max P(fall) 0.72).
+  - **G03 empty, 11:37:** GOOD. RSSI −37/−37 (22 Oct −37 / −38), all 15 key features at the 15th–95th percentile of 22 Oct empty. **Presence: empty 24 / occupied 28 of 52, P(occupied) median 0.68** (`presence_contrib_G03.log`: again no feature out of range).
+- **RX2 diagnosis (final):** RX2's motion blindness was a **connector/mating fault at RX2's U.FL**. Evidence: RX2 RSSI +4 dB and motion features at the 0th–5th percentile in every take this morning, with RX1 normal; a re-seat helped partially; after a full swap and a firm swap-back, RX2 is fully normal (72nd–97th percentile while walking), with both antennas working on either board. The board, its position and the antennas themselves are not the cause.
+
+## Final live test (11:40–11:53, `live_20261023_114052.jsonl`; analyses `analysis_final.log` (per marker segment), `live_steps_final.log` (per action interval, `scripts/phase5_live_steps.py`))
+- Set-up: dashboard live mode (`streamlit run app/live_app.py -- --serial --log-dir results/phase5/live_library --env-check 60`), engine in its own process (D-057), one browser tab (Claude Code browser pane). The step cues were **spoken** (`spd-say`) and marked in the dashboard at each step. Same RF conditions as earlier today (laptop Wi-Fi on, locked to channel 1; Bluetooth blocked). **No screenshots were taken of this session** (user decision).
+- Cue timing: the walk path2 "go" was issued at 11:49:42–44, but the speech command returned late (11:50:34), so the cue may have been heard a few seconds late. The fall "go" was spoken at 11:51:55, 14 s after the marker (11:51:41). The per-step analysis uses the spoken-cue times.
+- **System:** 1658 steps, interval median 0.50 s / p90 0.54 s, no crash, both RX connected throughout. Loss RX1 2–8 %, RX2 3–4 %. Degraded windows (> 20 % missing) during walk path2 (10/52) and the event steps (8/20 each), from RX1 loss bursts.
+- **Environment check:** 4 completed runs, all "environment differs: predictions unreliable", **only because of the presence model**: occupied 58 / 28 / 72 / 64 % (limit 20 %). The dynamic features match the training empty rooms closely (median |z| 0.29–0.37, 4 % outside the 5–95 % range; limits 2 and 30 %); fall crossings 0 %. `start_env_check` was called 11 times in the session (run numbers 1, 2, 3, 11 completed). The extra starts came from the dashboard button; they were not part of the scripted sequence, and their source is not recorded.
+- **Per step** (raw window labels in the action interval; `live_steps_final.log`):
+
+| step | windows ok | prediction | P(occupied) median | result |
+|---|---|---|---|---|
+| empty (final 30 s) | 52/52 | empty 35, stand 17 | 0.39 | 35/52 correct |
+| stand at A | 50/50 | stand 24, walk 18, empty 8 | 0.98 | 24/50 correct |
+| walk path1 (vertical) | 51/51 | **empty 40**, walk 6, stand 5 | 0.42 | **6/51 correct** |
+| walk path2 (horizontal) | 42/52 | **walk 37**, stand 3, empty 2 | 1.00 | 37/42 correct; **2 false fall alarms** (11:50:01 P 0.57, 11:50:12 P 0.50) |
+| sit_down at A (10 s) | 12/20 | state stand 7, walk 3, sit 2 | 1.00 | event sit_down in 0 windows |
+| stand_up at A (10 s) | 11/19 | state sit 10, walk 1 | 1.00 | event stand_up in 1 window |
+| fall on mattress M (10 s) | 12/20 | walk 7, stand 4, empty 1 | 0.90 | event fall in 2 windows; max P(fall) 0.28; **no alarm** |
+
+## Final assessment of the live tests (2026-10-23)
+**What worked**
+- The live chain end to end: acquisition from both boards, alignment, the gate (degraded or no_signal instead of predictions on stale data), all four models, the alarm rule, logging (now with every environment-check run), markers, and the engine process stepping every 0.50 s for 14 minutes without a crash. RX2 unplug/replug recovery was shown in session 3.
+- Walking across the link (path2) is recognised live (37/42) and offline (G02 51/53). The engine computes the same windows as the offline pipeline (D-054).
+- The environment check did its job: it reported "predictions unreliable" whenever the presence model misjudged the empty room.
+
+**What failed**
+- **Fall detection:** the fall on the mattress gave **no alarm** (max P(fall) 0.28), and walking across the link gave **2 false fall alarms**. In session 3 the fall also gave no alarm.
+- **Presence and still states:** the empty room was called occupied in 28–72 % of environment-check windows and in 17/52 windows of the final empty step. Standing at A was correct in only 24/50 windows.
+- **Walk along the link (path1, vertical): mostly "empty"** (40/51), although walking along path1 had LOSO 1.00 on 22 Oct.
+- **Events sit_down / stand_up** were not recognised live (0 and 1 windows).
+
+**Why (as far as the evidence goes)**
+1. Most of the morning's failure was the **RX2 U.FL connector fault** (diagnosed and fixed above).
+2. After the fix, the **presence model** (logistic regression, LOSO macro-F1 0.70 ± 0.07) is the weak link. Its empty/occupied boundary lies inside the 22 Oct empty-room feature distribution (LOSO: 0–42 % of empty windows called occupied per take). A new day with all features in range still lands on the wrong side. Presence gates the state labels, so its errors propagate.
+3. The live test ran under different RF conditions from the training day: the laptop Wi-Fi was on (D-032 exception), co-channel library APs were nearby, and RX1 loss bursts reached 8 %. There was one operator/subject, not one of S1–S6.
+4. The live steps are short (10–30 s, one repetition each), so they are a functional demonstration, not an accuracy measurement.
+
+**The evaluation remains the leave-one-subject-out results in `results/REPORT.md`.** The live test shows that the system runs end to end on real boards. It also shows that its accuracy does not carry over reliably to a new session without re-calibration. The calibration routine proposed in `docs/analysis/calibration_proposal.md` is the obvious next step (not done).
