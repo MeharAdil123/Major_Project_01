@@ -1,0 +1,21 @@
+track,model,input,macro_f1_mean,macro_f1_std,seed_std,S1,S2,S3,S4,S5,S6,wins_or_ties_vs_best,within_1sd,passes_rule,fit_or_train_s,predict_ms_per_window,size
+A,extra_trees,dynamic,0.5717,0.115,nan,0.434,0.538,0.64,0.422,0.688,0.708,6,True,True,125.7,0.31,50 features
+B,minirocket_numpy,16 band channels,0.568,0.0785,nan,0.498,0.499,0.572,0.555,0.552,0.732,3,True,False,282.6,0.051,9240 kernel features
+A,extra_trees,all,0.5642,0.1269,nan,0.431,0.548,0.62,0.379,0.671,0.737,4,True,False,137.0,0.28,83 features
+A,lightgbm,dynamic,0.5612,0.1349,nan,0.4,0.483,0.69,0.406,0.713,0.676,3,True,False,219.5,0.138,50 features
+C,that,32 band channels,0.5455,0.1662,0.0077,0.503,0.733,0.486,0.354,0.395,0.803,3,True,False,300.6,0.254,126660 params
+A,rf,dynamic,0.5413,0.1095,nan,0.437,0.538,0.672,0.366,0.645,0.591,3,True,False,298.0,0.311,50 features
+A,hist_gb,dynamic,0.5386,0.1318,nan,0.382,0.467,0.697,0.39,0.691,0.604,2,True,False,832.4,0.21,50 features
+C,bilstm,32 band channels,0.5338,0.1381,0.0229,0.542,0.546,0.528,0.36,0.424,0.802,3,True,False,394.4,0.457,50692 params
+A,xgboost,dynamic,0.529,0.1316,nan,0.401,0.459,0.662,0.354,0.702,0.596,2,True,False,222.5,0.039,50 features
+C,cnn1d,32 band channels,0.5274,0.1575,0.0164,0.414,0.647,0.554,0.349,0.401,0.798,3,True,False,119.8,0.156,36580 params
+C,cnn_bilstm,32 band channels,0.5243,0.1534,0.002,0.443,0.677,0.493,0.336,0.42,0.777,3,True,False,252.3,0.287,98180 params
+C,gru,32 band channels,0.5187,0.1181,0.0299,0.516,0.509,0.54,0.335,0.474,0.737,2,True,False,510.7,0.414,19076 params
+C,tcn,32 band channels,0.507,0.1593,0.0055,0.447,0.651,0.552,0.328,0.316,0.747,3,True,False,652.4,0.912,102212 params
+C,cnn_lstm,32 band channels,0.4991,0.1324,0.0087,0.419,0.614,0.433,0.351,0.443,0.736,3,True,False,188.4,0.224,64644 params
+C,lstm,32 band channels,0.4963,0.1312,0.0332,0.505,0.555,0.457,0.308,0.417,0.735,3,True,False,226.5,0.254,25348 params
+A,svm_rbf,dynamic,0.4943,0.0811,nan,0.397,0.522,0.455,0.405,0.594,0.593,2,True,False,14.1,0.081,50 features
+C,resnet1d,32 band channels,0.4841,0.1556,0.0061,0.343,0.666,0.555,0.305,0.355,0.68,1,True,False,335.5,0.502,114244 params
+C,ablstm,32 band channels,0.475,0.1198,0.0202,0.438,0.434,0.5,0.333,0.426,0.72,2,True,False,518.6,0.543,59013 params
+A,knn,dynamic,0.4689,0.0934,nan,0.387,0.545,0.334,0.418,0.543,0.585,2,True,False,1.5,0.032,50 features
+A,logreg,dynamic,0.4561,0.131,nan,0.309,0.335,0.665,0.419,0.597,0.411,2,False,False,7.3,0.008,50 features

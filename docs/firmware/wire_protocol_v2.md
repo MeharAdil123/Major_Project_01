@@ -51,8 +51,14 @@ The host slides forward one byte on a bad CRC and resyncs on the next `A5 5A`. D
 | 44 | u16 | sig_len | bytes incl. FCS |
 | 46 | u16 | csi_len | bytes of CSI that follow (384 measured at HT40) |
 
-CSI bytes are int8 pairs, imaginary part first, then real, per subcarrier. Measured layout at HT40 with the secondary below and no STBC: 384 B = L-LTF 128 B (64 subcarriers) + HT-LTF 256 B (128 subcarriers). Subcarrier ordering is decoded in Phase 5.
+CSI bytes are int8 pairs, imaginary part first, then real, per subcarrier. Measured layout at HT40 with the secondary below and no STBC: 384 B = L-LTF 128 B (64 subcarriers) + HT-LTF 256 B (128 subcarriers). HT-LTF buffer order is sub-carrier 0..63 then −64..−1 (ESP-IDF v5.5.5 table); `host/csiwire.py` reorders it to −64..63. Which carriers are empty and where the L-LTF bins sit is checked on real data in Phase 2.
 
 ## TX payload (first 24 bytes of each ESP-NOW frame from csi_tx)
 
 `magic u32 "CSI1" (0x31495343) | seq u32 | tx_time_us u64 | radio_id u32 | rate_hz u16 | tx_power_qdbm i8 (offset 22) | reserved u8`, then zero padding to 32 bytes.
+
+## Firmware v2.1 additions (2026-10-22, built, not flashed)
+
+Wire format unchanged (version byte stays 2). New HELLO fields, ignored by older hosts:
+- RX HELLO: `reset` (receiver reset reason: poweron, sw, panic, int_wdt, task_wdt, wdt, brownout, usb, ext, other), `uptime_s`, `link_core` (1 = the UART/USB driver and its interrupt run on core 1, away from Wi-Fi).
+- TX HELLO (text line on the TX UART): `reset`, `uptime_s`. The TX transmit task is watched by the task watchdog (reboot after 5 s without sending).

@@ -1,0 +1,7 @@
+take_id,kind,activity,position,duration_s,cue_s,pre_delay_s,say
+D01,state,empty,none,30,,10,Everyone leave the taped area and stay still outside it.
+D02,state,stand,A,30,,5,Stand at spot A. Stand naturally.
+D03,state,walk,path1,30,,5,Walk back and forth along path 1 at normal speed.
+D04,state,walk,path2,30,,5,Walk back and forth along path 2.
+D05,event,sit_down,A,10,3,5,Stand in front of the chair at A. On the beep sit down normally.
+D06,event,fall,M,10,3,5,Stand next to the mattress. On the beep fall forward onto the mattress via your knees and stay down.

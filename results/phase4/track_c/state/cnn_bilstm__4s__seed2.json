@@ -1,0 +1,143 @@
+{
+ "model": "cnn_bilstm",
+ "task": "state",
+ "window": "4s",
+ "seed": 2,
+ "result": {
+  "macro_f1_mean": 0.5255721264752685,
+  "macro_f1_std": 0.15671824876973783,
+  "macro_f1_per_fold": {
+   "S1": 0.4046,
+   "S2": 0.6951,
+   "S3": 0.4857,
+   "S4": 0.3692,
+   "S5": 0.4164,
+   "S6": 0.7825
+  },
+  "pooled": {
+   "macro_f1": 0.5496360450806042,
+   "accuracy": 0.5696649029982364,
+   "n": 1134,
+   "per_class": {
+    "lie": {
+     "precision": 0.352059925093633,
+     "recall": 0.5662650602409639,
+     "f1": 0.4341801385681293,
+     "support": 166
+    },
+    "sit": {
+     "precision": 0.6259842519685039,
+     "recall": 0.5698924731182796,
+     "f1": 0.5966228893058161,
+     "support": 279
+    },
+    "stand": {
+     "precision": 0.3879003558718861,
+     "recall": 0.35161290322580646,
+     "f1": 0.3688663282571912,
+     "support": 310
+    },
+    "walk": {
+     "precision": 0.8554216867469879,
+     "recall": 0.7493403693931399,
+     "f1": 0.7988748241912799,
+     "support": 379
+    }
+   },
+   "confusion": {
+    "labels": [
+     "lie",
+     "sit",
+     "stand",
+     "walk"
+    ],
+    "matrix": [
+     [
+      94,
+      21,
+      43,
+      8
+     ],
+     [
+      61,
+      159,
+      52,
+      7
+     ],
+     [
+      112,
+      56,
+      109,
+      33
+     ],
+     [
+      0,
+      18,
+      77,
+      284
+     ]
+    ]
+   }
+  },
+  "epochs": {
+   "S1": {
+    "best_epoch": 21,
+    "epochs_run": 27,
+    "inner_val_subject": "S2"
+   },
+   "S2": {
+    "best_epoch": 5,
+    "epochs_run": 11,
+    "inner_val_subject": "S3"
+   },
+   "S3": {
+    "best_epoch": 21,
+    "epochs_run": 27,
+    "inner_val_subject": "S4"
+   },
+   "S4": {
+    "best_epoch": 10,
+    "epochs_run": 16,
+    "inner_val_subject": "S5"
+   },
+   "S5": {
+    "best_epoch": 3,
+    "epochs_run": 9,
+    "inner_val_subject": "S6"
+   },
+   "S6": {
+    "best_epoch": 12,
+    "epochs_run": 18,
+    "inner_val_subject": "S1"
+   }
+  },
+  "per_fold": {
+   "S1": {
+    "macro_f1": 0.4045560923925262,
+    "fall_vs_rest": null
+   },
+   "S2": {
+    "macro_f1": 0.6950798301117624,
+    "fall_vs_rest": null
+   },
+   "S3": {
+    "macro_f1": 0.48574625454689113,
+    "fall_vs_rest": null
+   },
+   "S4": {
+    "macro_f1": 0.3691769913771604,
+    "fall_vs_rest": null
+   },
+   "S5": {
+    "macro_f1": 0.4163679584927523,
+    "fall_vs_rest": null
+   },
+   "S6": {
+    "macro_f1": 0.7825056319305187,
+    "fall_vs_rest": null
+   }
+  }
+ },
+ "train_s": 89.77007961273193,
+ "predict_ms_per_window": 0.2879461147964556
+}

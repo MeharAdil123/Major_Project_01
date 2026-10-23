@@ -13,6 +13,10 @@
  *     slow blink 1 Hz   transmitting normally
  *     fast blink 5 Hz   radio problem (init failed, rate not forced, or >1 % send errors)
  *
+ * Watchdog (v2.1): the transmit task is watched by the task watchdog. If it stops sending
+ *   for CONFIG_ESP_TASK_WDT_TIMEOUT_S (timer stopped, esp_now_send stuck), the TX reboots;
+ *   receivers see the sequence number restart, and HELLO reports reset=task_wdt.
+ *
  * USB serial (115200 baud, via the board's CP2102/CH340), plain text lines:
  *   HELLO {json}   at boot and every 10 s: MAC, firmware, radio read-back
  *   STATS {json}   every second: counters and achieved rate
@@ -38,6 +42,8 @@
 #include "esp_netif.h"
 #include "esp_now.h"
 #include "esp_rom_crc.h"
+#include "esp_system.h"
+#include "esp_task_wdt.h"
 #include "esp_timer.h"
 #include "esp_wifi.h"
 #include "freertos/FreeRTOS.h"
@@ -127,8 +133,10 @@ static void tx_task(void *arg)
     p->magic = TX_MAGIC;
     p->radio_id = s_radio_id;
     p->rate_hz = RATE_HZ;
+    ESP_ERROR_CHECK(esp_task_wdt_add(NULL));
     for (;;) {
         uint32_t n = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        esp_task_wdt_reset();
         if (n > 1) s_late += n - 1;               /* woke late: no burst catch-up */
         p->seq = s_seq;
         p->tx_time_us = (uint64_t)esp_timer_get_time();
@@ -205,6 +213,21 @@ static esp_err_t radio_start(void)
 }
 
 /* ------------------------------------------------------------- reporting */
+static const char *reset_name(esp_reset_reason_t r)
+{
+    switch (r) {
+    case ESP_RST_POWERON:  return "poweron";
+    case ESP_RST_SW:       return "sw";
+    case ESP_RST_PANIC:    return "panic";
+    case ESP_RST_INT_WDT:  return "int_wdt";
+    case ESP_RST_TASK_WDT: return "task_wdt";
+    case ESP_RST_WDT:      return "wdt";
+    case ESP_RST_BROWNOUT: return "brownout";
+    case ESP_RST_EXT:      return "ext";
+    default:               return "other";
+    }
+}
+
 static void print_hello(void)
 {
     const esp_app_desc_t *app = esp_app_get_description();
@@ -218,10 +241,11 @@ static void print_hello(void)
     printf("HELLO {\"role\":\"TX\",\"mac\":\"%s\",\"fw\":\"%s\",\"app_version\":\"%s\",\"idf\":\"%s\","
            "\"radio_id\":\"0x%08" PRIX32 "\",\"channel\":%u,\"second\":%d,\"bw\":%d,\"bw_cfg\":\"%s\","
            "\"phy_rate\":\"MCS0_LGI\",\"rate_cfg\":\"%s\",\"rate_hz\":%d,\"payload\":%d,"
-           "\"tx_power_dbm\":%.2f,\"saved_power_dbm\":%s,\"radio_ok\":%s}\n",
+           "\"tx_power_dbm\":%.2f,\"saved_power_dbm\":%s,\"radio_ok\":%s,\"reset\":\"%s\",\"uptime_s\":%lld}\n",
            s_mac, app->project_name, app->version, esp_get_idf_version(), s_radio_id,
            ch, (int)sec, (int)bw, BW_NAME, esp_err_to_name(s_rate_cfg), RATE_HZ, PAYLOAD_BYTES,
-           pwr / 4.0, saved, s_radio_ok ? "true" : "false");
+           pwr / 4.0, saved, s_radio_ok ? "true" : "false", reset_name(esp_reset_reason()),
+           (long long)(esp_timer_get_time() / 1000000));
 }
 
 static void set_power(float dbm, bool save)

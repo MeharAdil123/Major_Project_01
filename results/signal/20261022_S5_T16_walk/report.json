@@ -1,0 +1,415 @@
+{
+  "run": "data/raw/20261022_S5_T16_walk",
+  "window_s": [
+    null,
+    null
+  ],
+  "receivers": {
+    "RX1": {
+      "receiver": "RX1",
+      "records": 5970,
+      "note": null,
+      "dropped_not_our_tx": 0,
+      "crc_rejected_frames": 0,
+      "other_csi_len": {},
+      "duration_s": 29.97,
+      "rate_hz": 199.2,
+      "loss_pct": 0.42,
+      "duplicates": 0,
+      "gap_ms_max": 10.0,
+      "gaps_over_20ms": 0,
+      "gaps_over_limit": 0,
+      "ht40_pct": 100.0,
+      "ht_sig_pct": 100.0,
+      "first_word_invalid_pct": 0.0,
+      "rssi_dbm": {
+        "median": -37.0,
+        "p5": -39.0,
+        "p95": -35.0
+      },
+      "noise_floor_dbm_median": -94.0,
+      "htltf_null_subcarriers": "-64..-59, -1..1, 59..63",
+      "htltf_used_count": 114,
+      "htltf_matches_80211n_ht40": true,
+      "lltf_null_bins": "0..5, 32, 59..63",
+      "csi_power_steps": [],
+      "gain_change_candidates": 0,
+      "corr_csi_power_vs_rssi": 0.096,
+      "lltf_mapping": {
+        "correlations": {
+          "bin k = HT40 sub-carrier k (upper 20 MHz)": {
+            "overlap": 52,
+            "r": 0.997
+          },
+          "bin k = HT40 sub-carrier k-64 (lower 20 MHz)": {
+            "overlap": 52,
+            "r": 0.625
+          },
+          "FFT order around the upper-20 MHz centre (+32)": {
+            "overlap": 46,
+            "r": -0.827
+          },
+          "FFT order around the lower-20 MHz centre (-32)": {
+            "overlap": 46,
+            "r": -0.338
+          }
+        },
+        "verdict": "bin k = HT40 sub-carrier k (upper 20 MHz)"
+      }
+    },
+    "RX2": {
+      "receiver": "RX2",
+      "records": 5886,
+      "note": null,
+      "dropped_not_our_tx": 0,
+      "crc_rejected_frames": 0,
+      "other_csi_len": {},
+      "duration_s": 30.02,
+      "rate_hz": 196.0,
+      "loss_pct": 2.0,
+      "duplicates": 0,
+      "gap_ms_max": 15.0,
+      "gaps_over_20ms": 0,
+      "gaps_over_limit": 0,
+      "ht40_pct": 100.0,
+      "ht_sig_pct": 100.0,
+      "first_word_invalid_pct": 0.0,
+      "rssi_dbm": {
+        "median": -41.0,
+        "p5": -42.0,
+        "p95": -39.0
+      },
+      "noise_floor_dbm_median": -95.0,
+      "htltf_null_subcarriers": "-64..-59, -1..1, 59..63",
+      "htltf_used_count": 114,
+      "htltf_matches_80211n_ht40": true,
+      "lltf_null_bins": "0..5, 32, 59..63",
+      "csi_power_steps": [
+        {
+          "t_s": 0.92,
+          "csi_db": -5.4,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 1.02,
+          "csi_db": 5.4,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 1.19,
+          "csi_db": -5.5,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 1.29,
+          "csi_db": 5.5,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 2.15,
+          "csi_db": -5.7,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 2.32,
+          "csi_db": 5.6,
+          "rssi_db": 1.5,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 2.52,
+          "csi_db": -6.0,
+          "rssi_db": -2.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 2.63,
+          "csi_db": 5.8,
+          "rssi_db": 2.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 2.94,
+          "csi_db": 5.3,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 3.25,
+          "csi_db": -5.8,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 3.48,
+          "csi_db": 5.7,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 3.63,
+          "csi_db": 2.8,
+          "rssi_db": 2.0,
+          "gain_change_candidate": false
+        },
+        {
+          "t_s": 4.83,
+          "csi_db": -6.1,
+          "rssi_db": -1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 4.96,
+          "csi_db": 3.2,
+          "rssi_db": 1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 5.12,
+          "csi_db": 5.7,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 5.25,
+          "csi_db": 2.9,
+          "rssi_db": 1.0,
+          "gain_change_candidate": false
+        },
+        {
+          "t_s": 5.79,
+          "csi_db": -5.8,
+          "rssi_db": 1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 5.9,
+          "csi_db": 5.8,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 6.78,
+          "csi_db": -5.3,
+          "rssi_db": -1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 6.88,
+          "csi_db": 5.1,
+          "rssi_db": 1.5,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 7.21,
+          "csi_db": 5.5,
+          "rssi_db": -1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 7.37,
+          "csi_db": -3.2,
+          "rssi_db": -1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 7.67,
+          "csi_db": 6.0,
+          "rssi_db": 1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 9.4,
+          "csi_db": 3.1,
+          "rssi_db": 0.5,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 10.76,
+          "csi_db": -5.4,
+          "rssi_db": -1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 10.88,
+          "csi_db": 5.3,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 11.84,
+          "csi_db": 5.9,
+          "rssi_db": 1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 14.88,
+          "csi_db": -5.7,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 14.98,
+          "csi_db": 5.9,
+          "rssi_db": -1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 15.79,
+          "csi_db": -3.1,
+          "rssi_db": -2.0,
+          "gain_change_candidate": false
+        },
+        {
+          "t_s": 15.89,
+          "csi_db": 3.1,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 17.11,
+          "csi_db": -3.1,
+          "rssi_db": -2.0,
+          "gain_change_candidate": false
+        },
+        {
+          "t_s": 17.22,
+          "csi_db": 3.0,
+          "rssi_db": 2.0,
+          "gain_change_candidate": false
+        },
+        {
+          "t_s": 18.62,
+          "csi_db": 5.9,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 19.86,
+          "csi_db": -3.1,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 19.96,
+          "csi_db": 3.0,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 21.36,
+          "csi_db": -5.7,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 21.47,
+          "csi_db": 5.7,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 21.68,
+          "csi_db": -5.7,
+          "rssi_db": 1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 21.77,
+          "csi_db": 5.7,
+          "rssi_db": 0.5,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 23.13,
+          "csi_db": -3.0,
+          "rssi_db": -1.0,
+          "gain_change_candidate": false
+        },
+        {
+          "t_s": 23.28,
+          "csi_db": -5.5,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 23.4,
+          "csi_db": 5.7,
+          "rssi_db": 2.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 23.75,
+          "csi_db": -3.2,
+          "rssi_db": -0.5,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 23.86,
+          "csi_db": -3.0,
+          "rssi_db": 2.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 24.02,
+          "csi_db": 2.9,
+          "rssi_db": 0.5,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 24.98,
+          "csi_db": -5.7,
+          "rssi_db": -1.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 25.1,
+          "csi_db": 5.7,
+          "rssi_db": 0.0,
+          "gain_change_candidate": true
+        },
+        {
+          "t_s": 27.2,
+          "csi_db": -5.8,
+          "rssi_db": -4.0,
+          "gain_change_candidate": false
+        },
+        {
+          "t_s": 27.3,
+          "csi_db": 5.7,
+          "rssi_db": 2.0,
+          "gain_change_candidate": true
+        }
+      ],
+      "gain_change_candidates": 43,
+      "corr_csi_power_vs_rssi": 0.152,
+      "lltf_mapping": {
+        "correlations": {
+          "bin k = HT40 sub-carrier k (upper 20 MHz)": {
+            "overlap": 52,
+            "r": 0.994
+          },
+          "bin k = HT40 sub-carrier k-64 (lower 20 MHz)": {
+            "overlap": 52,
+            "r": 0.23
+          },
+          "FFT order around the upper-20 MHz centre (+32)": {
+            "overlap": 46,
+            "r": -0.566
+          },
+          "FFT order around the lower-20 MHz centre (-32)": {
+            "overlap": 46,
+            "r": -0.498
+          }
+        },
+        "verdict": "bin k = HT40 sub-carrier k (upper 20 MHz)"
+      }
+    }
+  },
+  "seen_by_both_pct": 97.57
+}

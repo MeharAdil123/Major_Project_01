@@ -1,7 +1,7 @@
 # Phase 5: CSI decoding and inspection
 
 Tools: `host/csiwire.py` (decoder library) and `host/csi_inspect.py` (figures + report).
-Test data: `host/tests/make_synthetic_run.py` writes a fake run with known features (synthetic, not a measurement).
+Test data: `tests/synthetic/make_synthetic_run.py` writes a fake run with known features (synthetic, not a measurement).
 
 ## What the decoder assumes (and where it comes from)
 

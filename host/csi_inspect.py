@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Phase 5 inspection of a saved run (host/rx_check.py --save DIR).
 
-Makes three figures and a report in DIR/inspect/:
+Makes three figures and a report in results/signal/<session_id>/ (default; see resolve_out):
   1_heatmap.png   amplitude over time x sub-carrier for each receiver
                   (raw dB, then relative to the static channel) + RSSI
   2_channel.png   channel shape: mean amplitude per sub-carrier, empty (null)
@@ -10,12 +10,13 @@ Makes three figures and a report in DIR/inspect/:
   report.json     the numbers behind the figures
 
 Usage:
-    python3 csi_inspect.py ~/csi_runs/e0_swap
-    python3 csi_inspect.py ~/csi_runs/e0_swap --t0 25 --t1 37     # zoom in time
-    python3 csi_inspect.py ~/csi_runs/e0_swap --export             # also save decoded .npz
+    python3 host/csi_inspect.py data/raw/<session_id>               # -> results/signal/<session_id>/
+    python3 host/csi_inspect.py ~/csi_runs/e0_swap --t0 25 --t1 37  # -> results/signal/e0_swap_t25-37/
+    python3 host/csi_inspect.py RUN --out some/folder --export      # also save decoded .npz
 
 Time axis = TX clock (tx_time_us carried in every packet), so RX1 and RX2 line up.
-Nothing is uploaded; all outputs stay in DIR/inspect/.
+Nothing is uploaded. Output is never written inside data/raw (raw data is read-only):
+an --out path inside any data/raw folder is refused.
 """
 from __future__ import annotations
 
@@ -28,6 +29,9 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import csiwire as cw  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_OUT_ROOT = ROOT / "results" / "signal"
 
 EXPECTED_HZ = 200.0
 BIN_S = 0.05                 # heatmap time bin (10 packets at 200 Hz)
@@ -413,17 +417,53 @@ def fig_quality(P, out: Path, plt):
     plt.close(fig)
 
 
+# ----------------------------------------------------------------------------- output folder
+def inside_raw(path: Path) -> bool:
+    """True if path (after resolving symlinks) is inside a data/raw folder, including _rejected."""
+    parts = Path(path).expanduser().resolve().parts
+    return any(a == "data" and b == "raw" for a, b in zip(parts, parts[1:]))
+
+
+def resolve_out(run: Path, out: Path | None, t0: float | None, t1: float | None,
+                out_root: Path = DEFAULT_OUT_ROOT) -> Path:
+    """Output folder: --out if given, else <out_root>/<session_id>[_t<t0>-<t1>].
+
+    session_id comes from RUN/meta.json if present, else the RUN folder name.
+    Raises ValueError for any path inside data/raw.
+    """
+    if out is None:
+        sid = Path(run).resolve().name
+        meta = Path(run) / "meta.json"
+        if meta.exists():
+            try:
+                sid = json.loads(meta.read_text()).get("session_id") or sid
+            except ValueError:
+                pass
+        if t0 is not None or t1 is not None:
+            sid += f"_t{t0 if t0 is not None else 'start'}-{t1 if t1 is not None else 'end'}"
+        out = Path(out_root) / sid
+    if inside_raw(out):
+        raise ValueError(f"refusing to write inside data/raw (raw data is read-only): {out}")
+    return Path(out)
+
+
 # ----------------------------------------------------------------------------- main
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("run", type=Path, help="folder made by rx_check.py --save (contains RX1.bin / RX2.bin)")
     ap.add_argument("--t0", type=float, help="start time (s) for the window")
     ap.add_argument("--t1", type=float, help="end time (s) for the window")
-    ap.add_argument("--out", type=Path, help="output folder (default RUN/inspect, or RUN/inspect_T0-T1)")
+    ap.add_argument("--out", type=Path, help="output folder (default results/signal/<session_id>[_tT0-T1]; never inside data/raw)")
     ap.add_argument("--export", action="store_true", help="also write decoded arrays (.npz) for later phases")
     a = ap.parse_args()
     import warnings
     warnings.filterwarnings("ignore", category=RuntimeWarning)   # NaN columns are expected
+
+    try:
+        out = resolve_out(a.run, a.out, a.t0, a.t1)
+    except ValueError as e:
+        print(f"ERROR: {e}")
+        return 2
 
     files = sorted(a.run.glob("RX*.bin"))
     if not files:
@@ -460,12 +500,6 @@ def main() -> int:
         union = np.union1d(a_["hdr"]["seq"], b_["hdr"]["seq"])
         report["seen_by_both_pct"] = round(100 * len(common) / len(union), 2)
 
-    if a.out:
-        out = a.out
-    elif a.t0 is not None or a.t1 is not None:
-        out = a.run / f"inspect_{a.t0 if a.t0 is not None else 'start'}-{a.t1 if a.t1 is not None else 'end'}"
-    else:
-        out = a.run / "inspect"
     out.mkdir(parents=True, exist_ok=True)
 
     import matplotlib

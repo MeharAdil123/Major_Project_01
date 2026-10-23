@@ -1,0 +1,211 @@
+{
+ "model": "tcn",
+ "task": "state",
+ "window": "4s",
+ "seed": 0,
+ "result": {
+  "macro_f1_mean": 0.5059344002623178,
+  "macro_f1_std": 0.2061799343340449,
+  "macro_f1_per_fold": {
+   "S1": 0.3623,
+   "S2": 0.6214,
+   "S3": 0.6104,
+   "S4": 0.3318,
+   "S5": 0.259,
+   "S6": 0.8507
+  },
+  "pooled": {
+   "macro_f1": 0.5129473320810143,
+   "accuracy": 0.5264550264550265,
+   "n": 1134,
+   "per_class": {
+    "lie": {
+     "precision": 0.2709030100334448,
+     "recall": 0.4879518072289157,
+     "f1": 0.34838709677419355,
+     "support": 166
+    },
+    "sit": {
+     "precision": 0.7245508982035929,
+     "recall": 0.4336917562724014,
+     "f1": 0.5426008968609866,
+     "support": 279
+    },
+    "stand": {
+     "precision": 0.33608815426997246,
+     "recall": 0.3935483870967742,
+     "f1": 0.362555720653789,
+     "support": 310
+    },
+    "walk": {
+     "precision": 0.8950819672131147,
+     "recall": 0.7203166226912929,
+     "f1": 0.7982456140350878,
+     "support": 379
+    }
+   },
+   "confusion": {
+    "labels": [
+     "lie",
+     "sit",
+     "stand",
+     "walk"
+    ],
+    "matrix": [
+     [
+      81,
+      4,
+      75,
+      6
+     ],
+     [
+      68,
+      121,
+      89,
+      1
+     ],
+     [
+      131,
+      32,
+      122,
+      25
+     ],
+     [
+      19,
+      10,
+      77,
+      273
+     ]
+    ]
+   }
+  },
+  "epochs": {
+   "S1": {
+    "best_epoch": 5,
+    "epochs_run": 11,
+    "inner_val_subject": "S2"
+   },
+   "S2": {
+    "best_epoch": 2,
+    "epochs_run": 8,
+    "inner_val_subject": "S3"
+   },
+   "S3": {
+    "best_epoch": 7,
+    "epochs_run": 13,
+    "inner_val_subject": "S4"
+   },
+   "S4": {
+    "best_epoch": 23,
+    "epochs_run": 29,
+    "inner_val_subject": "S5"
+   },
+   "S5": {
+    "best_epoch": 1,
+    "epochs_run": 7,
+    "inner_val_subject": "S6"
+   },
+   "S6": {
+    "best_epoch": 5,
+    "epochs_run": 11,
+    "inner_val_subject": "S1"
+   }
+  },
+  "per_fold": {
+   "S1": {
+    "macro_f1": 0.3623174660304288,
+    "fall_vs_rest": null
+   },
+   "S2": {
+    "macro_f1": 0.6214203843583564,
+    "fall_vs_rest": null
+   },
+   "S3": {
+    "macro_f1": 0.6103651862392403,
+    "fall_vs_rest": null
+   },
+   "S4": {
+    "macro_f1": 0.3318220522549708,
+    "fall_vs_rest": null
+   },
+   "S5": {
+    "macro_f1": 0.258957560296846,
+    "fall_vs_rest": null
+   },
+   "S6": {
+    "macro_f1": 0.8507237523940645,
+    "fall_vs_rest": null
+   }
+  }
+ },
+ "train_s": 249.9364366531372,
+ "predict_ms_per_window": 0.8894561937746975,
+ "curves_fold_S1": [
+  {
+   "epoch": 1,
+   "train_loss": 1.1882906582312374,
+   "val_loss": 1.1440420150756836,
+   "val_macro_f1": 0.4194745002865136
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.8855830725157292,
+   "val_loss": 0.8619734644889832,
+   "val_macro_f1": 0.6451473055246639
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.7706522199226596,
+   "val_loss": 0.8297162652015686,
+   "val_macro_f1": 0.5622516192680699
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.6633668983937542,
+   "val_loss": 0.63283771276474,
+   "val_macro_f1": 0.6935770979009369
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.5154578424701395,
+   "val_loss": 0.5507940649986267,
+   "val_macro_f1": 0.807197997517932
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.5004953079753451,
+   "val_loss": 0.6250417828559875,
+   "val_macro_f1": 0.7407708032708032
+  },
+  {
+   "epoch": 7,
+   "train_loss": 0.4364839291888306,
+   "val_loss": 0.586893618106842,
+   "val_macro_f1": 0.7096567882472138
+  },
+  {
+   "epoch": 8,
+   "train_loss": 0.4011037788649862,
+   "val_loss": 0.4915591776371002,
+   "val_macro_f1": 0.771462703962704
+  },
+  {
+   "epoch": 9,
+   "train_loss": 0.37785509236407216,
+   "val_loss": 0.5484384298324585,
+   "val_macro_f1": 0.771146654470123
+  },
+  {
+   "epoch": 10,
+   "train_loss": 0.3327814841147233,
+   "val_loss": 0.7749036550521851,
+   "val_macro_f1": 0.631517150672455
+  },
+  {
+   "epoch": 11,
+   "train_loss": 0.44516557870909224,
+   "val_loss": 0.577766478061676,
+   "val_macro_f1": 0.7692947120759211
+  }
+ ]
+}

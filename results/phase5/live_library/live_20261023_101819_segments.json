@@ -1,0 +1,266 @@
+[
+ {
+  "segment": "before first marker (incl. empty-room check)",
+  "wall": "10:18:19",
+  "t0": 0.0,
+  "t1": 461.79,
+  "status": {
+   "no_signal": 1,
+   "degraded": 1,
+   "starting": 9,
+   "ok": 889
+  },
+  "labels": {
+   "stand": 31,
+   "uncertain": 285,
+   "empty": 476,
+   "walk": 11,
+   "sit": 86
+  },
+  "events": {
+   "fall": 23,
+   "sit_down": 3,
+   "stand_up": 1
+  },
+  "max_fall_prob": 0.5746248502073021,
+  "alarms": []
+ },
+ {
+  "segment": "empty (nobody inside the tape)",
+  "wall": "10:26:00",
+  "t0": 461.79,
+  "t1": 469.98,
+  "status": {
+   "ok": 16
+  },
+  "labels": {
+   "empty": 16
+  },
+  "events": {},
+  "max_fall_prob": 0.027474507029835893,
+  "alarms": []
+ },
+ {
+  "segment": "stand at A",
+  "wall": "10:26:09",
+  "t0": 469.98,
+  "t1": 522.66,
+  "status": {
+   "ok": 105
+  },
+  "labels": {
+   "empty": 93,
+   "uncertain": 10,
+   "stand": 2
+  },
+  "events": {
+   "sit_down": 9,
+   "stand_up": 4
+  },
+  "max_fall_prob": 0.15883641901002588,
+  "alarms": []
+ },
+ {
+  "segment": "stand at A",
+  "wall": "10:27:01",
+  "t0": 522.66,
+  "t1": 571.81,
+  "status": {
+   "ok": 98
+  },
+  "labels": {
+   "empty": 86,
+   "uncertain": 12
+  },
+  "events": {},
+  "max_fall_prob": 0.18069240593354974,
+  "alarms": []
+ },
+ {
+  "segment": "sit_down at A",
+  "wall": "10:27:50",
+  "t0": 571.81,
+  "t1": 587.84,
+  "status": {
+   "ok": 32
+  },
+  "labels": {
+   "uncertain": 11,
+   "sit": 9,
+   "empty": 12
+  },
+  "events": {
+   "stand_up": 5,
+   "sit_down": 4
+  },
+  "max_fall_prob": 0.06613975854609322,
+  "alarms": []
+ },
+ {
+  "segment": "stand_up at A",
+  "wall": "10:28:06",
+  "t0": 587.84,
+  "t1": 611.71,
+  "status": {
+   "ok": 48
+  },
+  "labels": {
+   "empty": 44,
+   "uncertain": 4
+  },
+  "events": {
+   "sit_down": 6,
+   "stand_up": 11
+  },
+  "max_fall_prob": 0.06365092420625407,
+  "alarms": []
+ },
+ {
+  "segment": "stand_up at A",
+  "wall": "10:28:30",
+  "t0": 611.71,
+  "t1": 644.97,
+  "status": {
+   "ok": 66
+  },
+  "labels": {
+   "empty": 53,
+   "uncertain": 9,
+   "stand": 4
+  },
+  "events": {
+   "sit_down": 2,
+   "stand_up": 10,
+   "fall": 1
+  },
+  "max_fall_prob": 0.3827543983370132,
+  "alarms": []
+ },
+ {
+  "segment": "walk path1",
+  "wall": "10:29:04",
+  "t0": 644.97,
+  "t1": 688.77,
+  "status": {
+   "ok": 87
+  },
+  "labels": {
+   "uncertain": 32,
+   "empty": 37,
+   "walk": 18
+  },
+  "events": {
+   "stand_up": 28,
+   "fall": 9,
+   "sit_down": 24
+  },
+  "max_fall_prob": 0.40749892740727733,
+  "alarms": []
+ },
+ {
+  "segment": "walk path2",
+  "wall": "10:29:47",
+  "t0": 688.77,
+  "t1": 729.82,
+  "status": {
+   "ok": 83
+  },
+  "labels": {
+   "empty": 78,
+   "walk": 3,
+   "uncertain": 2
+  },
+  "events": {
+   "sit_down": 2,
+   "stand_up": 5,
+   "fall": 2
+  },
+  "max_fall_prob": 0.28123256625518767,
+  "alarms": []
+ },
+ {
+  "segment": "bend_pick at C",
+  "wall": "10:30:28",
+  "t0": 729.82,
+  "t1": 796.07,
+  "status": {
+   "ok": 132
+  },
+  "labels": {
+   "uncertain": 19,
+   "empty": 108,
+   "stand": 3,
+   "walk": 2
+  },
+  "events": {
+   "sit_down": 16,
+   "stand_up": 10,
+   "bend_pick": 1
+  },
+  "max_fall_prob": 0.10685584888007138,
+  "alarms": []
+ },
+ {
+  "segment": "fall on mattress M",
+  "wall": "10:31:35",
+  "t0": 796.07,
+  "t1": 814.64,
+  "status": {
+   "ok": 37
+  },
+  "labels": {
+   "empty": 26,
+   "uncertain": 9,
+   "stand": 2
+  },
+  "events": {
+   "fall": 1,
+   "stand_up": 2,
+   "sit_down": 1
+  },
+  "max_fall_prob": 0.3264567617979721,
+  "alarms": []
+ },
+ {
+  "segment": "RX2 unplugged",
+  "wall": "10:31:53",
+  "t0": 814.64,
+  "t1": 854.86,
+  "status": {
+   "ok": 24,
+   "degraded": 46,
+   "starting": 10
+  },
+  "labels": {
+   "empty": 23,
+   "walk": 1
+  },
+  "events": {
+   "sit_down": 4,
+   "stand_up": 1
+  },
+  "max_fall_prob": 0.17462706917897852,
+  "alarms": []
+ },
+ {
+  "segment": "other",
+  "wall": "10:32:33",
+  "t0": 854.86,
+  "t1": 990.67,
+  "status": {
+   "ok": 261
+  },
+  "labels": {
+   "walk": 20,
+   "empty": 210,
+   "uncertain": 31
+  },
+  "events": {
+   "fall": 6,
+   "sit_down": 24,
+   "stand_up": 11
+  },
+  "max_fall_prob": 0.6649231069529541,
+  "alarms": []
+ }
+]

@@ -16,9 +16,9 @@ menu "CSI transmitter"
         default 200
 
     config TX_POWER_QDBM
-        int "Start-up TX power in 0.25 dBm units (8 = 2 dBm, the minimum)"
+        int "Start-up TX power in 0.25 dBm units (8 = 2 dBm, the minimum; 20 = 5 dBm, D-017)"
         range 8 80
-        default 8
+        default 20
 
     config TX_LED_GPIO
         int "Status LED GPIO (NodeMCU-32 boards: usually 2)"

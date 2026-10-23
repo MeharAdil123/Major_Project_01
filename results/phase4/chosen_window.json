@@ -1,0 +1,89 @@
+{
+ "rule": [
+  "score(window) = mean over tasks (events, state, presence) of the best Track A model's LOSO macro-F1",
+  "(mean over folds), dynamic feature set. Highest score wins; any window within TIE of the best counts",
+  "as a tie and the tie goes to 3 s (the expected default), then to the shorter window (lower latency).",
+  "Also records the best model per task at the chosen window (for ablations and the per-take chain)."
+ ],
+ "tie": 0.005,
+ "table": {
+  "2s": {
+   "per_task": {
+    "events": {
+     "model": "rf",
+     "macro_f1_mean": 0.4500622534884044,
+     "macro_f1_std": 0.054923215358513855,
+     "n_models": 8
+    },
+    "state": {
+     "model": "lightgbm",
+     "macro_f1_mean": 0.5629804447740315,
+     "macro_f1_std": 0.10795334688187523,
+     "n_models": 8
+    },
+    "presence": {
+     "model": "svm_rbf",
+     "macro_f1_mean": 0.5847985442600098,
+     "macro_f1_std": 0.06855812525803957,
+     "n_models": 8
+    }
+   },
+   "score": 0.5326137475074819
+  },
+  "3s": {
+   "per_task": {
+    "events": {
+     "model": "xgboost",
+     "macro_f1_mean": 0.5027663434516126,
+     "macro_f1_std": 0.05946849947775571,
+     "n_models": 8
+    },
+    "state": {
+     "model": "lightgbm",
+     "macro_f1_mean": 0.5797955174230222,
+     "macro_f1_std": 0.10723532632189614,
+     "n_models": 8
+    },
+    "presence": {
+     "model": "svm_rbf",
+     "macro_f1_mean": 0.664551121824276,
+     "macro_f1_std": 0.07612365022349812,
+     "n_models": 8
+    }
+   },
+   "score": 0.5823709942329702
+  },
+  "4s": {
+   "per_task": {
+    "events": {
+     "model": "svm_rbf",
+     "macro_f1_mean": 0.5385486066031762,
+     "macro_f1_std": 0.053686976597395304,
+     "n_models": 8
+    },
+    "state": {
+     "model": "extra_trees",
+     "macro_f1_mean": 0.5717388693144686,
+     "macro_f1_std": 0.11496452974484558,
+     "n_models": 8
+    },
+    "presence": {
+     "model": "logreg",
+     "macro_f1_mean": 0.6979300563436394,
+     "macro_f1_std": 0.0646047001433219,
+     "n_models": 8
+    }
+   },
+   "score": 0.602739177420428
+  }
+ },
+ "tied": [
+  "4s"
+ ],
+ "chosen": "4s",
+ "best_model_per_task": {
+  "events": "svm_rbf",
+  "state": "extra_trees",
+  "presence": "logreg"
+ }
+}

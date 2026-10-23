@@ -1,0 +1,29 @@
+# Geometry of layout_library (recording room, 22 Oct 2026). Single source of truth for
+# interpreting the `position` field of meta.json. Do not hard-code coordinates elsewhere.
+#
+# Frame: metres; origin = floor under the TX; +y points from the TX towards the receivers;
+# the TX-RX "link" therefore runs along y. h = antenna height above the floor.
+# Source: operator's sketch docs/setup/layout_library_sketch.jpg plus the user's Gate 0
+# correction (2026-10-22). PROJECT_CONTEXT before that date had path1/path2 swapped.
+layout: layout_library
+version: 2            # 1 = PROJECT_CONTEXT original (paths swapped), 2 = corrected
+units: m
+
+boards:
+  TX:  {x: 0.0,  y: 0.0, h: 0.9}
+  RX1: {x: -1.3, y: 4.5, h: 1.0}
+  RX2: {x: 1.3,  y: 4.5, h: 0.5}
+
+positions:
+  A:     {kind: point, x: -0.9, y: 3.2, what: chair}
+  B:     {kind: point, x: 1.0,  y: 1.5, what: chair}
+  C:     {kind: point, x: 0.0,  y: 1.2, what: chair}
+  M:     {kind: area, x: [-0.5, 1.5], y: [2.9, 3.8], what: mattress (falls, lie); in front of RX1/RX2, slightly toward RX2}
+  path1: {kind: segment, x: [-1.5, -1.5], y: [1.2, 4.0], relation: along_link, what: walk path, vertical, from chair C's row to near RX1}
+  path2: {kind: segment, x: [-2.0, 2.0],  y: [2.55, 2.55], relation: across_link, what: walk path, horizontal}
+  free:  {kind: area, x: [-2.2, 2.2], y: [-0.3, 4.8], what: free walk in the taped area (from PROJECT_CONTEXT, not re-checked)}
+  none:  {kind: none, what: empty room}
+
+others:
+  operator_O: {x: 3.0, y: 5.0, approx: true}
+  spotter:    {x: 2.0, y: 3.3, approx: true}

@@ -1,0 +1,44 @@
+{
+ "test_subject": "S6",
+ "params": {
+  "C": 10,
+  "gamma": "scale"
+ },
+ "inner_fall_f1": 0.35725725725725727,
+ "chosen": {
+  "theta": 0.5,
+  "k": 1,
+  "n": 2,
+  "ok": true,
+  "fall_share": 0.35294117647058826,
+  "lookalike": 6,
+  "walk_per_h": 9.30942191075885,
+  "inner_falls": 12,
+  "inner_fall_takes": 34,
+  "inner_lookalike": 6,
+  "inner_lookalike_takes": 88,
+  "inner_walk_alarms": 1,
+  "inner_walk_h": 0.1074,
+  "inner_walk_per_h": 9.30942191075885,
+  "inner_still_alarms": 0,
+  "inner_still_h": 0.2647,
+  "inner_still_per_h": 0.0,
+  "inner_latency_median_s": NaN,
+  "fallback": false
+ },
+ "test": {
+  "falls": 5,
+  "fall_takes": 8,
+  "lookalike": 4,
+  "lookalike_takes": 21,
+  "walk_alarms": 0,
+  "walk_h": 0.0247,
+  "walk_per_h": 0.0,
+  "still_alarms": 0,
+  "still_h": 0.0495,
+  "still_per_h": 0.0,
+  "latency_median_s": 2.115
+ },
+ "n_candidates_feasible": 35,
+ "wall_s": 15.2
+}

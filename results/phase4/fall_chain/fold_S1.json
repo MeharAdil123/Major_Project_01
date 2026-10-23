@@ -1,0 +1,44 @@
+{
+ "test_subject": "S1",
+ "params": {
+  "C": 1,
+  "gamma": "scale"
+ },
+ "inner_fall_f1": 0.5326548901205221,
+ "chosen": {
+  "theta": 0.6,
+  "k": 1,
+  "n": 2,
+  "ok": true,
+  "fall_share": 0.5,
+  "lookalike": 5,
+  "walk_per_h": 37.2844492776138,
+  "inner_falls": 17,
+  "inner_fall_takes": 34,
+  "inner_lookalike": 5,
+  "inner_lookalike_takes": 88,
+  "inner_walk_alarms": 4,
+  "inner_walk_h": 0.1073,
+  "inner_walk_per_h": 37.2844492776138,
+  "inner_still_alarms": 2,
+  "inner_still_h": 0.2314,
+  "inner_still_per_h": 8.644650822142314,
+  "inner_latency_median_s": NaN,
+  "fallback": false
+ },
+ "test": {
+  "falls": 2,
+  "fall_takes": 8,
+  "lookalike": 1,
+  "lookalike_takes": 21,
+  "walk_alarms": 0,
+  "walk_h": 0.0249,
+  "walk_per_h": 0.0,
+  "still_alarms": 0,
+  "still_h": 0.0828,
+  "still_per_h": 0.0,
+  "latency_median_s": 4.275
+ },
+ "n_candidates_feasible": 26,
+ "wall_s": 16.8
+}

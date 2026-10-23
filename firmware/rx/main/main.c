@@ -2,7 +2,7 @@
  *
  * Listens on the TX's channel, keeps only frames from the TX MAC, captures the
  * channel state information (CSI) of each one and streams it to the host as
- * framed binary records (see csi_wire.h). The host tool tools/rx_check.py
+ * framed binary records (see csi_wire.h). The host tools host/rx_check.py and host/csiwire.py
  * decodes and checks the stream.
  *
  * Link to the host is chosen at build time:
@@ -24,6 +24,7 @@
 #include "esp_mac.h"
 #include "esp_netif.h"
 #include "esp_rom_crc.h"
+#include "esp_system.h"
 #include "esp_timer.h"
 #include "esp_wifi.h"
 #include "freertos/FreeRTOS.h"
@@ -182,6 +183,32 @@ static void csi_cb(void *ctx, wifi_csi_info_t *info)
     }
 }
 
+/* FW-1: a driver's interrupt is allocated on the core that installs it. app_main runs on
+ * core 0, where the Wi-Fi task also runs, so before v2.1 the RX2 UART ISR competed with Wi-Fi
+ * (suspected cause of RX2's extra loss, D-012). Install the link from a task on core 1. */
+static void link_init_task(void *arg)
+{
+    link_init();
+    xTaskNotifyGive((TaskHandle_t)arg);
+    vTaskDelete(NULL);
+}
+
+static const char *reset_name(esp_reset_reason_t r)
+{
+    switch (r) {
+    case ESP_RST_POWERON:  return "poweron";
+    case ESP_RST_SW:       return "sw";
+    case ESP_RST_PANIC:    return "panic";
+    case ESP_RST_INT_WDT:  return "int_wdt";
+    case ESP_RST_TASK_WDT: return "task_wdt";
+    case ESP_RST_WDT:      return "wdt";
+    case ESP_RST_BROWNOUT: return "brownout";
+    case ESP_RST_USB:      return "usb";
+    case ESP_RST_EXT:      return "ext";
+    default:               return "other";
+    }
+}
+
 static void writer_task(void *arg)
 {
     static item_t it;
@@ -235,6 +262,7 @@ static void send_hello(void)
         "\"link\":\"%s\",\"uart_baud\":%d,\"fw\":\"%s\",\"app_version\":\"%s\",\"idf\":\"%s\","
         "\"tx_mac_filter\":\"%s\",\"expected_radio_id\":\"0x%08" PRIX32 "\","
         "\"channel\":%u,\"second\":%d,\"bw\":%d,\"bw_cfg\":\"%s\",\"radio_ok\":%s,"
+        "\"reset\":\"%s\",\"uptime_s\":%" PRId64 ",\"link_core\":1,"
         "\"csi\":{\"lltf\":1,\"htltf\":1,\"stbc_htltf2\":1,\"ltf_merge\":0,\"chan_filter\":0}}",
         WIRE_PROTO_VERSION, CONFIG_RX_ID, s_mac, link_name(),
 #if CONFIG_RX_LINK_UART
@@ -244,7 +272,7 @@ static void send_hello(void)
 #endif
         app->project_name, app->version, esp_get_idf_version(),
         CONFIG_RX_TX_MAC, s_expected_radio_id, ch, (int)sec, (int)bw, BW_NAME,
-        s_radio_ok ? "true" : "false");
+        s_radio_ok ? "true" : "false", reset_name(esp_reset_reason()), esp_timer_get_time() / 1000000);
     if (n > 0 && n < (int)sizeof(s_json)) link_send(WIRE_T_HELLO, s_json, n);
 }
 
@@ -279,7 +307,8 @@ void app_main(void)
         nvs_flash_erase();
         nvs_flash_init();
     }
-    link_init();
+    xTaskCreatePinnedToCore(link_init_task, "link_init", 3072, xTaskGetCurrentTaskHandle(), 10, NULL, 1);
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     uint8_t m[6];
     esp_read_mac(m, ESP_MAC_WIFI_STA);

@@ -5,9 +5,9 @@ Change a format only after telling everyone; bump the version string.
 
 ```
  Track A                Track B                    Track C                  Track D
- record_session.py ──►  build_dataset.py   ──►     ml/train.py      ──►     app/engine.py + live_app.py
+ record_session.py ──►  build_dataset.py   ──►     ml/train_final.py ──►    app/engine.py + live_app.py
  Format 1               Format 2                   Format 3                 (reads Format 3 + live serial)
- data/raw/<sid>/        data/processed/*.npz       models/<task>_rf/        dashboard
+ data/raw/<sid>/        data/processed/*.npz       models/<task>/           dashboard
                         pipeline/preprocess.py  ◄──────── shared by B (offline) and D (live) ───────┘
 ```
 
@@ -62,6 +62,24 @@ A window is rejected if any receiver misses more than 10 % of its packets or has
 
 State windows: every 1 s, skipping the first and last second. Event windows: 5 windows centred on the movement peak after the cue (−0.3, −0.15, 0, +0.15, +0.3 s). `data/processed/index.csv` lists windows kept and rejected per take.
 
+
+## Format 2 v2 (2026-10-22, D-042) — replaces the v1 windows above
+
+`data/processed/windows_<len>s.npz` for len = 2, 3, 4 s (3 s default):
+
+| Key | Shape / type | Meaning |
+| --- | --- | --- |
+| `X` | float16 [N, 2, T, 114] | gain-normalised amplitude, anti-alias decimated to 100 Hz (T = 100 × len) |
+| `P` | float16 [N, 2, T, 114] | sanitised phase (rad) |
+| `rssi` | float16 [N, 2, T] | RSSI |
+| `y`, `source` | str [N] | window label; `state` / `event` / `event_pre` / `event_post` |
+| `session_id`, `subject`, `position`, `take_id`, `activity`, `kind` | str [N] | ids (**split by subject; never random windows**) |
+| `t_start` | float32 [N] | window start in take time (s from the first packet) |
+| `miss_frac`, `max_gap` | [N, 2] | missing share and longest gap per RX (gate inputs; never features) |
+| `preproc_version`, `features_version`, `onset_version`, `dataset_version`, `win_s`, `gate_max_miss`, `gate_max_gap`, `used_sc`, `fs`, `synthetic` | — | metadata |
+
+`data/features/features_<len>s.csv`: `session_id, subject, take_id, activity_label, window_label, position, t_start, rx1_miss, rx2_miss, source, kind`, then the 83 f2 features (`docs/FEATURES.md`). Per-take and per-window indexes: `data/processed/index_<len>s.csv`, `windows_<len>s_index.csv`; event intervals: `onsets.csv`.
+
 ## Format 3: models (Track C → D)
 
 `models/<task>_rf/model.joblib` + `model_meta.json` (`task`, `classes`, `features_version`, `preproc_version`, `synthetic`, `trained_at`, top features, extra keys such as `live_motion_threshold`).
@@ -77,6 +95,21 @@ out = p.predict(X, rssi)    # X [2,200,114], rssi [2,200]
 ```
 A CNN or any other model can replace the random forest if it is wrapped to keep this call identical.
 
+
+## Format 3 v2 and Predictor p2 (2026-10-23, D-050/D-052) — replaces the v1 model format above
+
+`models/<task>/model.joblib` + `model_meta.json` for task = `presence` (logistic regression), `state` (extra trees), `events` (SVM-RBF), `fall_alarm` (calibrated binary SVM, D-051), plus `models/env_baseline.json` (empty-room reference for the live environment check).
+`model_meta.json` keys: `task, model, classes, best_params, n_train, loso{macro_f1_mean, macro_f1_std, macro_f1_per_fold, pooled, source}, features_version, preproc_version, onset_version, window_s, fs, featset, feature_names, synthetic, trained_at, trained_on, git_commit, python, sklearn, limitations`, and `alarm{theta, k, n, cooldown_s}` (events / fall_alarm).
+
+```python
+from ml.predict import Predictor          # PREDICTOR_VERSION "p2"
+p = Predictor("models")
+out = p.predict(X, rssi, P)               # one 4 s window from pipeline/preprocess.py v2: X, P [2, 400, 114], rssi [2, 400]
+# {"label", "confidence", "probs", "motion", "fall_prob", "uncertain",               (v1 keys)
+#  "presence_prob", "state", "state_probs", "event", "event_probs"}                  (added)
+p.alarm   # {"theta": 0.5, "k": 2, "n": 3, "cooldown_s": 10.0, ...}: alarm when >= k of the last n windows have fall_prob >= theta
+```
+
 ## Engine state (Track D internal, for the UI)
 
 See the docstring in `app/engine.py`: `status` (`ok|degraded|no_signal|error`), `label`, `label_smoothed` (majority of last 3 windows), `confidence`, `uncertain`, `probs`, `motion`, `fall_prob`, `alert` (`FALL` when 2 of the last 3 windows have fall_prob ≥ 0.6, 10 s cooldown), and `rx` health.
@@ -86,4 +119,4 @@ See the docstring in `app/engine.py`: `status` (`ok|degraded|no_signal|error`), 
 1. Never split windows randomly. Neighbouring windows overlap and look alike, so random splits inflate accuracy.
 2. The main result is **leave-one-subject-out**: test on a person the model never saw. Empty-room takes are dealt to folds take by take.
 3. Report per-class precision, recall, F1, the confusion matrix, presence sensitivity and specificity, fall sensitivity, and the false-alarm share.
-4. Every result says that it comes from one room, one layout, 3 volunteers, and simulated falls.
+4. Every result says that it comes from one room, one layout, 6 volunteers (S1–S6), and simulated falls.
