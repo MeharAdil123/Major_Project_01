@@ -2,6 +2,7 @@
 """Diagnose the live-test failure with 6 takes recorded on 2026-10-23 (data/live_library/diag_takes).
 
     python3 scripts/phase5_diag_analysis.py > results/phase5/live_library/diag_analysis.log
+    python3 scripts/phase5_diag_analysis.py diag_takes2 > results/phase5/live_library/diag2_analysis.log   (Option A)
 
 0. Receiver identity: MAC in the HELLO frames of RX1.bin / RX2.bin (today and a 22 Oct take).
 1. OFFLINE pipeline (preprocess v2, f2, final models) on today's takes: per take, window predictions with the
@@ -30,7 +31,8 @@ from pipeline import labels as lb  # noqa: E402
 from pipeline import onset as od  # noqa: E402
 from pipeline import preprocess as pp  # noqa: E402
 
-DIAG = ROOT / "data" / "live_library" / "diag_takes"
+DIAG_NAME = sys.argv[1] if len(sys.argv) > 1 else "diag_takes"      # folder under data/live_library
+DIAG = ROOT / "data" / "live_library" / DIAG_NAME
 RAW = ROOT / "data" / "raw"
 WIN = 4.0
 KEY = ["rx1_motion_mean", "rx2_motion_mean", "rx1_motion_max", "rx2_motion_max", "rx1_sd_mean", "rx2_sd_mean",
@@ -180,7 +182,7 @@ def main():
             cells.append(f"{k} {pr:.0f}")
         print("   today's median as percentile of 22 Oct (50 = typical; <5 or >95 = outside): " + ", ".join(cells))
     out = {k: {kk: vv for kk, vv in v.items() if kk not in ("feats", "X", "meta")} for k, v in summary.items()}
-    (ROOT / "results" / "phase5" / "live_library" / "diag_summary.json").write_text(json.dumps(out, indent=1, default=float))
+    (ROOT / "results" / "phase5" / "live_library" / f"{DIAG_NAME.replace('_takes', '')}_summary.json").write_text(json.dumps(out, indent=1, default=float))
 
 
 if __name__ == "__main__":

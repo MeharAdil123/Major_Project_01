@@ -90,3 +90,24 @@ Six takes (empty, stand A, walk path1, walk path2, sit_down A, fall M), all GOOD
 3. Compare vs 22 Oct with `scripts/phase5_diag_analysis.py` (point DIAG at the new folder). Success: RX2 RSSI ≈ −37 … −39 dBm and varying with the person; RX2 motion/variation features inside the 5–95 % range of 22 Oct; walk path2 recognised.
 4. If fixed: a short live re-run (dashboard live mode, empty check + a few movements with markers).
 5. If RX2 is still motion-blind: **antenna swap test**: swap the RX1/RX2 antennas (or move RX2's antenna to a known-good one) and repeat step 2–3, to separate antenna/connector from board/position.
+
+## Option A, round 1 (2026-10-23, takes 11:05 and 11:06)
+- RX2 physical check (user, via the question form): **position correct per the sketch; antenna re-seated and/or re-aimed** (the form did not say which, or how it pointed before). Not reported: height, chair, objects nearby, mattress.
+- Takes (`protocol/plan_diag_live2.csv`, recorder `--auto`, same flags as 22 Oct, subject DX; `diag2_record.log`; `data/live_library/diag_takes2/`, not data/raw): E01 walk path2 30 s, E02 empty 30 s; both GOOD, 0 CRC errors, loss 4.5–6.8 %.
+- Comparison (`scripts/phase5_diag_analysis.py diag_takes2` → `diag2_analysis.log`, `diag2_summary.json`):
+  - RX2 RSSI **−36 dBm walk / −35 dBm empty** (before: −34 in every take; 22 Oct walk path2 median −39 [−41…−37], empty −38 [−40…−34]). It now moves by 1 dB between the takes; RX1 −35 in both.
+  - E02 empty: correct (empty 48/53, P(occupied) median 0.10); **all 15 key features of both RX at the 32nd–88th percentile** of 22 Oct empty (before, rx2_sd_mean was at the 0th).
+  - E01 walk path2: stand 33 / empty 19 of 52, no walk (P(occupied) median 0.64; before 0.00). **Motion features of RX1 and RX2 are both at the 0th–7th percentile**, whereas in the first walk path2 take (D04) RX1 was at the 24th–47th.
+- Check of the motion over time (`scripts/phase5_motion_timeline.py` → `diag2_motion_timeline.log`; mean per-carrier amplitude SD in 2 s blocks): E01 RX1 3.4–4.8, RX2 3.5–4.1. That is **at or below the empty takes** (E02 RX1 3.9–5.7 with one 13.0 spike, D01 4.2–5.5), and below D04 walk (RX1 4.9–6.7) and the 22 Oct walk S1_T06 (RX1 up to 8.8, RX2 up to 13.7).
+- Reading: in E01 neither receiver saw a person walking, so **E01 cannot test RX2**. It does not show RX2 is still blind. Open question to the user: was the walk done on path 2 for the full 30 s?
+- User (~11:10): E01 confirmed, the walk did not happen during the recording window (operator error). **E01 is void** (kept on disk, not used).
+
+## Option A, round 2: walk retake E03 (11:13)
+- **Path naming conflict (open):** the user said the walker would walk "path 1 (the horizontal line)", then confirmed **path 1 = horizontal, path 2 = vertical**. That is the opposite of `config/position_map.yaml` v2 (path1 vertical along the link at x −1.5, path2 horizontal at y 2.55), which records the user's own Gate 0 correction of 22 Oct. Config not changed; to settle against `docs/setup/layout_library_sketch.jpg`. The user chose to label the take **walk path1** (their naming) and compare it with the 22 Oct path1 takes and D03.
+- E03 walk path1, horizontal line, 30 s; the user said "go" at "recording" (`diag2b_record.log`): GOOD, 0 CRC, loss 5.8 / 6.2 %.
+- Comparison (`diag2_analysis.log`, rerun on all of diag_takes2):
+  - Offline prediction: **walk 42 / empty 10 of 52** (P(occupied) median 0.95). D03 this morning: walk 34 / empty 19; 22 Oct LOSO walk@path1: 1.00. There was **one fall alarm at 21.5 s during walking** (max P(fall) 0.54; D03: none).
+  - RX1 normal: RSSI −36 (22 Oct −37), features at the 17th–75th percentile.
+  - RX2: RSSI −36 (22 Oct median −38 [−41…−35]; D03 −34). Features still **low**: motion_mean 0, sd_mean 3, sc_corr 5, motion_max 16, pc1_logpower 13, ph_cvar_w 12 (D03: 0, 0, 5, 5, 1, 0).
+  - Motion over time (`diag2_motion_timeline.log`): RX1 5.6–13.6 (a clear walk, like D03 5.1–14.4); RX2 3.9–6.7 (D03 3.2–6.0; 22 Oct S1_T06 walk up to 13.7).
+- **Verdict:** RX2 is a little more responsive than this morning and its RSSI is back within ±3 dB of 22 Oct. It is **still near motion-blind** while walking, with core motion features at the 0th–5th percentile of 22 Oct. Walking is recognised, through RX1. The user's condition for the live re-run ("both receivers show normal motion and walking is recognised") is **not met**, so **no live re-run**. Next per plan: the antenna swap test.

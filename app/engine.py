@@ -283,6 +283,8 @@ class Engine:
         self.sources = []
         self.env = None
         self.envcheck = None
+        self.env_runs = 0              # environment checks started in this session
+        self._env_logged_run = 0       # last run whose result went to the log (every completed run is logged)
         self.models_dir = getattr(predictor, "dir", None)
         self.last_window = None
         self.log = None
@@ -298,6 +300,7 @@ class Engine:
             self.env = dict(state="unavailable", reason="no models/env_baseline.json (run python3 -m ml.train_final)")
             return
         self.envcheck = ec.EnvCheck(base, self.alarm_theta, seconds or ec.CHECK_S, t_start=self.clock() - self.t0)
+        self.env_runs += 1
         self.env = self.envcheck.status(self.clock() - self.t0)
 
     # ---- the window the live engine sees (also used by the consistency check)
@@ -382,9 +385,9 @@ class Engine:
             if self.env:
                 keep["env_state"] = self.env.get("state")
                 keep["env_windows"] = self.env.get("windows")
-            if state.get("env") and state["env"].get("state") == "done" and not getattr(self, "_env_logged", False):
-                keep["env"] = state["env"]
-                self._env_logged = True
+            if state.get("env") and state["env"].get("state") == "done" and self._env_logged_run != self.env_runs:
+                keep["env"] = dict(state["env"], run=self.env_runs)
+                self._env_logged_run = self.env_runs
             keep["rx"] = {k: {kk: v.get(kk) for kk in ("rate", "rssi", "age_s", "loss_pct")} for k, v in state["rx"].items()}
             self.log.write(json.dumps(keep, default=float) + "\n")
             self.log.flush()

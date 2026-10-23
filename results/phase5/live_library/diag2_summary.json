@@ -1,0 +1,56 @@
+{
+ "20261023_DX_E01_walk": {
+  "activity": "walk",
+  "position": "path2",
+  "windows": 52,
+  "gate_ok": 52,
+  "labels": {
+   "empty": 19,
+   "stand": 33
+  },
+  "events": {},
+  "p_occupied_median": 0.6405672983286865,
+  "max_fall": 0.20489790029554023,
+  "alarms": [],
+  "onset": null
+ },
+ "20261023_DX_E02_empty": {
+  "activity": "empty",
+  "position": "none",
+  "windows": 53,
+  "gate_ok": 53,
+  "labels": {
+   "stand": 3,
+   "empty": 48,
+   "walk": 2
+  },
+  "events": {
+   "sit_down": 9
+  },
+  "p_occupied_median": 0.09822535885401,
+  "max_fall": 0.0983105835717728,
+  "alarms": [],
+  "onset": null
+ },
+ "20261023_DX_E03_walk": {
+  "activity": "walk",
+  "position": "path1",
+  "windows": 52,
+  "gate_ok": 52,
+  "labels": {
+   "walk": 42,
+   "empty": 10
+  },
+  "events": {
+   "sit_down": 14,
+   "stand_up": 8,
+   "fall": 11
+  },
+  "p_occupied_median": 0.9534815975254308,
+  "max_fall": 0.537630720013763,
+  "alarms": [
+   21.5
+  ],
+  "onset": null
+ }
+}

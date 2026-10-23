@@ -90,3 +90,41 @@ def test_serial_source_reconnects_after_port_death():
     s.stop.set()
     assert s.reconnects >= 1 and len(opened) >= 2 and "SerialException" in (s.last_error or "")
     assert len(buf.d[2]) > 50                                   # packets flow again after the reconnect
+
+
+def test_every_completed_env_check_is_logged(tmp_path, monkeypatch):
+    """Bug 2026-10-23: only the first environment-check result per session reached the live log."""
+    import json
+    from app import envcheck as ec
+
+    class StubCheck:                                     # done after 2 windows; verdict alternates per run
+        runs = 0
+
+        def __init__(self, *a, **k):
+            StubCheck.runs += 1
+            self.n, self.result, self.verdict = 0, None, "ok" if StubCheck.runs % 2 == 0 else "differs"
+
+        def add(self, t, w, out):
+            self.n += 1
+            if self.n >= 2:
+                self.result = dict(verdict=self.verdict)
+
+        def status(self, t):
+            return dict(state="done", **self.result) if self.result else dict(state="running", windows=self.n)
+
+    monkeypatch.setattr(ec, "load_baseline", lambda d: {})
+    monkeypatch.setattr(ec, "EnvCheck", StubCheck)
+    pred = Predictor(make_models(tmp_path / "models"))
+    clock = SimClock()
+    eng = E.Engine(pred, E.Buffer(clock=clock), log_dir=tmp_path / "logs", clock=clock)
+    feed(eng.buf, clock, (1, 2), 6.0)
+    for run in range(3):
+        eng.start_env_check(1.0)
+        for k in range(4):
+            clock.t += 0.5
+            eng.buf.arrivals = {r: type(eng.buf.arrivals[r])([(clock.t, 0)], maxlen=600) for r in (1, 2)}
+            assert eng.step()["status"] == "ok"
+    eng.log.close()
+    rows = [json.loads(x) for f in (tmp_path / "logs").glob("live_*.jsonl") for x in f.read_text().splitlines()]
+    logged = [r["env"] for r in rows if "env" in r]
+    assert [(e["run"], e["verdict"]) for e in logged] == [(1, "differs"), (2, "ok"), (3, "differs")]
