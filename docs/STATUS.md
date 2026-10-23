@@ -1,4 +1,4 @@
-# STATUS — 2026-10-23 ~11:30 IST · Phase 5 · antenna swap restored RX2; empty-room false presence open · Gate 5 open
+# STATUS — 2026-10-23 ~11:30 IST · Phase 5 · antenna swap restored RX2; empty room read as occupied (presence-model fragility); swap-back proposed · Gate 5 open
 
 ## ▶ Prompt for the next session
 > Read CLAUDE.md, docs/STATUS.md, results/phase5/live_library/TEST_CONDITIONS.md ("Option A, round 1/2/3") and docs/context/PROJECT_CONTEXT.md. We are at Gate 5. After the antenna swap (antenna B → RX1, A → RX2), both receivers respond to walking and walking is recognised (47/52). But the new empty take F02 is predicted "stand" in 38/52 windows. Re-check the empty room (live env check or a new empty take, nobody inside the tape), then do the short live re-run (stand A, walk path1, walk path2, sit_down A, fall M). Settle the path-naming conflict against the sketch. Then close Gate 5 and do Phase 6, stopping at Gate 6. Remind me to remove the BSSID lock AC:DE:01:59:B1:41 and unblock Bluetooth.
@@ -16,8 +16,10 @@
 
 - **Antenna swap test (11:22–11:23, `data/live_library/diag_takes3`, `diag3_analysis.log`, `diag3_motion_timeline.log`):** antennas swapped (B, formerly on RX2, → RX1; A → RX2); no visible damage. F01 walk path1: **walk 47/52**, RX2 motion features back inside 22 Oct (14th–46th percentile; amplitude SD 5–14), and RX1 with antenna B still normal. So antenna B is not faulty; the fresh U.FL mating fixed RX2 (likely a poorly mated contact). F02 empty: features normal (28th–82nd percentile), **but presence "stand" 38/52 (P(occupied) 0.89)**; RX1 empty RSSI −33 (+4 dB vs 22 Oct).
 
+- **Empty retake F03 (11:26, `presence_contrib.log`, `presence_empty_loso.log`):** RSSI −36/−36 (in range), all key features inside the 22 Oct empty range, **but presence "occupied" 53/53 (P 0.97)**. Contribution analysis: no feature is out of range; many noise features sit mid-distribution instead of at the quiet end, and together they cross the boundary. The presence model is fragile on empty rooms even in LOSO (0.00–0.42 occupied per 22 Oct empty take). E02's "correct" empty was partly due to the blind RX2. New script `scripts/phase5_presence_contrib.py`.
+
 ## Open
-1. **Empty-room false presence after the swap** (F02). Check whether the room was really empty; re-check with the live env check or a new empty take. Then the short live re-run.
+1. **Empty room read as occupied after the swap.** Proposed: swap the antennas back to the 22 Oct pairing (A → RX1, B → RX2), firmly clicked, then walk path1 + empty takes (diag_takes4). If both RX are normal and empty is correct → short live re-run. Otherwise, report the presence weakness as a limitation and decide with the user whether to run the live test anyway.
 2. **Path naming conflict:** the user says path 1 = horizontal, path 2 = vertical; `config/position_map.yaml` v2 (Gate 0 correction) says the opposite. Config unchanged; E03 is labelled path1 by the user's naming. Settle against `docs/setup/layout_library_sketch.jpg`.
 3. **Reminder:** remove the BSSID lock AC:DE:01:59:B1:41 from RNSIT-STUDENTS; unblock Bluetooth if wanted.
 4. Phase 6 not started: archive moves (Gate 0 list + `ml/train.py`, `~/WiFi_CSI_Final/transfer/`, `docs/setup/MIGRATE_TO_MAC.md`, `data/features/stream_3s.csv.incomplete_killed_2026-10-22`, needs approval), README, final docs, reproduction run.

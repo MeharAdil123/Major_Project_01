@@ -31,5 +31,23 @@
   "max_fall": 0.0885156261189799,
   "alarms": [],
   "onset": null
+ },
+ "20261023_DX_F03_empty": {
+  "activity": "empty",
+  "position": "none",
+  "windows": 53,
+  "gate_ok": 53,
+  "labels": {
+   "stand": 46,
+   "lie": 4,
+   "sit": 3
+  },
+  "events": {
+   "sit_down": 2
+  },
+  "p_occupied_median": 0.9732551692391923,
+  "max_fall": 0.1974509876228906,
+  "alarms": [],
+  "onset": null
  }
 }

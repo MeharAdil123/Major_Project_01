@@ -1,3 +1,4 @@
 take_id,kind,activity,position,duration_s,cue_s,pre_delay_s,say
 F01,state,walk,path1,30,,10,Walk back and forth along path 1 at normal speed.
 F02,state,empty,none,30,,15,Everyone leave the taped area and stay still outside it.
+F03,state,empty,none,30,,20,Everyone leave the taped area and stay still outside it.
