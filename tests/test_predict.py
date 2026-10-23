@@ -24,7 +24,7 @@ def make_models(tmp_path, win_s=4.0, fall_alarm=True):
         y = np.array(classes * (60 // len(classes) + 1))[:60]
         m = LogisticRegression(max_iter=500).fit(F, y)
         d = tmp_path / task
-        d.mkdir()
+        d.mkdir(parents=True)
         joblib.dump(m, d / "model.joblib")
         meta = dict(task=task, classes=classes, feature_names=cols, window_s=win_s, preproc_version=pp.PREPROC_VERSION,
                     features_version=fx.FEATURES_VERSION, synthetic=True)

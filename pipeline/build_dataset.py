@@ -45,6 +45,17 @@ EDGE_SKIP_S = 1.0
 DATASET_VERSION = "d2"
 
 
+def motion_energy(grid) -> np.ndarray:
+    """LEGACY (v1, replaced by pipeline/onset.py o1/o2, D-034). Kept only so the Phase 2 comparison scripts
+    (scripts/phase2_peaks.py, phase2_figures.py) can be re-run. Mean |d/dt| of gain-normalised amplitude
+    between consecutive 200 Hz packets, both RX, 0.2 s smoothed. Not used by the v2 pipeline."""
+    a = pp.normalise(grid["amp"])                          # [R, L, S]
+    d = np.abs(np.diff(a, axis=1)).mean(axis=(0, 2))
+    d = np.concatenate([[d[0]], d])
+    k = int(0.2 * pp.FS_IN)
+    return np.convolve(d, np.ones(k) / k, mode="same")
+
+
 def load_overrides(path=ROOT / "config" / "take_overrides.csv") -> dict:
     if not Path(path).exists():
         return {}
