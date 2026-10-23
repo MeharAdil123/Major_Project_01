@@ -1,6 +1,6 @@
 """Phase 4 evaluation framework: LOSO folds, tasks, feature sets, nested search, metrics.
 
-Rules (CLAUDE.md 6, CONTRACTS): leave-one-subject-out over S1..S6 only; empty-room takes are dealt
+Rules (docs/PROJECT_RULES.md rule 6, CONTRACTS): leave-one-subject-out over S1..S6 only; empty-room takes are dealt
 to folds take by take; scaling, feature selection and hyper-parameter search happen inside the
 training subjects of each outer fold (inner GroupKFold over training subjects); never random windows.
 """

@@ -18,6 +18,6 @@ data_synth/
 models_synth/
 results_synth/
 logs/
-# trained model binaries are rebuilt by ml/train.py (metadata is committed)
+# trained model binaries are rebuilt by ml/train_final.py (metadata is committed)
 models/**/*.joblib
 models/**/*.pt

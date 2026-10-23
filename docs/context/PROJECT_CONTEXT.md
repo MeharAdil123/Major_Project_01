@@ -1,6 +1,6 @@
 # WiFi-CSI HAR — consolidated project context (as of 2026-10-22, 13:50 IST; updated 18:15 IST with S5/S6 and Gate 0 corrections)
 
-This file merges ~20 planning/handover notes written between 18 and 22 Oct 2026. Where older notes disagreed, the resolution is already applied here. **Facts marked (verified) come from pasted tool output. Everything else is a plan, an assumption or an open question — check it on the machine.**
+This file merges ~20 planning/handover notes written between 18 and 22 Oct 2026. Where older notes disagreed, the resolution is already applied here. **Facts marked (verified) come from measured tool output. Everything else is a plan, an assumption or an open question — check it on the machine.**
 
 ---
 
@@ -37,7 +37,7 @@ Camera-free human activity recognition (HAR) with Wi-Fi Channel State Informatio
 
 ## 4. Host and repository
 
-- Ubuntu 24.04.4, Python 3.12.3, venv `~/WiFi_CSI_Final/hostenv` (`host/requirements.txt`: pyserial, numpy, matplotlib, streamlit, scikit-learn, joblib).
+- Ubuntu 24.04.4, Python 3.12.3, venv `~/WiFi_CSI_Final/hostenv` (`requirements.txt`, formerly `host/requirements.txt`: pyserial, numpy, matplotlib, streamlit, scikit-learn, joblib).
 - Repo: `~/WiFi_CSI_Final/wifi-csi-har` (the working copy). An **old unpacked zip** `~/Downloads/wifi-csi-har_2026-10-21_v2` exists — not used; data is NOT there.
 - GitHub: `github.com/mohithgowdam7/Major_Project` — **not pushed yet** (needs a personal access token; never store it in a file). `data/`, raw `.bin`, models `.joblib` are git-ignored and must stay off GitHub.
 - Bench recordings (outside the repo): `~/csi_runs/e0_second`, `e0_v2`, `e0_swap`, `lib_empty`, `lib_person` (link checks; not training data).

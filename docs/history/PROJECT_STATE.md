@@ -1,6 +1,6 @@
 # Project state — WiFi-CSI HAR
 
-As of 2026-10-21. The project chat keeps a mirrored copy in `claude/progress_checkpoint.md`.
+As of 2026-10-21. A mirrored copy was kept in the team's planning notes.
 
 **Bottom line:** the RF chain works. TX → RX1 + RX2 → PC runs at about 195–198 packets/s per receiver, with 100 % HT40 and about 97–98 % of packets seen by both receivers. Firmware v2 is on all boards. E1 is deferred until the room is set up. Next: Phase 5 (CSI decoding and inspection) on the recordings already saved.
 

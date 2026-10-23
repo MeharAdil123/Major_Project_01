@@ -54,25 +54,25 @@ Matches `wire_protocol_v2.md` (sync, type, len, CRC-16/CCITT-FALSE, 48-byte head
 
 ### `pipeline/preprocess.py` (v1) — the shared frozen interface
 Matches CONTRACTS (114 carriers, align by seq, linear fill, per-packet mean normalisation, pair average, 2 s windows, gate 10 % / 20 packets).
-- P1 (M): **no anti-alias filter** before 200→100 Hz. The pair average is only a 2-tap boxcar (≈ −3 dB at 50 Hz, so it does not stop 50–100 Hz from folding down). PROMPT Phase 3 asks for a real low-pass → `PREPROC_VERSION` bump.
+- P1 (M): **no anti-alias filter** before 200→100 Hz. The pair average is only a 2-tap boxcar (≈ −3 dB at 50 Hz, so it does not stop 50–100 Hz from folding down). The phase plan (Phase 3) asks for a real low-pass → `PREPROC_VERSION` bump.
 - P2 (M): `USED_SC` (114 carriers) is still the textbook layout, **never verified on real data**. Phase 2 checks it.
 - P3 (L): no phase channel. Phase 3 adds sanitised phase.
 - P4 (M): the gate is "all RX must pass". With RX2 at a 6.65 % median loss and up to 35 % at spot B, a whole class can vanish for one subject. Options for Phase 3: per-RX thresholds, a higher miss limit with an explicit interpolation-fraction report, or keeping windows where one RX is good and masking the other. These need your choice.
 - P5 (L): offline passes `hdr`, so FIRST_WORD_INVALID values become NaN → missing. Live (`records_from_arrays` without `hdr`) does not. This has no effect today, because the flag only touches the first two L-LTF values and v1 uses HT-LTF only. It must be unified if L-LTF is ever used.
 
 ### `pipeline/build_dataset.py` — Format 1 → Format 2
-- B1 (H): **every event window is labelled with the event**. Five windows shifted only ±0.3 s around the motion peak are kept, and no pre-cue or post-action windows. PROMPT Phase 3 replaces this with overlap-based labels. The 5 near-identical windows per take also inflate per-window counts.
+- B1 (H): **every event window is labelled with the event**. Five windows shifted only ±0.3 s around the motion peak are kept, and no pre-cue or post-action windows. The phase plan (Phase 3) replaces this with overlap-based labels. The 5 near-identical windows per take also inflate per-window counts.
 - B2 (M): the cue is placed at grid index `cue_s × 200`, but grid index 0 is the first sequence number heard by **both** RX, not the recording start. The offset is a few packets normally, and more if a receiver missed the first packets. Map the cue through `tx_time_us` / the first seq per RX instead.
 - B3 (M): `valid: false` takes are skipped with only a line in index.csv (see D1).
-- B4 (L): window length, hop and edge-skip are module constants. PROMPT wants window length as a parameter (2/3/4 s).
+- B4 (L): window length, hop and edge-skip are module constants. The phase plan wants window length as a parameter (2/3/4 s).
 
 ### `ml/features.py` (f1, 45 features)
 - F1 (H, honesty): 8 static band means + RSSI mean/std per RX encode **position**, which is confounded with activity (D6).
 - F2 (L): band powers are computed on PC1 only. `xrx_sd_ratio` is the only cross-RX feature.
-- No `miss_frac`/loss features ✔ (PROMPT rule).
+- No `miss_frac`/loss features ✔ (phase-plan rule).
 
 ### `ml/train.py` — LOSO random forest
-- LOSO grouping is correct: empty takes are dealt round-robin to the 4 subjects (CLAUDE rule 6) ✔. No random splits ✔.
+- LOSO grouping is correct: empty takes are dealt round-robin to the 4 subjects (project rule 6) ✔. No random splits ✔.
 - T1 (M): no hyper-parameter search at all (a fixed RF). Fine as a baseline; Phase 4 adds nested search.
 - T2 (M): only per-fold accuracy, no per-fold macro-F1 and no mean ± std; no per-take fall count.
 - T3 (H): **the evaluated fall detector is not the deployed one.** LOSO scores the event RF on every window. Live, `Predictor` only runs it when `motion ≥ live_motion_threshold`. That threshold is the 5th percentile of fall motion, fitted on *all* data after LOSO (leaks the test subject into a deployed parameter, and is never evaluated).
@@ -104,7 +104,7 @@ Runs on synthetic data (T1 below) and recovers the built-in layout, gaps and gai
 - Matches the CONTRACTS engine-state dict otherwise (status, label_smoothed by majority of 3, 2-of-3 fall rule, 10 s cooldown).
 
 ### `app/live_app.py`
-Never run under Streamlit (an infinite `while True` loop in the script body; a starter). Missing almost everything PROMPT Phase 5 lists (heatmaps, phase, health, model info, panels).
+Never run under Streamlit (an infinite `while True` loop in the script body; a starter). Missing almost everything the phase plan lists for Phase 5 (heatmaps, phase, health, model info, panels).
 
 ### `scripts/pipeline.sh`
 Works for `synth` (it runs the same commands as T2–T4). It writes `data_synth/`, `models_synth/` and `results_synth/` into the repo (git-ignored). Uses `python3`, not the venv, unless `PY` is set.
@@ -114,11 +114,11 @@ Read only. Matches the wire protocol (48-byte packed header with static assert, 
 - W1 (M): RX2's UART driver is installed from `app_main` → its ISR lands on **core 0 together with Wi-Fi**. The writer task is already pinned to core 1. This supports the D-012 suspicion.
 - W2 (M): the TX has no watchdog and no host-visible alive signal when unplugged from the PC. The LED code exists (solid on, then 1 Hz OK, 5 Hz error) but its behaviour on the board is unconfirmed.
 - W3 (L): RX1's USB link drops frames instantly after one timed-out write (`s_stalled`). That is intended, but a host reconnect is not signalled.
-- `releases/v2/*.bin` (six firmware images, 4.9 MB) **are committed to git**, which conflicts with a literal reading of CLAUDE.md rule 4 ("never commit `.bin`"). That rule targets raw CSI. See the open question in STATUS.
+- `releases/v2/*.bin` (six firmware images, 4.9 MB) **are committed to git**, which conflicts with a literal reading of project rule 4 ("never commit `.bin`"). That rule targets raw CSI. See the open question in STATUS.
 
 ### Docs vs reality
 - `docs/CONTRACTS.md` says "3 volunteers" (now 4) and "2 s windows" (to become a parameter). It needs a v2 note in Phase 3.
-- **The decision-log path disagrees**: CLAUDE.md rule 8 says `docs/decisions/DECISIONS.md`, but PROMPT Phase 6 says `docs/DECISIONS.md`. Neither exists yet; the register lives only in PROJECT_CONTEXT §8.
+- **The decision-log path disagrees**: the project rules say `docs/decisions/DECISIONS.md`, but the phase plan says `docs/DECISIONS.md`. Neither exists yet; the register lives only in PROJECT_CONTEXT §8.
 - `docs/PROJECT_STATE.md`, `TEAM_PLAN.md` and `tracks/*` describe the 21 Oct state and are superseded by `docs/context/PROJECT_CONTEXT.md`.
 - `host/requirements.txt` uses `>=` (not pinned). The venv also has pandas 3.0.6 and scipy 1.18.1, which are not listed.
 
@@ -130,8 +130,8 @@ There is **no unit-test suite** (no pytest, no `tests/` with asserts). The only 
 
 | Test | Command | Result |
 | --- | --- | --- |
-| T1 | `host/tests/make_synthetic_run.py` → `host/csi_inspect.py --out <scratch>` | PASS: recovers 114 used carriers, L-LTF "upper 20 MHz" placement, the 65 ms gap and 1 gain-change candidate, as built in |
-| T2 | `host.tests.make_synthetic_dataset --subjects 3` | PASS: 76 takes |
+| T1 | `tests/synthetic/make_synthetic_run.py` → `host/csi_inspect.py --out <scratch>` | PASS: recovers 114 used carriers, L-LTF "upper 20 MHz" placement, the 65 ms gap and 1 gain-change candidate, as built in |
+| T2 | `tests.synthetic.make_synthetic_dataset --subjects 3` | PASS: 76 takes |
 | T3 | `pipeline.build_dataset` on T2 | PASS: 1168 state + 180 event windows |
 | T4 | `ml.train` on T3 | PASS (runs). SYNTHETIC LOSO numbers not reported as results |
 | T5 | engine replay (SYNTHETIC model and takes), 4× speed, 16 s | Runs with no errors, but see E2 |
@@ -139,11 +139,11 @@ There is **no unit-test suite** (no pytest, no `tests/` with asserts). The only 
 | — | `app/live_app.py` under Streamlit | not run |
 | — | `host/rx_check.py`, `record_session.py` | need boards; not run |
 
-Missing tests that PROMPT asks for (Phase 1/3/5): decoder round-trip, alignment, gap fill, labelling, feature shapes, simulated-port recorder tests, and live-vs-offline consistency.
+Missing tests that the phase plan asks for (Phase 1/3/5): decoder round-trip, alignment, gap fill, labelling, feature shapes, simulated-port recorder tests, and live-vs-offline consistency.
 
 ---
 
-## 4. Rule check (CLAUDE.md)
+## 4. Rule check (project rules, `docs/PROJECT_RULES.md`)
 - Raw data untouched ✔ (the audit only reads). `_rejected/` was listed by name only.
 - No board was opened, flashed or reset ✔.
 - Synthetic outputs went to the scratchpad and are labelled SYNTHETIC ✔.

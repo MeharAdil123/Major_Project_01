@@ -1,4 +1,4 @@
-# Proposal: short labelled calibration for a new room (NOT built; PROMPT Phase 5.4 — "propose, do not build without asking")
+# Proposal: short labelled calibration for a new room (NOT built; phase plan 5.4: "propose, do not build without asking")
 
 **Why.** The models were trained in one room (library hall) with one layout. CSI depends on the room's multipath. In our own data the static channel shape already changed by 3.4 / 4.4 dB between two sessions in the same room (D-033), and published work reports accuracy collapsing when the room changes. The start-up environment check (`app/envcheck.py`) can tell that the room differs, but cannot fix it.
 

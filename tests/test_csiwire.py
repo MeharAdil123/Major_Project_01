@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 from host import csiwire as cw
-from host.tests.make_synthetic_dataset import frame
+from tests.synthetic.make_synthetic_dataset import frame
 
 
 def _csi_frame(seq, iq, flags=cw.F_SEQ_VALID, csi_len=384, rx_id=1):

@@ -6,7 +6,7 @@ from a toy multipath model with one "body" reflection whose delay/amplitude depe
 activity. Results on this data mean NOTHING about real performance; every meta.json says
 "synthetic": true and build/train scripts print a warning when they see it.
 
-    python3 -m host.tests.make_synthetic_dataset --out data_synth/raw --subjects 3
+    python3 -m tests.synthetic.make_synthetic_dataset --out data_synth/raw --subjects 3
 """
 from __future__ import annotations
 

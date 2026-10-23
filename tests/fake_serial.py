@@ -6,7 +6,7 @@ import time
 import numpy as np
 
 from host import csiwire as cw
-from host.tests.make_synthetic_dataset import frame
+from tests.synthetic.make_synthetic_dataset import frame
 
 IQ = (np.arange(384) % 50 - 25).astype(np.int8)
 

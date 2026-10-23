@@ -5,9 +5,9 @@ Change a format only after telling everyone; bump the version string.
 
 ```
  Track A                Track B                    Track C                  Track D
- record_session.py ──►  build_dataset.py   ──►     ml/train.py      ──►     app/engine.py + live_app.py
+ record_session.py ──►  build_dataset.py   ──►     ml/train_final.py ──►    app/engine.py + live_app.py
  Format 1               Format 2                   Format 3                 (reads Format 3 + live serial)
- data/raw/<sid>/        data/processed/*.npz       models/<task>_rf/        dashboard
+ data/raw/<sid>/        data/processed/*.npz       models/<task>/           dashboard
                         pipeline/preprocess.py  ◄──────── shared by B (offline) and D (live) ───────┘
 ```
 

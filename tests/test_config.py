@@ -38,13 +38,15 @@ def test_take_overrides_file():
 
 
 def test_empty_takes_dealt_to_folds_take_by_take():
-    """Gate 0 item 9: the three B01 empty-short takes are distinct sessions on different folds."""
-    from ml.train import groups_for
+    """Gate 0 item 9: empty-room takes are distinct sessions, each dealt whole to one fold, on different folds."""
+    import pandas as pd
+    from ml.evaluate import assign_folds
     sessions = ["20261022_none_B00_empty", "20261022_none_B01_empty", "20261022_none_B01_empty_r2",
                 "20261022_none_B01_empty_r4"]
-    subj = np.array(["none"] * 8 + ["S1", "S2", "S3", "S4"])
-    sess = np.array([s for s in sessions for _ in range(2)] + ["a", "b", "c", "d"])
-    g = groups_for(subj, sess)
+    df = pd.DataFrame(dict(subject=["none"] * 8 + ["S1", "S2", "S3", "S4"],
+                           session_id=[s for s in sessions for _ in range(2)] + ["a", "b", "c", "d"]))
+    g = assign_folds(df)
+    sess = df["session_id"].to_numpy()
     per_take = {s: set(g[sess == s].tolist()) for s in sessions}
     assert all(len(v) == 1 for v in per_take.values())               # a take never splits
     assert len({next(iter(v)) for v in per_take.values()}) == 4        # 4 takes -> 4 different folds

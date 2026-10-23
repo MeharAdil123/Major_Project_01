@@ -44,7 +44,7 @@ host/rx_check.py             reads RX1+RX2, live view, E0 checks, --save raw str
 host/csiwire.py              decoder for saved runs (wire protocol v2, CSI layout)
 host/csi_inspect.py          Phase 5 figures: heatmaps, channel shape, quality checks
 host/record_session.py       labelled recording of takes (plan CSV -> data/raw)
-host/tests/                  synthetic run/dataset generators for testing
+tests/synthetic/                  synthetic run/dataset generators for testing
 protocol/                    recording plans (CSV)
 pipeline/                    preprocessing (shared offline/live) and dataset builder
 ml/                          features, training + evaluation, Predictor interface

@@ -13,16 +13,16 @@ One entry per decision: id, date, decision, why, consequences. Earlier entries (
 | D-013 | Scope: presence; states sit/stand/walk/lie; events fall, sit_down, stand_up (+ bend_pick as look-alike negative); live monitor with uncertainty. Through-wall, breathing, counting, auto-calibration, sleep, clinical use are out of scope. |
 | D-014 | Protocol: state takes 30 s; event takes 10 s with audio cue at 3 s. |
 | D-015 | Evaluation: leave-one-subject-out. |
-| D-016 | Keep the random forest unless a CNN is clearly better on LOSO. *(Phase 4 replaces this with the selection rule in PROMPT Phase 4.2.)* |
+| D-016 | Keep the random forest unless a CNN is clearly better on LOSO. *(Phase 4 replaces this with the selection rule of phase plan 4.2.)* |
 | D-017 | Record on ch 11 at 5 dBm with a relaxed keep rule: RX1 ≥ 180/s (≥ 165 at spot A), RX2 ≥ 160/s (≥ 150 at spot B), no gap > 100 ms. Not coded in the recorder (which applies 180/s on both); recorded here so it is not lost. |
 
 ## Gate 0 decisions (2026-10-22, user)
 
 **D-018 Take overrides.** `20261022_S1_T29_walk` (`valid:false`, empty notes) is used. Overrides live in the version-controlled `config/take_overrides.csv` (`session_id, use, reason`); raw `meta.json` files are never edited. The dataset builder must apply this file and log every override.
 
-**D-019 Decision log location.** This file, `docs/decisions/DECISIONS.md`. PROMPT and STATUS updated.
+**D-019 Decision log location.** This file, `docs/decisions/DECISIONS.md`. Phase plan and STATUS updated.
 
-**D-020 What "never commit .bin" means.** CLAUDE.md rule 4 covers recorded data and trained artefacts (`data/**`, raw `RXn.bin` recordings, `.npz`, models). Firmware images in `releases/**/*.bin` stay tracked. CLAUDE.md clarified.
+**D-020 What "never commit .bin" means.** Project rule 4 (`docs/PROJECT_RULES.md`) covers recorded data and trained artefacts (`data/**`, raw `RXn.bin` recordings, `.npz`, models). Firmware images in `releases/**/*.bin` stay tracked. The rule was clarified accordingly.
 
 **D-021 Archive plan.** The moves proposed in Phase 0 STATUS are approved and will be applied in Phase 6.
 
@@ -42,7 +42,7 @@ One entry per decision: id, date, decision, why, consequences. Earlier entries (
 
 **D-029 TX build-default power = 5 dBm (2026-10-22, user).** In firmware v2.1, `CONFIG_TX_POWER_QDBM` defaults to 20 (5 dBm), the same as the NVS-saved boot power used for every recording (D-017). Before this, the default was 8 (2 dBm), so an NVS erase would silently have changed the radio of the study. The saved NVS value still overrides the default. Built (TX v2.1 SHA-256 893dbf15…, `results/firmware/BUILDS.md`), **not flashed**.
 
-**D-030 USB autosuspend off for the receivers (2026-10-22, user).** `setup/linux/99-wifi-csi-usb-power.rules` sets `power/control=on` for RX1 (Espressif USB-Serial-JTAG 303a:1001) and RX2 (CH343 1a86:55d3), one suspected contributor to the RX1 USB drops (W3). Written by Claude, installed by the user (needs sudo).
+**D-030 USB autosuspend off for the receivers (2026-10-22, user).** `setup/linux/99-wifi-csi-usb-power.rules` sets `power/control=on` for RX1 (Espressif USB-Serial-JTAG 303a:1001) and RX2 (CH343 1a86:55d3), one suspected contributor to the RX1 USB drops (W3). Installed by the user (needs sudo).
 
 **D-031 Set-up drift check for later subjects (2026-10-22, user).** When S5/S6 are finished, the raw audit compares each new take's RSSI median per receiver with the 22 Oct baseline for the same activity and position (and empty room with empty room). A difference of more than 3 dB is flagged as a sign that the set-up moved. Flags are reported; they do not by themselves exclude a take.
 *Calibration (2026-10-22, `results/audit/rssi_drift_calibration.log`, from the committed baseline table only):* within the 22 Oct set-up, the per-take rule already flags 8/37 S4 takes and 4/22 S3 takes (body shadowing, up to +12 dB on RX2 at spot B), while the per-subject median shift stays ≤ 1.2 dB. So the **per-subject median (and an empty-room take, if recorded) is the set-up-moved indicator**; per-take flags are listed for inspection only.
@@ -79,7 +79,7 @@ One entry per decision: id, date, decision, why, consequences. Earlier entries (
 
 **D-044 Gate 3 not stopped (2026-10-22).** The user asked to stop at Gate 3 only if the loss-tolerance test, labelling or the dataset summary showed something unexpected. None did (`results/dataset/summary.log`; STATUS has the details), so Phase 4 started directly.
 
-**D-045 Phase 4 stays on the Linux laptop (2026-10-22, user).** The planned move to a MacBook was cancelled: the laptop hotspot did not appear on the Mac, and the Mac's USB networking does not bind on Linux (`cdc_ncm … bind() failure`). The archive had been copied to the user's phone (size verified, 710,328,320 bytes) but is not used; the user removes it from the phone. `docs/setup/MIGRATE_TO_MAC.md` and `~/WiFi_CSI_Final/transfer/` stay for a later move. GitHub cannot carry the recordings (CLAUDE.md rule 4). Phase 4 runs here: Intel i3-7020U (2 cores / 4 threads), 7 GB RAM, so runs are long and staged.
+**D-045 Phase 4 stays on the Linux laptop (2026-10-22, user).** The planned move to a MacBook was cancelled: the laptop hotspot did not appear on the Mac, and the Mac's USB networking does not bind on Linux (`cdc_ncm … bind() failure`). The archive had been copied to the user's phone (size verified, 710,328,320 bytes) but is not used; the user removes it from the phone. `docs/setup/MIGRATE_TO_MAC.md` and `~/WiFi_CSI_Final/transfer/` stay for a later move. GitHub cannot carry the recordings (project rule 4). Phase 4 runs here: Intel i3-7020U (2 cores / 4 threads), 7 GB RAM, so runs are long and staged.
 
 ## Phase 4 (2026-10-23; evidence `results/REPORT.md`, `results/phase4/`)
 
@@ -94,7 +94,7 @@ One entry per decision: id, date, decision, why, consequences. Earlier entries (
 ## Gate 4 (2026-10-23, user decision)
 
 **D-050 Final models (4 s windows, dynamic-only features f2).** Events → **SVM-RBF**, state → **extra trees** (the rule's pick), presence → **logistic regression**. Two departures from the selection rule (D-047), recorded with their reasons; the rule's picks stay in `results/REPORT.md` for transparency:
-1. *Events: SVM-RBF instead of MiniRocket.* Falls were declared the target before the run (PROMPT: "Report fall detection separately", D-013/D-025), and MiniRocket is worse on exactly that class: window-level fall F1 0.464 vs 0.521, fall sensitivity 0.434 vs 0.552. The live alarm needs calibrated probabilities (P(fall) ≥ θ); MiniRocket's ridge head gives none. Its single-window transform also takes 326 ms on this laptop vs < 1 ms for SVM prediction on f2 features (133 ms).
+1. *Events: SVM-RBF instead of MiniRocket.* Falls were declared the target before the run (phase plan: "Report fall detection separately", D-013/D-025), and MiniRocket is worse on exactly that class: window-level fall F1 0.464 vs 0.521, fall sensitivity 0.434 vs 0.552. The live alarm needs calibrated probabilities (P(fall) ≥ θ); MiniRocket's ridge head gives none. Its single-window transform also takes 326 ms on this laptop vs < 1 ms for SVM prediction on f2 features (133 ms).
 2. *Presence: logistic regression instead of MiniRocket.* Stability across subjects: MiniRocket's mean (0.729) hides two collapsed folds (S3 0.474, S4 0.487; std 0.178), while logistic regression is 0.698 ± 0.065 with no fold below 0.587. Presence errors are expensive in a monitor (a false "empty" hides a person). Logistic regression is also the simplest model and its probabilities are directly usable.
 
 **D-051 Bounded fall-alarm experiment before retraining (user).** A binary fall-vs-rest SVM with Platt-calibrated probabilities (calibration fitted on training subjects only). Per outer fold, the alarm threshold and k-of-n rule (1-of-2, 2-of-3, 2-of-4) are chosen from INNER leave-one-subject-out stream predictions on the training subjects only. The objective is maximum falls detected per take, subject to look-alike false alarms ≤ 9/109 and walking alarms/hour ≤ the current chain's. The settings are applied unchanged to the held-out subject. It is adopted only if it detects more falls with no increase in look-alike or walking false alarms; otherwise the current chain (5-class SVM, θ 0.6, 2-of-3) stays. There is no tuning on test subjects.

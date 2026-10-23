@@ -51,7 +51,7 @@ def test_main_refuses_raw_before_reading(tmp_path, monkeypatch, capsys):
 
 
 def test_end_to_end_synthetic(tmp_path, monkeypatch):
-    from host.tests import make_synthetic_run as msr
+    from tests.synthetic import make_synthetic_run as msr
     import numpy as np
     run = tmp_path / "run"; run.mkdir()
     rng = np.random.default_rng(0)

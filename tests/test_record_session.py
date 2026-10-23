@@ -5,7 +5,7 @@ import types
 import pytest
 
 from host import record_session as rs
-from host.tests.make_synthetic_dataset import frame
+from tests.synthetic.make_synthetic_dataset import frame
 from host import csiwire as cw
 from tests.fake_serial import opener_for
 

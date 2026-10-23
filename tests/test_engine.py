@@ -5,7 +5,7 @@ import numpy as np
 
 from app import engine as E
 from app.consistency import SimClock, compare_take
-from host.tests.make_synthetic_dataset import make_take
+from tests.synthetic.make_synthetic_dataset import make_take
 from ml.predict import Predictor
 from tests.fake_serial import opener_for
 from tests.test_predict import make_models
