@@ -95,6 +95,21 @@ out = p.predict(X, rssi)    # X [2,200,114], rssi [2,200]
 ```
 A CNN or any other model can replace the random forest if it is wrapped to keep this call identical.
 
+
+## Format 3 v2 and Predictor p2 (2026-10-23, D-050/D-052) — replaces the v1 model format above
+
+`models/<task>/model.joblib` + `model_meta.json` for task = `presence` (logistic regression), `state` (extra trees), `events` (SVM-RBF), `fall_alarm` (calibrated binary SVM, D-051), plus `models/env_baseline.json` (empty-room reference for the live environment check).
+`model_meta.json` keys: `task, model, classes, best_params, n_train, loso{macro_f1_mean, macro_f1_std, macro_f1_per_fold, pooled, source}, features_version, preproc_version, onset_version, window_s, fs, featset, feature_names, synthetic, trained_at, trained_on, git_commit, python, sklearn, limitations`, and `alarm{theta, k, n, cooldown_s}` (events / fall_alarm).
+
+```python
+from ml.predict import Predictor          # PREDICTOR_VERSION "p2"
+p = Predictor("models")
+out = p.predict(X, rssi, P)               # one 4 s window from pipeline/preprocess.py v2: X, P [2, 400, 114], rssi [2, 400]
+# {"label", "confidence", "probs", "motion", "fall_prob", "uncertain",               (v1 keys)
+#  "presence_prob", "state", "state_probs", "event", "event_probs"}                  (added)
+p.alarm   # {"theta": 0.5, "k": 2, "n": 3, "cooldown_s": 10.0, ...}: alarm when >= k of the last n windows have fall_prob >= theta
+```
+
 ## Engine state (Track D internal, for the UI)
 
 See the docstring in `app/engine.py`: `status` (`ok|degraded|no_signal|error`), `label`, `label_smoothed` (majority of last 3 windows), `confidence`, `uncertain`, `probs`, `motion`, `fall_prob`, `alert` (`FALL` when 2 of the last 3 windows have fall_prob ≥ 0.6, 10 s cooldown), and `rx` health.

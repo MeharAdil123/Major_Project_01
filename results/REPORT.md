@@ -1,4 +1,4 @@
-# WiFi-CSI HAR: Phase 4 results (draft for Gate 4, 2026-10-23)
+# WiFi-CSI HAR: Phase 4 results (final, 2026-10-23)
 
 All numbers come from scripts run on 2026-10-22/23 on the 202 real takes (S1–S6). Logs and result files are referenced next to each table. Nothing here is synthetic.
 
@@ -51,7 +51,7 @@ All numbers come from scripts run on 2026-10-22/23 on the 202 real takes (S1–S
 - **They overfit:** training loss falls to ~0.2 while the inner-validation loss rises from about epoch 3. The best epoch has a median of 5–9 (`results/phase4/track_c/<task>/*_curves.png`, fold S1, seed 0). On events, every deep model under-predicts the four event classes (recall 0.1–0.4).
 - Hyper-parameters were not tuned after seeing test folds.
 
-**Time:** fit/train time is in the comparison CSVs. Per-window latency on this laptop (`results/phase4/latency.log`): f2 features 133 ms; MiniRocket transform 41 ms batched, **326 ms for a single window**. Classifier prediction is < 1 ms (Track A) and ~1 ms (deep). The live engine steps every 500 ms.
+**Time:** fit/train time is in the comparison CSVs. Per-window latency on this laptop (`results/phase4/latency.log`): f2 features 133 ms (67 ms after caching the per-receiver PCA, outputs bit-identical; a full Predictor call ≈ 125 ms); MiniRocket transform 41 ms batched, **326 ms for a single window**. Classifier prediction is < 1 ms (Track A) and ~1 ms (deep). The live engine steps every 500 ms.
 
 ## 3. Selection rule (`scripts/phase4_select.py`, `results/phase4/selection.json`)
 Rule (PROMPT 4.2), adapted from 4 to 6 folds: the simplest model whose macro-F1 is within one std of the best **and** that wins or ties (within 0.02) the best on **≥ 5 of 6 folds** (75 %, as 3 of 4).
@@ -99,8 +99,42 @@ Readings:
 
 **Position check** (`results/phase4/position_check.log`; SVM-RBF dynamic, per-window recall). sit_down: A 0.76, B 0.25, C 0.34. stand_up: A 0.55, B 0.40, C 0.27. At B and C, 16–22 % of these windows are taken for a fall. **The same movement is recognised far better at spot A (next to RX1).** Recognition depends on position relative to the links, so the fall results (all at M) do not generalise to other places in the room.
 
-## 6. Open items for Gate 4
-1. **Events:** adopt MiniRocket (rule result) or SVM-RBF? MiniRocket needs a probability head for the live alarm (e.g. logistic regression on its features, re-evaluated on the same folds and the per-take chain). Its single-window transform takes 326 ms on this laptop.
-2. **Presence:** MiniRocket (rule; unstable folds) or logistic regression (stable, cheap)? Either way, presence of a still person needs an empty-room calibration in the new room (Phase 5).
-3. **State:** extra trees (dynamic), as the rule says.
-4. After the choice: retrain on all subjects, save in Format 3 (`models/<task>/model.joblib` + `model_meta.json`), and update `ml/predict.py`.
+## 6. Gate 4 decision (D-050)
+**Final models: events → SVM-RBF, state → extra trees, presence → logistic regression; 4 s windows; dynamic-only f2 features.**
+The selection rule (§3) picked MiniRocket for events and presence. **Those rule picks stay recorded here**; two departures were made, with these reasons (`docs/decisions/DECISIONS.md` D-050):
+- **Events, SVM-RBF instead of MiniRocket.** Falls were declared the target before the run, and MiniRocket is worse on that class: window-level fall F1 0.464 vs 0.521, sensitivity 0.434 vs 0.552. The live alarm needs calibrated probabilities, which MiniRocket's ridge head does not give. Its transform takes 326 ms per single window on this laptop.
+- **Presence, logistic regression instead of MiniRocket.** Stability across subjects: MiniRocket 0.729 ± 0.178 with S3 0.474 and S4 0.487; logistic regression 0.698 ± 0.065, no fold below 0.587.
+
+## 7. Fall alarm experiment (D-051; `scripts/phase4_fall_chain.py`, `results/phase4/fall_chain/`, log `results/phase4/fall_chain.log`)
+- **Model:** a binary fall-vs-rest SVM-RBF (dynamic f2) with Platt (sigmoid) calibration. Calibration is fitted on leave-one-subject-out splits of the training subjects only.
+- **Per outer fold:** the threshold θ (0.30–0.95) and the rule k-of-n (1-of-2, 2-of-3, 2-of-4) are chosen from INNER leave-one-subject-out stream predictions on the five training subjects. The goal is the most falls detected, subject to look-alike alarms ≤ 9/109 and walking alarms ≤ 45.4 per hour. The setting is then applied unchanged to the held-out subject. No tuning on test subjects.
+
+| | Current chain (5-class SVM, θ 0.6, 2-of-3) | New chain (calibrated binary SVM, per-fold settings) |
+| --- | --- | --- |
+| Falls detected | 18 of 42 | **21 of 42** |
+| Look-alike takes with an alarm | 9 of 109 | 8 of 109 |
+| Walking alarms | 6 in 0.132 h (45.4 per hour) | 4 (30.3 per hour) |
+| Empty/still-take alarms | 1 in 0.314 h (3.2 per hour) | **2 (6.4 per hour)** |
+| Median alarm latency after onset | 2.05 s | 1.99 s |
+| Per fold: falls / look-alike alarms | S1 1/8 · S2 2/5 · S3 3/5 · S4 3/8 · S5* 3/8 · S6* 6/8 | S1 2/8, 1 · S2 2/5, 0 · S3 4/5, 1 · S4 3/8, 1 · S5* 5/8, 1 · S6* 5/8, 4 |
+| Chosen settings | fixed | S1 θ 0.60 1-of-2 · S2 0.60 1-of-2 · S3 0.50 2-of-3 · S4 0.60 2-of-3 · S5 0.45 2-of-3 · S6 0.50 1-of-2 |
+
+**Adopted:** the new chain detects more falls with no increase in look-alike or walking alarms, so it meets the adoption rule set before the run. Caveats:
+- the gain is small (+3 of 42) on few takes;
+- empty/still alarms, which are not part of the adoption rule, rose from 1 to 2;
+- S6 has 4 look-alike alarms.
+
+**Final alarm settings** (the same selection on all six subjects' outer-LOSO predictions, `results/phase4/fall_chain/final_settings.json`): **θ = 0.5, 2-of-3, 10 s cooldown**. On those predictions this single setting gives 18/42 falls, 7/109 look-alike alarms, 30.3 walking and 6.4 still alarms per hour. These are in-sample for the setting; the unbiased estimate of the procedure is the per-fold column above.
+
+## 8. Final models (Format 3, `models/`; `ml/train_final.py`, log `results/phase4/train_final.log`)
+Trained on all six subjects plus the 7 empty-room takes. Hyper-parameters come from the same grids, chosen by GroupKFold(3) over the six subjects. The LOSO scores in each `model_meta.json` are the evaluation results above, not scores of the refitted models.
+
+| Task | Model | Params | Training windows | File size | LOSO macro-F1 |
+| --- | --- | --- | --- | --- | --- |
+| presence | logistic regression | C = 1 | 2401 | 3 KB | 0.698 ± 0.065 |
+| state | extra trees (300 trees) | max_features 0.3, min_samples_leaf 1 | 1134 | 10 MB | 0.572 ± 0.115 |
+| events | SVM-RBF | C = 10, γ = 0.01 | 2401 | 540 KB | 0.539 ± 0.054 |
+| fall_alarm | SVM-RBF + Platt calibration | C = 1, γ = 0.01; θ 0.5, 2-of-3 | 2401 | 548 KB | chain: 21/42 falls (§7) |
+
+Interface: `ml/predict.py` Predictor **p2**, `predict(X, rssi, P)` (D-052). An environment baseline for the live start-up check is in `models/env_baseline.json`: the 7 training empty-room takes, 262 windows; their static profiles differ by 3.2 dB median RMS among themselves.
+Smoke test on real windows: `results/phase4/predictor_smoke.log` (in-sample, for interface checking only).

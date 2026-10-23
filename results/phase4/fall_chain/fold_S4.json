@@ -1,0 +1,44 @@
+{
+ "test_subject": "S4",
+ "params": {
+  "C": 1,
+  "gamma": "scale"
+ },
+ "inner_fall_f1": 0.4318694188259406,
+ "chosen": {
+  "theta": 0.6,
+  "k": 2,
+  "n": 3,
+  "ok": true,
+  "fall_share": 0.2647058823529412,
+  "lookalike": 4,
+  "walk_per_h": 37.2357618462732,
+  "inner_falls": 9,
+  "inner_fall_takes": 34,
+  "inner_lookalike": 4,
+  "inner_lookalike_takes": 88,
+  "inner_walk_alarms": 4,
+  "inner_walk_h": 0.1074,
+  "inner_walk_per_h": 37.2357618462732,
+  "inner_still_alarms": 0,
+  "inner_still_h": 0.2644,
+  "inner_still_per_h": 0.0,
+  "inner_latency_median_s": NaN,
+  "fallback": false
+ },
+ "test": {
+  "falls": 3,
+  "fall_takes": 8,
+  "lookalike": 1,
+  "lookalike_takes": 21,
+  "walk_alarms": 0,
+  "walk_h": 0.0247,
+  "walk_per_h": 0.0,
+  "still_alarms": 0,
+  "still_h": 0.0498,
+  "still_per_h": 0.0,
+  "latency_median_s": 1.5550000000000002
+ },
+ "n_candidates_feasible": 20,
+ "wall_s": 16.4
+}

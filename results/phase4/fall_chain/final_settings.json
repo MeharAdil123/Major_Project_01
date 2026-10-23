@@ -1,0 +1,25 @@
+{
+ "note": "selection on all six subjects' outer-LOSO stream predictions (each scored by a model that never saw it)",
+ "chosen": {
+  "theta": 0.5,
+  "k": 2,
+  "n": 3,
+  "ok": true,
+  "fall_share": 0.42857142857142855,
+  "lookalike": 7,
+  "walk_per_h": 30.266725518632956,
+  "inner_falls": 18,
+  "inner_fall_takes": 42,
+  "inner_lookalike": 7,
+  "inner_lookalike_takes": 109,
+  "inner_walk_alarms": 4,
+  "inner_walk_h": 0.1322,
+  "inner_walk_per_h": 30.266725518632956,
+  "inner_still_alarms": 2,
+  "inner_still_h": 0.3141,
+  "inner_still_per_h": 6.366413631198963,
+  "inner_latency_median_s": NaN,
+  "fallback": false
+ },
+ "n_feasible": 27
+}

@@ -1,27 +1,15 @@
-# STATUS — 2026-10-23 ~03:50 IST · Phase 4 runs complete · **waiting at Gate 4**
+# STATUS — 2026-10-23 ~05:45 IST · Phase 4 closed (Gate 4 decided) · Phase 5 starting
 
-## Phase 4: what was done (branch `cc/phase4`; laptop run, D-045)
-- Overnight chain `csi-phase4` (systemd user unit under `systemd-inhibit`) finished 03:27; every step exit 0 (`results/phase4/overnight.log`, `step_*.log`).
-- Track A: 8 classical models × 3 tasks at 3 s (dynamic + all) and at 2/4 s (dynamic), nested LOSO (64 runs, `results/phase4/track_a/`).
-- Window length **4 s** by the pre-set rule (D-046).
-- Track B: MiniRocket (NumPy re-implementation, D-043) × 3 tasks.
-- Track C: 10 deep models × 3 seeds on events and state (they overfit, D-048).
-- Ablations (receivers, amplitude vs phase, static vs dynamic, feature groups removed one at a time, gate 15 %, state-takes-only), position check, per-take live chain (SVM-RBF), latency.
-- Selection rule applied (D-047). **Full results: `results/REPORT.md`.**
+## Phase 4 (closed; details `results/REPORT.md`, decisions D-046 … D-052)
+- Final models (D-050): events SVM-RBF, state extra trees, presence logistic regression; 4 s windows; dynamic-only f2. The two departures from the selection rule are recorded; the rule's picks stay in REPORT.
+- Fall-alarm experiment (D-051, ~2 min under systemd-inhibit): calibrated binary SVM with settings chosen from inner LOSO → 21/42 falls vs 18/42, look-alike 8/109 vs 9/109, walking 30.3 vs 45.4 per hour, still 6.4 vs 3.2 per hour → **adopted**. Final alarm θ 0.5, 2-of-3, 10 s cooldown.
+- Final models trained on all six subjects (`results/phase4/train_final.log`), Format 3 in `models/` (not committed; `model_meta.json` describes them), `models/env_baseline.json`.
+- Predictor p2 (D-052): `predict(X, rssi, P)`; ≈ 125 ms per window on this laptop.
+- Tests: `results/audit/pytest_phase4.log`.
 
-## Key results (macro-F1, mean ± std over 6 LOSO folds, 4 s)
-- Events: MiniRocket 0.572 ± 0.062 · SVM-RBF 0.539 ± 0.054 · XGBoost 0.523 · best deep 0.344.
-- State: extra trees 0.572 ± 0.115 · MiniRocket 0.568.
-- Presence: MiniRocket 0.729 ± 0.178 (unstable) · logistic regression 0.698 ± 0.065.
-- Falls per take (SVM-RBF, live chain): **18 of 42** detected, 9 of 109 look-alike takes alarmed, 7 alarms in 0.45 h of state takes.
-- Position dependence: sit_down recall 0.76 at A vs 0.25 at B.
-
-## Open problems / Gate 4 decisions
-1. Events: MiniRocket (rule) needs a probability head and a per-take evaluation; SVM-RBF is already evaluated per take.
-2. Presence: MiniRocket (rule) vs logistic regression (stable).
-3. State: extra trees.
-4. Final retraining and Format 3 models only after your choice; `ml/predict.py` and `app/engine.py` are still on v1.
-5. Fall detection is weak (18 of 42 falls), and all falls are at one spot; limitations in the report.
+## Open problems
+1. Fall detection is limited (≈ half the falls; all falls at spot M), presence of still people is weak, and recognition depends on position (REPORT §5). These are limitations, not bugs.
+2. `app/engine.py` and `app/live_app.py` are still v1 → Phase 5.
 
 ## Next step
-Your decision at Gate 4, then retrain on all subjects, Format 3 models, REPORT final, then Phase 5.
+Phase 5: engine v2 + replay demo + live/offline consistency test, empty-room environment check, dashboard. Built and tested with replay first; I ask before anything that needs the boards. Stop at Gate 5.

@@ -29,7 +29,21 @@ def _rolling_std(x: np.ndarray, w: int) -> np.ndarray:
     return np.sqrt(np.clip((c2[w:] - c2[:-w]) / w - m * m, 0, None))
 
 
+_PCA_CACHE: dict = {}                    # per window_features() call: same array -> same SVD (speed only)
+
+
 def _pca(x: np.ndarray):
+    """PCA of a [T, S] window. Views of the window array (alive for the whole window_features call) are
+    cached by data pointer, shape and strides; arrays that own their data (temporaries) are never cached."""
+    if x.base is None:
+        return _pca_uncached(x)
+    key = (x.__array_interface__["data"][0], x.shape, x.strides)
+    if key not in _PCA_CACHE:
+        _PCA_CACHE[key] = _pca_uncached(x)
+    return _PCA_CACHE[key]
+
+
+def _pca_uncached(x: np.ndarray):
     xc = x - x.mean(axis=0, keepdims=True)
     try:
         u, s, vt = np.linalg.svd(xc, full_matrices=False)
@@ -172,6 +186,14 @@ def _rx_features(x, p, rssi):
 
 
 def window_features(X: np.ndarray, P: np.ndarray, rssi: np.ndarray) -> np.ndarray:
+    _PCA_CACHE.clear()
+    try:
+        return _window_features(X, P, rssi)
+    finally:
+        _PCA_CACHE.clear()
+
+
+def _window_features(X: np.ndarray, P: np.ndarray, rssi: np.ndarray) -> np.ndarray:
     X = np.asarray(X, np.float64)
     P = np.asarray(P, np.float64)
     rssi = np.asarray(rssi, np.float64)
