@@ -120,3 +120,16 @@ One entry per decision: id, date, decision, why, consequences. Earlier entries (
 **D-059 Walk path naming confirmed (2026-10-23, user).** path1 = vertical (along the link, x −1.5), path2 = horizontal (across the link, y 2.55), as in `config/position_map.yaml` v2. A statement earlier the same day ("path 1 = horizontal") was withdrawn. Diagnostic takes E03 and F01 were labelled "path1" but walked on the horizontal line (= path2); this is recorded in TEST_CONDITIONS.md and their meta.json files are left as recorded.
 
 **D-060 RX2 fault and Gate 5 closed (2026-10-23).** The morning's live failure was traced to a poorly mated U.FL connector at RX2: RSSI +4 dB and motion features at the 0th–5th percentile, with RX1 normal. It was fixed by re-mating it (swap test, then swap back to the 22 Oct pairing): on walk path2, RX2 sits at the 72nd–97th percentile. The final live test (11:40–11:53) is reported as a functional test with its failures (no fall alarm, 2 false alarms while walking, presence fragility on empty rooms, vertical walk mostly "empty"). By the user's decision there is no further testing. LOSO stays the evaluation. Evidence: `results/phase5/live_library/TEST_CONDITIONS.md`.
+
+## Phase 6 (2026-10-23)
+
+**D-061 Archive and assistant-independent repository (user, final plan).** The Gate 0 archive plan (D-021) and the later items were applied (`../_archive/ARCHIVE_LOG.md`). Files written for an AI assistant (session rules, phase prompt, per-person prompt briefs, handover bundle) were moved to `../_archive/20261023/`. The project rules are now `docs/PROJECT_RULES.md`, written for human maintainers, and references to the old rule file point there. "PROMPT" references now read "phase plan". No code or script depends on an assistant. Git history was not rewritten. The README acknowledges AI assistance for code and documentation; the team is responsible for design, data collection and validation. Also moved within the repo: synthetic generators to `tests/synthetic/`, `requirements.txt` to the repo root, early planning docs to `docs/history/`. `ml/train.py` (v1) was archived; its fold test now checks `ml.evaluate.assign_folds`.
+
+**D-062 Reproduction (Phase 6).** `scripts/pipeline.sh reproduce` (`scripts/reproduce.sh`):
+1. Checks every raw file against `results/audit/raw_sha256.txt`.
+2. Runs the audit.
+3. Rebuilds the 4 s dataset from `data/raw` and retrains the final models, both into a scratch folder.
+4. Compares them with the committed features and models (`scripts/reproduce_check.py`).
+5. Runs the live = offline check and the unit tests.
+
+It never overwrites committed outputs. The ~7 h model comparison (`scripts/pipeline.sh phase4`) is documented, not re-run. `ml/train_final.py` gained a `--models` option (default unchanged).

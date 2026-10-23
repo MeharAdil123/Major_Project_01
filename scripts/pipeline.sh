@@ -6,6 +6,7 @@
 #   scripts/pipeline.sh train            # final models on all subjects -> models/ (Format 3)
 #   scripts/pipeline.sh consistency      # live vs offline check on real takes
 #   scripts/pipeline.sh test             # unit tests
+#   scripts/pipeline.sh reproduce        # raw data -> dataset -> models in a scratch folder, compared with the committed state (~1 h)
 #   scripts/pipeline.sh replay [glob]    # dashboard replaying recorded takes (backup demo, no boards)
 #   scripts/pipeline.sh demo             # dashboard on the live boards (laptop Wi-Fi + Bluetooth OFF, D-032)
 set -euo pipefail
@@ -19,7 +20,8 @@ case "${1:-}" in
   train)       $PY -m ml.train_final ;;
   consistency) $PY scripts/phase5_consistency.py ;;
   test)        $PY -m pytest ;;
+  reproduce)   bash scripts/reproduce.sh ;;
   replay)      $ST run app/live_app.py -- --replay-dir data/raw --pattern "${2:-*S6_E2*}" --loop ;;
   demo)        $ST run app/live_app.py -- --serial ;;
-  *) sed -n '2,11p' "$0"; exit 1 ;;
+  *) sed -n '2,12p' "$0"; exit 1 ;;
 esac

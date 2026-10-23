@@ -136,4 +136,7 @@ def main(models_dir: Path = ROOT / "models") -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    import argparse
+    ap = argparse.ArgumentParser(description="Train the final models on all subjects (Format 3).")
+    ap.add_argument("--models", type=Path, default=ROOT / "models", help="output folder (default models/)")
+    sys.exit(main(ap.parse_args().models))

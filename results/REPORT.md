@@ -1,6 +1,8 @@
-# WiFi-CSI HAR: Phase 4 results (final, 2026-10-23)
+# WiFi-CSI HAR: final report (2026-10-23)
 
-All numbers come from scripts run on 2026-10-22/23 on the 202 real takes (S1–S6). Logs and result files are referenced next to each table. Nothing here is synthetic.
+All numbers come from scripts run on 2026-10-22/23 on the 202 real takes (S1–S6) and, for §9–10, on the live tests of 2026-10-23. Logs and result files are referenced next to each table. Nothing here is synthetic.
+
+**The evaluation of this project is the leave-one-subject-out (LOSO) analysis in §1–8.** The live tests (§10) show the system working on real boards, but they are not an accuracy measurement.
 
 ## Scope and limits (read first)
 - **One room** (library hall), **one layout** (`config/position_map.yaml` v2), **6 volunteers** (S1–S6), one TX and two RX boards, channel 11 HT40, 5 dBm.
@@ -54,7 +56,7 @@ All numbers come from scripts run on 2026-10-22/23 on the 202 real takes (S1–S
 **Time:** fit/train time is in the comparison CSVs. Per-window latency on this laptop (`results/phase4/latency.log`): f2 features 133 ms (67 ms after caching the per-receiver PCA, outputs bit-identical; a full Predictor call ≈ 125 ms); MiniRocket transform 41 ms batched, **326 ms for a single window**. Classifier prediction is < 1 ms (Track A) and ~1 ms (deep). The live engine steps every 500 ms.
 
 ## 3. Selection rule (`scripts/phase4_select.py`, `results/phase4/selection.json`)
-Rule (PROMPT 4.2), adapted from 4 to 6 folds: the simplest model whose macro-F1 is within one std of the best **and** that wins or ties (within 0.02) the best on **≥ 5 of 6 folds** (75 %, as 3 of 4).
+Rule (phase plan 4.2), adapted from 4 to 6 folds: the simplest model whose macro-F1 is within one std of the best **and** that wins or ties (within 0.02) the best on **≥ 5 of 6 folds** (75 %, as 3 of 4).
 - **Events → MiniRocket.** No simpler model passes: SVM-RBF wins or ties on 3/6 folds, XGBoost 2/6. Same result with a 4-of-6 reading.
 - **State → extra trees (dynamic).** It is the best; MiniRocket ties on 3/6.
 - **Presence → MiniRocket.** It is the best mean, but with the largest spread (± 0.178). The rule measures "within one std" with the best model's own std, so its instability does not count against it. Logistic regression is much more stable (± 0.065).
@@ -138,3 +140,41 @@ Trained on all six subjects plus the 7 empty-room takes. Hyper-parameters come f
 
 Interface: `ml/predict.py` Predictor **p2**, `predict(X, rssi, P)` (D-052). An environment baseline for the live start-up check is in `models/env_baseline.json`: the 7 training empty-room takes, 262 windows; their static profiles differ by 3.2 dB median RMS among themselves.
 Smoke test on real windows: `results/phase4/predictor_smoke.log` (in-sample, for interface checking only).
+
+## 9. Live system (Phase 5; `docs/decisions/DECISIONS.md` D-053…D-058)
+- **Engine v2** (`app/engine.py`) uses the same preprocessing, f2 features and Predictor as training. It runs every 0.5 s on a 4 s window, applies the gate (a receiver silent > 1 s gives `degraded` / `no_signal`, never a prediction) and the adopted alarm rule. With the dashboard, the engine runs as its own process (`app/engine_proc.py`, D-057): step interval median 0.50 s.
+- **Live = offline:** replaying 12 real takes packet by packet through the live buffer and engine gives bit-identical features and probabilities on all 378 windows (`results/phase5/consistency.log`, D-054).
+- **Environment check** (`app/envcheck.py`, D-055): 60 s of empty room compared with the training empty rooms (dynamic-feature shift, presence "occupied" share, fall-threshold crossings). Validation on recorded takes: 7/7 empty takes pass and 7/8 takes with a person present are flagged (`results/phase5/envcheck.log`).
+- Logs hold predictions, health and markers only, never raw CSI.
+
+## 10. Live tests in the library (2026-10-23; `results/phase5/live_library/TEST_CONDITIONS.md`)
+Conditions: same room and layout as 22 Oct; laptop Wi-Fi on (locked to channel 1, a deliberate exception to D-032); co-channel library access points nearby; one operator acting as the subject.
+
+- **Morning (session 3):** the chain ran end to end (0.50 s steps, RX2 unplug/replug recovered after 5 s, no false alarms). But a person was mostly reported as "empty" and the fall gave no alarm.
+- **Diagnosis:** offline predictions on separately recorded takes were equally wrong, so the live path was not at fault. RX2 was 4–5 dB stronger than on 22 Oct and almost motion-blind (motion features at the 0th–5th percentile of 22 Oct), while RX1 was normal. A re-seat helped partly. An antenna swap and a firm swap back restored RX2: walk path2 gave walk 51/53, with RX2 at the 72nd–97th percentile. **Cause: a poorly mated U.FL connector at RX2** (D-060).
+- **Final live test (11:40–11:53, spoken cues and markers):**
+
+| step | result |
+| --- | --- |
+| system | 14 min at 0.50 s steps, no crash; loss 2–8 % |
+| environment check (4 runs) | "differs" every time, **only** because presence called the empty room occupied (28–72 %); dynamic features matched the training empty rooms (median \|z\| ≈ 0.3) |
+| empty (30 s) | 35/52 windows empty |
+| stand at A | 24/50 stand |
+| walk path1 (vertical, along the link) | 6/51 walk (mostly "empty") |
+| walk path2 (horizontal, across the link) | **37/42 walk**; **2 false fall alarms** |
+| sit_down / stand_up at A | not recognised (0 and 1 windows) |
+| fall on the mattress | **no alarm** (max P(fall) 0.28) |
+
+- **Reading:** the live system works mechanically, and walking across the link is recognised. Accuracy does not carry over to a new day: the presence model's empty/occupied boundary lies inside the empty-room feature distribution (even in LOSO, 0–42 % of empty windows per take were called occupied). Presence errors also propagate to the state labels, and fall detection is weak (about half of falls in LOSO, none live).
+
+## 11. Conclusions, limitations and future work
+**Results.** With two ESP32-S3 receivers and 4 s windows of dynamic CSI features, leave-one-subject-out macro-F1 is 0.70 for presence, 0.57 for state and 0.54 for events. The calibrated fall alarm catches 21 of 42 simulated falls, with alarms on 8 of 109 look-alike movements. Both receivers matter, and motion and band-power features carry most of the information. Deep models overfit this small dataset.
+
+**Limitations.** One room, one layout, six volunteers, simulated falls all at one spot, no video ground truth, and a strong position confound. Presence is fragile on empty rooms, and a still person can look like an empty room. Live accuracy on a new day was clearly below LOSO, and a hardware fault (RX2 connector) can silently degrade the system. Not clinically validated.
+
+**Future work.**
+- A short labelled calibration on site (`docs/analysis/calibration_proposal.md`) and a presence model that uses a per-session empty-room reference.
+- A connector/antenna health check in the preflight (RSSI and motion response per receiver against a reference).
+- More subjects, rooms and fall positions, with video ground truth.
+- More receivers or links for spatial coverage (path1 along the link was poorly sensed live).
+- Probabilistic sequence models over windows, and a real-time MiniRocket head with calibrated probabilities.
