@@ -28,9 +28,10 @@ EVENT = {"fall": "🚨 Fall", "sit_down": "⬇️ Sit down", "stand_up": "⬆️
 
 @st.cache_resource
 def get_engine(argv: tuple):
+    """The engine runs in its own process (app/engine_proc.py, D-057), so page reruns never slow it down."""
+    from app.engine_proc import EngineProxy
     args = E.parser().parse_args(list(argv))
-    eng, _ = E.build(args)
-    return eng, args
+    return EngineProxy(argv, args.models), args
 
 
 eng, args = get_engine(tuple(sys.argv[1:]))
@@ -56,6 +57,15 @@ with st.sidebar:
              "Leave the room empty while it runs.")
     if st.button("Start empty-room check (60 s)"):
         eng.start_env_check(60)
+    st.divider()
+    st.header("Test markers")
+    st.caption("Live test: choose what you are about to do, press the button, then do it. Logged with the time.")
+    mk = st.selectbox("Activity", ["empty (nobody inside the tape)", "stand at A", "sit_down at A", "stand_up at A",
+                                   "walk path1", "walk path2", "bend_pick at C", "fall on mattress M",
+                                   "RX2 unplugged", "RX2 replugged", "other"])
+    if st.button("Mark start"):
+        m = eng.mark(mk)
+        st.success(f"marked '{mk}' at t = {m['t']:.1f} s ({m['wall']})")
     st.divider()
     st.header("Model")
     for task in ("presence", "state", "events", "fall_alarm"):
@@ -143,7 +153,8 @@ def live_panel():
                   for k, v in rx.items()})
     with left:
         st.subheader("Event history")
-        rows = [{"t (s)": f"{e['t']:.1f}", "event": ("FALL ALARM" if e["kind"] == "FALL" else e["kind"]),
+        rows = [{"t (s)": f"{e['t']:.1f}", "event": ("FALL ALARM" if e["kind"] == "FALL" else
+                                                    (f"▶ {e['label']}" if e["kind"] == "MARK" else e["kind"])),
                  "probability": f"{e.get('fall_prob', e.get('p', 0)):.2f}", "take": (e.get("source") or "")[9:],
                  "true label": e.get("truth") or "—"} for e in list(eng.events)[-8:][::-1]]
         if rows:

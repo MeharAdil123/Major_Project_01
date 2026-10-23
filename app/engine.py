@@ -325,6 +325,7 @@ class Engine:
         return w, None
 
     def step(self):
+        self._step_t0 = time.perf_counter()
         t = round(self.clock() - self.t0, 2)
         health = self.buf.health()
         for s in self.sources:
@@ -376,10 +377,28 @@ class Engine:
         if self.log:
             keep = {k: state.get(k) for k in ("t", "status", "reason", "label", "label_smoothed", "confidence",
                                               "presence_prob", "event", "fall_prob", "alert", "source", "truth")}
+            keep["wall"] = time.strftime("%H:%M:%S")
+            keep["step_ms"] = round((time.perf_counter() - getattr(self, "_step_t0", time.perf_counter())) * 1000)
+            if self.env:
+                keep["env_state"] = self.env.get("state")
+                keep["env_windows"] = self.env.get("windows")
+            if state.get("env") and state["env"].get("state") == "done" and not getattr(self, "_env_logged", False):
+                keep["env"] = state["env"]
+                self._env_logged = True
             keep["rx"] = {k: {kk: v.get(kk) for kk in ("rate", "rssi", "age_s", "loss_pct")} for k, v in state["rx"].items()}
             self.log.write(json.dumps(keep, default=float) + "\n")
             self.log.flush()
         return state
+
+    def mark(self, label: str, note: str = ""):
+        """Operator marker for a live test ("now doing X"); logged with engine time and wall-clock time."""
+        t = round(self.clock() - self.t0, 2)
+        m = dict(t=t, kind="MARK", label=label, note=note, wall=time.strftime("%H:%M:%S"))
+        self.events.append(dict(m, source=None, truth=label))
+        if self.log:
+            self.log.write(json.dumps(dict(marker=m)) + "\n")
+            self.log.flush()
+        return m
 
     def heatmap(self, seconds=8.0):
         """Last `seconds` of gain-normalised amplitude and sanitised phase per RX (for the dashboard)."""
@@ -433,11 +452,13 @@ def build(args, start=True):
         if not folders:
             raise SystemExit("nothing to replay")
         sources = [ReplaySource(buf, folders, loop=args.loop, speed=args.speed)]
-    eng = Engine(pred, buf, log_dir=None if args.no_log else ROOT / "logs")
+    eng = Engine(pred, buf, log_dir=None if args.no_log else (Path(args.log_dir) if args.log_dir else ROOT / "logs"))
     eng.sources = sources
     rs = [s for s in sources if isinstance(s, ReplaySource)]
     if rs:
         eng.source_info = rs[0].info
+    if args.env_check:
+        eng.start_env_check(args.env_check)
     if start:
         for s in sources:
             s.start()
@@ -458,6 +479,8 @@ def parser():
     ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--seconds", type=float, default=0, help="stop after N s (0 = run until Ctrl+C)")
     ap.add_argument("--no-log", action="store_true")
+    ap.add_argument("--log-dir", help="folder for live_*.jsonl (default logs/)")
+    ap.add_argument("--env-check", type=float, default=0, help="start the empty-room check for N s at launch")
     return ap
 
 
