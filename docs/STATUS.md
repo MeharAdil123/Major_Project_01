@@ -1,7 +1,7 @@
-# STATUS — 2026-10-23 ~11:20 IST · Phase 5 · Option A round 2 done, RX2 still near motion-blind · Gate 5 open
+# STATUS — 2026-10-23 ~11:30 IST · Phase 5 · antenna swap restored RX2; empty-room false presence open · Gate 5 open
 
 ## ▶ Prompt for the next session
-> Read CLAUDE.md, docs/STATUS.md, results/phase5/live_library/TEST_CONDITIONS.md (sections "Option A, round 1/2") and docs/context/PROJECT_CONTEXT.md. We are at Gate 5. RX2 was re-seated/re-aimed, but it is still near motion-blind while walking. Do the **antenna swap test**: swap the RX1/RX2 antennas (or move RX2's to a known-good antenna), record walk path1 (horizontal line, user's naming) + empty into data/live_library/diag_takes3 with host/record_session (same flags as 22 Oct: --setting same_room --layout layout_library --operator-position O --tx-power 5, subject DX), and compare with `scripts/phase5_diag_analysis.py diag_takes3` and `scripts/phase5_motion_timeline.py`. If RX2 becomes normal, do the short live re-run (stand A, walk path1, walk path2, sit_down A, fall M). Settle the path-naming conflict against the sketch. Then close Gate 5 and do Phase 6, stopping at Gate 6. Remind me to remove the BSSID lock AC:DE:01:59:B1:41 and unblock Bluetooth.
+> Read CLAUDE.md, docs/STATUS.md, results/phase5/live_library/TEST_CONDITIONS.md ("Option A, round 1/2/3") and docs/context/PROJECT_CONTEXT.md. We are at Gate 5. After the antenna swap (antenna B → RX1, A → RX2), both receivers respond to walking and walking is recognised (47/52). But the new empty take F02 is predicted "stand" in 38/52 windows. Re-check the empty room (live env check or a new empty take, nobody inside the tape), then do the short live re-run (stand A, walk path1, walk path2, sit_down A, fall M). Settle the path-naming conflict against the sketch. Then close Gate 5 and do Phase 6, stopping at Gate 6. Remind me to remove the BSSID lock AC:DE:01:59:B1:41 and unblock Bluetooth.
 
 ## Done this session (branch `cc/phase5`)
 - **RX2 physical check (user):** position correct per the sketch; antenna re-seated and/or re-aimed (the user did not say which). Height, chair and nearby objects were not reported.
@@ -14,8 +14,10 @@
 - **Env-check logging bug fixed (D-058):** every completed environment check is now logged with its run number. New test `test_every_completed_env_check_is_logged`; it fails on the old code. Full suite **93 passed** (`results/phase5/tests_after_envlog_fix.log`).
 - `scripts/phase5_diag_analysis.py` takes an optional folder name (default `diag_takes`; the summary goes to `<name>_summary.json`, so the first run's files are unchanged).
 
+- **Antenna swap test (11:22–11:23, `data/live_library/diag_takes3`, `diag3_analysis.log`, `diag3_motion_timeline.log`):** antennas swapped (B, formerly on RX2, → RX1; A → RX2); no visible damage. F01 walk path1: **walk 47/52**, RX2 motion features back inside 22 Oct (14th–46th percentile; amplitude SD 5–14), and RX1 with antenna B still normal. So antenna B is not faulty; the fresh U.FL mating fixed RX2 (likely a poorly mated contact). F02 empty: features normal (28th–82nd percentile), **but presence "stand" 38/52 (P(occupied) 0.89)**; RX1 empty RSSI −33 (+4 dB vs 22 Oct).
+
 ## Open
-1. **Antenna swap test** (TEST_CONDITIONS "Next: Option A" step 5). It separates antenna/connector from board/position. Then the short live re-run if RX2 is normal.
+1. **Empty-room false presence after the swap** (F02). Check whether the room was really empty; re-check with the live env check or a new empty take. Then the short live re-run.
 2. **Path naming conflict:** the user says path 1 = horizontal, path 2 = vertical; `config/position_map.yaml` v2 (Gate 0 correction) says the opposite. Config unchanged; E03 is labelled path1 by the user's naming. Settle against `docs/setup/layout_library_sketch.jpg`.
 3. **Reminder:** remove the BSSID lock AC:DE:01:59:B1:41 from RNSIT-STUDENTS; unblock Bluetooth if wanted.
 4. Phase 6 not started: archive moves (Gate 0 list + `ml/train.py`, `~/WiFi_CSI_Final/transfer/`, `docs/setup/MIGRATE_TO_MAC.md`, `data/features/stream_3s.csv.incomplete_killed_2026-10-22`, needs approval), README, final docs, reproduction run.

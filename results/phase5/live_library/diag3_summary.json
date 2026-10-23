@@ -1,0 +1,35 @@
+{
+ "20261023_DX_F01_walk": {
+  "activity": "walk",
+  "position": "path1",
+  "windows": 52,
+  "gate_ok": 52,
+  "labels": {
+   "walk": 47,
+   "empty": 5
+  },
+  "events": {
+   "stand_up": 2,
+   "sit_down": 4
+  },
+  "p_occupied_median": 0.999816695429401,
+  "max_fall": 0.36072799377237585,
+  "alarms": [],
+  "onset": null
+ },
+ "20261023_DX_F02_empty": {
+  "activity": "empty",
+  "position": "none",
+  "windows": 52,
+  "gate_ok": 52,
+  "labels": {
+   "stand": 38,
+   "empty": 14
+  },
+  "events": {},
+  "p_occupied_median": 0.8876799617123834,
+  "max_fall": 0.0885156261189799,
+  "alarms": [],
+  "onset": null
+ }
+}
