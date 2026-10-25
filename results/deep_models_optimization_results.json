@@ -1,0 +1,22 @@
+{
+  "Presence": {
+    "Baseline_CNN_BiLSTM": 99.7920997920998,
+    "Enhanced_SE_CNN_BiLSTM": 98.54469854469855,
+    "Optimized_SE_TCN": 98.96049896049897
+  },
+  "Fall_Detection": {
+    "Baseline_CNN_BiLSTM": 98.96049896049897,
+    "Enhanced_SE_CNN_BiLSTM": 99.58419958419958,
+    "Optimized_SE_TCN": 99.37629937629939
+  },
+  "Postural_State": {
+    "Baseline_CNN_BiLSTM": 91.18942731277532,
+    "Enhanced_SE_CNN_BiLSTM": 89.42731277533039,
+    "Optimized_SE_TCN": 95.59471365638767
+  },
+  "Events_5Class": {
+    "Baseline_CNN_BiLSTM": 94.5945945945946,
+    "Enhanced_SE_CNN_BiLSTM": 93.13929313929314,
+    "Optimized_SE_TCN": 95.84199584199584
+  }
+}
