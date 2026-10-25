@@ -163,14 +163,21 @@ def apply_rf_augmentation(x: torch.Tensor) -> torch.Tensor:
 
 
 def load_data(tag: str = "4s"):
-    npz_path = MOHITH_REPO / "data" / "processed" / f"windows_{tag}.npz"
     csv_path = MOHITH_REPO / "data" / "features" / f"features_{tag}.csv"
-    if not npz_path.exists() or not csv_path.exists():
-        raise FileNotFoundError(f"Missing {npz_path} or {csv_path}.")
+    if not csv_path.exists():
+        raise FileNotFoundError(f"Missing {csv_path}.")
 
     df = pd.read_csv(csv_path, usecols=ev.META_COLS)
+    cache_path = Path("data/channels_4s.npy")
+    if cache_path.exists():
+        print(f"Loading cached 32-channel tensors from {cache_path} (N={len(df)})...")
+        C = np.load(cache_path)
+        return df, C
+
+    npz_path = MOHITH_REPO / "data" / "processed" / f"windows_{tag}.npz"
+    if not npz_path.exists():
+        raise FileNotFoundError(f"Missing {npz_path}.")
     z = np.load(npz_path, allow_pickle=False)
-    
     print(f"Loading raw tensors and converting to 32 dual-receiver channels (N={len(df)})...")
     C = np.concatenate([dp.channels(z["X"][i:i + 256], z["P"][i:i + 256]) for i in range(0, len(df), 256)])
     return df, C
