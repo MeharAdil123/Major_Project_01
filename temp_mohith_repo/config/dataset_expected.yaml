@@ -1,0 +1,11 @@
+# Expected take counts in data/raw (excluding _rejected/_incoming). Checked by scripts/audit_raw.py.
+# Updated 2026-10-22 after S5/S6 (D-033). 202 takes; LOSO = 6 folds (S1..S6), D-028.
+total: 202
+per_subject_activity:
+  S1:   {fall: 8, sit_down: 8, stand_up: 9, bend_pick: 4, walk: 3, stand: 2, sit: 2, lie: 1}
+  S2:   {fall: 5, sit_down: 6, stand_up: 5, bend_pick: 2, walk: 2, stand: 2, sit: 2, lie: 1}
+  S3:   {fall: 5, sit_down: 5, stand_up: 5, bend_pick: 2, walk: 2, stand: 1, sit: 1, lie: 1}
+  S4:   {fall: 8, sit_down: 8, stand_up: 9, bend_pick: 4, walk: 3, stand: 2, sit: 2, lie: 1}
+  S5:   {fall: 8, sit_down: 8, stand_up: 9, bend_pick: 4, walk: 3, stand: 2, sit: 2, lie: 1}
+  S6:   {fall: 8, sit_down: 8, stand_up: 9, bend_pick: 4, walk: 3, stand: 2, sit: 2, lie: 1}
+  none: {empty: 7}

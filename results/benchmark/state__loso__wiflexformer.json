@@ -1,0 +1,153 @@
+{
+ "summary": {
+  "task": "state",
+  "protocol": "loso",
+  "model": "wiflexformer",
+  "params": 40676,
+  "latency_ms": 3.33,
+  "macro_f1_mean": 0.501,
+  "macro_f1_std": 0.1247,
+  "bal_acc_mean": 0.5343,
+  "acc_mean": 0.5773,
+  "pooled_macro_f1": 0.5265,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 3376.4
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.4039,
+   "bal_acc": 0.4856,
+   "acc": 0.4185,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 184
+  },
+  "seed0_S2": {
+   "macro_f1": 0.5699,
+   "bal_acc": 0.6123,
+   "acc": 0.6989,
+   "best_epoch": 20,
+   "epochs_run": 26,
+   "n_test": 176
+  },
+  "seed0_S3": {
+   "macro_f1": 0.5215,
+   "bal_acc": 0.5276,
+   "acc": 0.5906,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 127
+  },
+  "seed0_S4": {
+   "macro_f1": 0.3694,
+   "bal_acc": 0.4197,
+   "acc": 0.5092,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 218
+  },
+  "seed0_S5": {
+   "macro_f1": 0.4097,
+   "bal_acc": 0.4159,
+   "acc": 0.4676,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 216
+  },
+  "seed0_S6": {
+   "macro_f1": 0.7314,
+   "bal_acc": 0.7447,
+   "acc": 0.7793,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 213
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.5264964424355564,
+  "accuracy": 0.5758377425044092,
+  "n": 1134,
+  "per_class": {
+   "lie": {
+    "precision": 0.24770642201834864,
+    "recall": 0.3253012048192771,
+    "f1": 0.28125,
+    "support": 166
+   },
+   "sit": {
+    "precision": 0.6062992125984252,
+    "recall": 0.5519713261648745,
+    "f1": 0.5778611632270169,
+    "support": 279
+   },
+   "stand": {
+    "precision": 0.4418604651162791,
+    "recall": 0.36774193548387096,
+    "f1": 0.4014084507042254,
+    "support": 310
+   },
+   "walk": {
+    "precision": 0.8193069306930693,
+    "recall": 0.8733509234828496,
+    "f1": 0.8454661558109834,
+    "support": 379
+   }
+  },
+  "confusion": {
+   "labels": [
+    "lie",
+    "sit",
+    "stand",
+    "walk"
+   ],
+   "matrix": [
+    [
+     54,
+     31,
+     68,
+     13
+    ],
+    [
+     58,
+     154,
+     43,
+     24
+    ],
+    [
+     99,
+     61,
+     114,
+     36
+    ],
+    [
+     7,
+     8,
+     33,
+     331
+    ]
+   ]
+  }
+ },
+ "args": {
+  "task": "state",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_cnn_bilstm",
+   "se_tcn",
+   "wiflexformer"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "threads": 16
+ }
+}

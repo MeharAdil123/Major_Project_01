@@ -1,0 +1,206 @@
+[
+ {
+  "segment": "before first marker (incl. empty-room check)",
+  "wall": "11:40:52",
+  "t0": 0.0,
+  "t1": 14.17,
+  "status": {
+   "no_signal": 1,
+   "degraded": 1,
+   "starting": 9,
+   "ok": 17
+  },
+  "labels": {
+   "uncertain": 12,
+   "empty": 5
+  },
+  "events": {},
+  "max_fall_prob": 0.021669331669454284,
+  "alarms": []
+ },
+ {
+  "segment": "empty (nobody inside the tape)",
+  "wall": "11:41:06",
+  "t0": 14.17,
+  "t1": 395.9,
+  "status": {
+   "ok": 690,
+   "degraded": 30
+  },
+  "labels": {
+   "empty": 304,
+   "uncertain": 341,
+   "sit": 26,
+   "stand": 19
+  },
+  "events": {},
+  "max_fall_prob": 0.24993617070082452,
+  "alarms": []
+ },
+ {
+  "segment": "stand at A",
+  "wall": "11:47:28",
+  "t0": 395.9,
+  "t1": 463.17,
+  "status": {
+   "ok": 132
+  },
+  "labels": {
+   "uncertain": 68,
+   "empty": 13,
+   "walk": 24,
+   "stand": 27
+  },
+  "events": {
+   "stand_up": 12,
+   "sit_down": 1,
+   "bend_pick": 1
+  },
+  "max_fall_prob": 0.3208169509455725,
+  "alarms": []
+ },
+ {
+  "segment": "walk path1",
+  "wall": "11:48:35",
+  "t0": 463.17,
+  "t1": 529.62,
+  "status": {
+   "ok": 131
+  },
+  "labels": {
+   "uncertain": 63,
+   "walk": 34,
+   "empty": 34
+  },
+  "events": {
+   "sit_down": 9,
+   "fall": 1,
+   "stand_up": 4
+  },
+  "max_fall_prob": 0.5226889349592485,
+  "alarms": []
+ },
+ {
+  "segment": "walk path2",
+  "wall": "11:49:42",
+  "t0": 529.62,
+  "t1": 606.68,
+  "status": {
+   "ok": 102,
+   "degraded": 51
+  },
+  "labels": {
+   "walk": 70,
+   "empty": 2,
+   "uncertain": 28,
+   "stand": 2
+  },
+  "events": {
+   "sit_down": 15,
+   "fall": 11,
+   "stand_up": 7
+  },
+  "max_fall_prob": 0.5748373696639274,
+  "alarms": [
+   548.57,
+   559.6
+  ]
+ },
+ {
+  "segment": "sit_down at A",
+  "wall": "11:50:59",
+  "t0": 606.68,
+  "t1": 622.12,
+  "status": {
+   "ok": 23,
+   "degraded": 8
+  },
+  "labels": {
+   "uncertain": 10,
+   "sit": 13
+  },
+  "events": {},
+  "max_fall_prob": 0.20462003556214214,
+  "alarms": []
+ },
+ {
+  "segment": "stand_up at A",
+  "wall": "11:51:14",
+  "t0": 622.12,
+  "t1": 648.83,
+  "status": {
+   "ok": 44,
+   "degraded": 8
+  },
+  "labels": {
+   "sit": 12,
+   "uncertain": 13,
+   "empty": 9,
+   "stand": 10
+  },
+  "events": {
+   "stand_up": 2,
+   "bend_pick": 3
+  },
+  "max_fall_prob": 0.08060471059686314,
+  "alarms": []
+ },
+ {
+  "segment": "fall on mattress M",
+  "wall": "11:51:41",
+  "t0": 648.83,
+  "t1": 692.48,
+  "status": {
+   "ok": 79,
+   "degraded": 8
+  },
+  "labels": {
+   "empty": 56,
+   "uncertain": 17,
+   "walk": 6
+  },
+  "events": {
+   "stand_up": 3,
+   "fall": 2,
+   "sit_down": 1
+  },
+  "max_fall_prob": 0.2847099590575026,
+  "alarms": []
+ },
+ {
+  "segment": "empty (nobody inside the tape)",
+  "wall": "11:52:24",
+  "t0": 692.48,
+  "t1": 743.42,
+  "status": {
+   "ok": 100,
+   "degraded": 1
+  },
+  "labels": {
+   "empty": 69,
+   "uncertain": 25,
+   "stand": 6
+  },
+  "events": {},
+  "max_fall_prob": 0.28312456491379867,
+  "alarms": []
+ },
+ {
+  "segment": "other",
+  "wall": "11:53:15",
+  "t0": 743.42,
+  "t1": 855.55,
+  "status": {
+   "ok": 223
+  },
+  "labels": {
+   "empty": 89,
+   "uncertain": 113,
+   "walk": 10,
+   "stand": 11
+  },
+  "events": {},
+  "max_fall_prob": 0.35029605801632735,
+  "alarms": []
+ }
+]

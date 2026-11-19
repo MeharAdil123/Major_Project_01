@@ -1,0 +1,115 @@
+{
+ "20261023_DX_D01_empty": {
+  "activity": "empty",
+  "position": "none",
+  "windows": 53,
+  "gate_ok": 53,
+  "labels": {
+   "empty": 53
+  },
+  "events": {},
+  "p_occupied_median": 0.05492557571977163,
+  "max_fall": 0.04210469456855814,
+  "alarms": [],
+  "onset": null
+ },
+ "20261023_DX_D02_stand": {
+  "activity": "stand",
+  "position": "A",
+  "windows": 52,
+  "gate_ok": 52,
+  "labels": {
+   "empty": 42,
+   "stand": 10
+  },
+  "events": {},
+  "p_occupied_median": 0.11766453341453534,
+  "max_fall": 0.0908068068722897,
+  "alarms": [],
+  "onset": null
+ },
+ "20261023_DX_D03_walk": {
+  "activity": "walk",
+  "position": "path1",
+  "windows": 53,
+  "gate_ok": 53,
+  "labels": {
+   "walk": 34,
+   "empty": 19
+  },
+  "events": {
+   "stand_up": 5,
+   "sit_down": 15,
+   "fall": 4
+  },
+  "p_occupied_median": 0.8680715675942603,
+  "max_fall": 0.401825664381933,
+  "alarms": [],
+  "onset": null
+ },
+ "20261023_DX_D04_walk": {
+  "activity": "walk",
+  "position": "path2",
+  "windows": 52,
+  "gate_ok": 52,
+  "labels": {
+   "empty": 52
+  },
+  "events": {
+   "sit_down": 6,
+   "stand_up": 1
+  },
+  "p_occupied_median": 0.0029397243283880454,
+  "max_fall": 0.05948254002521469,
+  "alarms": [],
+  "onset": null
+ },
+ "20261023_DX_D05_sit_down": {
+  "activity": "sit_down",
+  "position": "A",
+  "windows": 12,
+  "gate_ok": 12,
+  "labels": {
+   "empty": 11,
+   "walk": 1
+  },
+  "events": {
+   "sit_down": 9
+  },
+  "p_occupied_median": 0.07749640314395437,
+  "max_fall": 0.041063345432600484,
+  "alarms": [],
+  "onset": {
+   "detected": true,
+   "onset": 4.13,
+   "end": 5.46,
+   "early": false,
+   "short": false,
+   "peak_ratio": 21.53504121849981
+  }
+ },
+ "20261023_DX_D06_fall": {
+  "activity": "fall",
+  "position": "M",
+  "windows": 12,
+  "gate_ok": 12,
+  "labels": {
+   "empty": 5,
+   "stand": 7
+  },
+  "events": {
+   "stand_up": 3
+  },
+  "p_occupied_median": 0.7932490054653683,
+  "max_fall": 0.28557637227556354,
+  "alarms": [],
+  "onset": {
+   "detected": true,
+   "onset": 4.2299999999999995,
+   "end": 6.74,
+   "early": false,
+   "short": false,
+   "peak_ratio": 3.9692850493189447
+  }
+ }
+}

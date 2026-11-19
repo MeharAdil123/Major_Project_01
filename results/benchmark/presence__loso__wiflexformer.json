@@ -1,0 +1,127 @@
+{
+ "summary": {
+  "task": "presence",
+  "protocol": "loso",
+  "model": "wiflexformer",
+  "params": 40610,
+  "latency_ms": 4.45,
+  "macro_f1_mean": 0.6853,
+  "macro_f1_std": 0.1463,
+  "bal_acc_mean": 0.7702,
+  "acc_mean": 0.876,
+  "pooled_macro_f1": 0.7525,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 15582.1,
+  "presence_sens": 0.8995,
+  "presence_spec": 0.7328
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.8112,
+   "bal_acc": 0.8407,
+   "acc": 0.8407,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.5918,
+   "bal_acc": 0.7846,
+   "acc": 0.7384,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.5984,
+   "bal_acc": 0.5811,
+   "acc": 0.8897,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.4816,
+   "bal_acc": 0.4898,
+   "acc": 0.929,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.7111,
+   "bal_acc": 0.9363,
+   "acc": 0.8799,
+   "best_epoch": 16,
+   "epochs_run": 22,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.9179,
+   "bal_acc": 0.9885,
+   "acc": 0.9784,
+   "best_epoch": 15,
+   "epochs_run": 21,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.7525169287122461,
+  "accuracy": 0.8812994585589338,
+  "n": 2401,
+  "per_class": {
+   "empty": {
+    "precision": 0.47174447174447176,
+    "recall": 0.732824427480916,
+    "f1": 0.5739910313901345,
+    "support": 262
+   },
+   "occupied": {
+    "precision": 0.9648946840521565,
+    "recall": 0.8994857410004675,
+    "f1": 0.9310428260343576,
+    "support": 2139
+   }
+  },
+  "confusion": {
+   "labels": [
+    "empty",
+    "occupied"
+   ],
+   "matrix": [
+    [
+     192,
+     70
+    ],
+    [
+     215,
+     1924
+    ]
+   ]
+  },
+  "presence_sensitivity": 0.8994857410004675,
+  "presence_specificity": 0.732824427480916
+ },
+ "args": {
+  "task": "presence",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_cnn_bilstm",
+   "se_tcn",
+   "wiflexformer"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "threads": 16
+ }
+}

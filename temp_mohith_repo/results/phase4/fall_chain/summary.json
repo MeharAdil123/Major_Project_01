@@ -1,0 +1,70 @@
+{
+ "new": {
+  "falls": 21,
+  "fall_takes": 42,
+  "lookalike": 8,
+  "lookalike_takes": 109,
+  "walk_alarms": 4,
+  "walk_per_h": 30.3030303030303,
+  "still_alarms": 2,
+  "still_per_h": 6.363347120585427,
+  "latency_median_s": 1.9949999999999992,
+  "per_fold": {
+   "S1": {
+    "falls": "2/8",
+    "lookalike": 1,
+    "walk_alarms": 0,
+    "theta": 0.6,
+    "rule": "1-of-2",
+    "fallback": false
+   },
+   "S2": {
+    "falls": "2/5",
+    "lookalike": 0,
+    "walk_alarms": 0,
+    "theta": 0.6,
+    "rule": "1-of-2",
+    "fallback": false
+   },
+   "S3": {
+    "falls": "4/5",
+    "lookalike": 1,
+    "walk_alarms": 0,
+    "theta": 0.5,
+    "rule": "2-of-3",
+    "fallback": false
+   },
+   "S4": {
+    "falls": "3/8",
+    "lookalike": 1,
+    "walk_alarms": 0,
+    "theta": 0.6,
+    "rule": "2-of-3",
+    "fallback": false
+   },
+   "S5": {
+    "falls": "5/8",
+    "lookalike": 1,
+    "walk_alarms": 4,
+    "theta": 0.45,
+    "rule": "2-of-3",
+    "fallback": false
+   },
+   "S6": {
+    "falls": "5/8",
+    "lookalike": 4,
+    "walk_alarms": 0,
+    "theta": 0.5,
+    "rule": "1-of-2",
+    "fallback": false
+   }
+  }
+ },
+ "current": {
+  "falls": 18,
+  "lookalike": 9,
+  "walk_per_h": 45.4,
+  "still_per_h": 3.18
+ },
+ "adopt": true
+}

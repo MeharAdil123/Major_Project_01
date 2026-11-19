@@ -1,0 +1,135 @@
+{
+ "summary": {
+  "task": "fall",
+  "protocol": "group",
+  "model": "wiflexformer_official+in-raw_amp",
+  "params": 59766,
+  "latency_ms": 4.25,
+  "macro_f1_mean": 0.4919,
+  "macro_f1_std": 0.0456,
+  "bal_acc_mean": 0.5127,
+  "acc_mean": 0.7113,
+  "pooled_macro_f1": 0.4977,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 5943.6,
+  "fall_recall": 0.2545,
+  "fall_precision": 0.1277,
+  "fall_false_alarm_rate": 0.2286,
+  "alarm": {
+   "fall_takes": 35,
+   "fall_caught": 11,
+   "lookalike_takes": 14,
+   "lookalike_alarm": 3,
+   "other_takes": 130,
+   "other_alarm": 38
+  }
+ },
+ "folds": {
+  "seed0_G1": {
+   "macro_f1": 0.4756,
+   "bal_acc": 0.5102,
+   "acc": 0.6472,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 479
+  },
+  "seed0_G2": {
+   "macro_f1": 0.4657,
+   "bal_acc": 0.4627,
+   "acc": 0.7495,
+   "best_epoch": 13,
+   "epochs_run": 19,
+   "n_test": 483
+  },
+  "seed0_G3": {
+   "macro_f1": 0.4899,
+   "bal_acc": 0.5631,
+   "acc": 0.618,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 479
+  },
+  "seed0_G4": {
+   "macro_f1": 0.449,
+   "bal_acc": 0.4426,
+   "acc": 0.7271,
+   "best_epoch": 11,
+   "epochs_run": 17,
+   "n_test": 480
+  },
+  "seed0_G5": {
+   "macro_f1": 0.5792,
+   "bal_acc": 0.5851,
+   "acc": 0.8146,
+   "best_epoch": 24,
+   "epochs_run": 30,
+   "n_test": 480
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.49768433890977815,
+  "accuracy": 0.7113702623906706,
+  "n": 2401,
+  "per_class": {
+   "fall": {
+    "precision": 0.12769784172661872,
+    "recall": 0.25448028673835127,
+    "f1": 0.17005988023952096,
+    "support": 279
+   },
+   "rest": {
+    "precision": 0.8872628726287263,
+    "recall": 0.7714420358152686,
+    "f1": 0.8253087975800353,
+    "support": 2122
+   }
+  },
+  "confusion": {
+   "labels": [
+    "fall",
+    "rest"
+   ],
+   "matrix": [
+    [
+     71,
+     208
+    ],
+    [
+     485,
+     1637
+    ]
+   ]
+  },
+  "fall_vs_rest": {
+   "sensitivity": 0.25448028673835127,
+   "precision": 0.12769784172661872,
+   "f1": 0.17005988023952096,
+   "false_alarm_rate": 0.2285579641847314
+  }
+ },
+ "args": {
+  "task": "fall",
+  "protocol": "group",
+  "models": [
+   "wiflexformer_official"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "raw_amp",
+  "rx": "both",
+  "threads": 16
+ }
+}

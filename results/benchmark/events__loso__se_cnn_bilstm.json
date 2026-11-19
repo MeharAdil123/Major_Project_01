@@ -1,0 +1,180 @@
+{
+ "summary": {
+  "task": "events",
+  "protocol": "loso",
+  "model": "se_cnn_bilstm",
+  "params": 438798,
+  "latency_ms": 3.05,
+  "macro_f1_mean": 0.3868,
+  "macro_f1_std": 0.0531,
+  "bal_acc_mean": 0.4067,
+  "acc_mean": 0.543,
+  "pooled_macro_f1": 0.3941,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 249.0,
+  "fall_recall": 0.3799,
+  "fall_precision": 0.263,
+  "fall_false_alarm_rate": 0.14
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.4038,
+   "bal_acc": 0.4248,
+   "acc": 0.5912,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.4684,
+   "bal_acc": 0.4545,
+   "acc": 0.7252,
+   "best_epoch": 16,
+   "epochs_run": 22,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.3555,
+   "bal_acc": 0.351,
+   "acc": 0.5551,
+   "best_epoch": 14,
+   "epochs_run": 20,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.4304,
+   "bal_acc": 0.4542,
+   "acc": 0.5226,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.3096,
+   "bal_acc": 0.374,
+   "acc": 0.3626,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.3529,
+   "bal_acc": 0.3819,
+   "acc": 0.5012,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.39412826685001334,
+  "accuracy": 0.5339441899208663,
+  "n": 2401,
+  "per_class": {
+   "bend_pick": {
+    "precision": 0.17258883248730963,
+    "recall": 0.3008849557522124,
+    "f1": 0.21935483870967742,
+    "support": 113
+   },
+   "fall": {
+    "precision": 0.2630272952853598,
+    "recall": 0.37992831541218636,
+    "f1": 0.31085043988269795,
+    "support": 279
+   },
+   "none": {
+    "precision": 0.8440111420612814,
+    "recall": 0.6511461318051576,
+    "f1": 0.7351395066720582,
+    "support": 1396
+   },
+   "sit_down": {
+    "precision": 0.2616822429906542,
+    "recall": 0.37209302325581395,
+    "f1": 0.30727023319615915,
+    "support": 301
+   },
+   "stand_up": {
+    "precision": 0.40878378378378377,
+    "recall": 0.38782051282051283,
+    "f1": 0.3980263157894737,
+    "support": 312
+   }
+  },
+  "confusion": {
+   "labels": [
+    "bend_pick",
+    "fall",
+    "none",
+    "sit_down",
+    "stand_up"
+   ],
+   "matrix": [
+    [
+     34,
+     28,
+     21,
+     26,
+     4
+    ],
+    [
+     38,
+     106,
+     56,
+     57,
+     22
+    ],
+    [
+     73,
+     185,
+     909,
+     141,
+     88
+    ],
+    [
+     28,
+     56,
+     44,
+     112,
+     61
+    ],
+    [
+     24,
+     28,
+     47,
+     92,
+     121
+    ]
+   ]
+  },
+  "fall_vs_rest": {
+   "sensitivity": 0.37992831541218636,
+   "precision": 0.2630272952853598,
+   "f1": 0.31085043988269795,
+   "false_alarm_rate": 0.13996229971724788
+  }
+ },
+ "args": {
+  "task": "events",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_cnn_bilstm",
+   "se_tcn",
+   "wiflexformer"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "threads": 16
+ }
+}

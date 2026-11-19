@@ -1,0 +1,274 @@
+{
+ "window": "4s",
+ "tie": 0.02,
+ "win_folds_required": 5,
+ "tasks": {
+  "events": {
+   "best": {
+    "model": "minirocket_numpy",
+    "track": "B",
+    "mean": 0.5720270829673558,
+    "std": 0.062038862361070014
+   },
+   "selected": {
+    "model": "minirocket_numpy",
+    "track": "B",
+    "featset": "16 band channels",
+    "mean": 0.5720270829673558,
+    "std": 0.062038862361070014,
+    "wins_or_ties": 6
+   },
+   "selected_if_4of6": {
+    "model": "minirocket_numpy",
+    "featset": "16 band channels",
+    "mean": 0.5720270829673558
+   },
+   "candidates": [
+    {
+     "model": "xgboost",
+     "featset": "dynamic",
+     "mean": 0.5233,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "svm_rbf",
+     "featset": "dynamic",
+     "mean": 0.5385,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "svm_rbf",
+     "featset": "all",
+     "mean": 0.53,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "minirocket_numpy",
+     "featset": "16 band channels",
+     "mean": 0.572,
+     "wins_or_ties": 6
+    }
+   ]
+  },
+  "state": {
+   "best": {
+    "model": "extra_trees",
+    "track": "A",
+    "mean": 0.5717388693144686,
+    "std": 0.11496452974484558
+   },
+   "selected": {
+    "model": "extra_trees",
+    "track": "A",
+    "featset": "dynamic",
+    "mean": 0.5717388693144686,
+    "std": 0.11496452974484558,
+    "wins_or_ties": 6
+   },
+   "selected_if_4of6": {
+    "model": "extra_trees",
+    "featset": "dynamic",
+    "mean": 0.5717388693144686
+   },
+   "candidates": [
+    {
+     "model": "extra_trees",
+     "featset": "dynamic",
+     "mean": 0.5717,
+     "wins_or_ties": 6
+    },
+    {
+     "model": "xgboost",
+     "featset": "dynamic",
+     "mean": 0.529,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "rf",
+     "featset": "dynamic",
+     "mean": 0.5413,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "svm_rbf",
+     "featset": "dynamic",
+     "mean": 0.4943,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "lightgbm",
+     "featset": "dynamic",
+     "mean": 0.5612,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "hist_gb",
+     "featset": "dynamic",
+     "mean": 0.5386,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "knn",
+     "featset": "dynamic",
+     "mean": 0.4689,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "extra_trees",
+     "featset": "all",
+     "mean": 0.5642,
+     "wins_or_ties": 4
+    },
+    {
+     "model": "minirocket_numpy",
+     "featset": "16 band channels",
+     "mean": 0.568,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "cnn_lstm",
+     "featset": "32 band channels",
+     "mean": 0.4991,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "cnn1d",
+     "featset": "32 band channels",
+     "mean": 0.5274,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "cnn_bilstm",
+     "featset": "32 band channels",
+     "mean": 0.5243,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "tcn",
+     "featset": "32 band channels",
+     "mean": 0.507,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "lstm",
+     "featset": "32 band channels",
+     "mean": 0.4963,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "resnet1d",
+     "featset": "32 band channels",
+     "mean": 0.4841,
+     "wins_or_ties": 1
+    },
+    {
+     "model": "gru",
+     "featset": "32 band channels",
+     "mean": 0.5187,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "bilstm",
+     "featset": "32 band channels",
+     "mean": 0.5338,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "ablstm",
+     "featset": "32 band channels",
+     "mean": 0.475,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "that",
+     "featset": "32 band channels",
+     "mean": 0.5455,
+     "wins_or_ties": 3
+    }
+   ]
+  },
+  "presence": {
+   "best": {
+    "model": "minirocket_numpy",
+    "track": "B",
+    "mean": 0.7289483636929502,
+    "std": 0.17752505945175973
+   },
+   "selected": {
+    "model": "minirocket_numpy",
+    "track": "B",
+    "featset": "16 band channels",
+    "mean": 0.7289483636929502,
+    "std": 0.17752505945175973,
+    "wins_or_ties": 6
+   },
+   "selected_if_4of6": {
+    "model": "minirocket_numpy",
+    "featset": "16 band channels",
+    "mean": 0.7289483636929502
+   },
+   "candidates": [
+    {
+     "model": "extra_trees",
+     "featset": "dynamic",
+     "mean": 0.685,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "logreg",
+     "featset": "dynamic",
+     "mean": 0.6979,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "xgboost",
+     "featset": "dynamic",
+     "mean": 0.5639,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "rf",
+     "featset": "dynamic",
+     "mean": 0.6347,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "svm_rbf",
+     "featset": "dynamic",
+     "mean": 0.6973,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "lightgbm",
+     "featset": "dynamic",
+     "mean": 0.579,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "hist_gb",
+     "featset": "dynamic",
+     "mean": 0.5516,
+     "wins_or_ties": 3
+    },
+    {
+     "model": "knn",
+     "featset": "dynamic",
+     "mean": 0.6699,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "logreg",
+     "featset": "all",
+     "mean": 0.6408,
+     "wins_or_ties": 2
+    },
+    {
+     "model": "minirocket_numpy",
+     "featset": "16 band channels",
+     "mean": 0.7289,
+     "wins_or_ties": 6
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,2 @@
+# ESP32-S3: print on the native USB port (USB-Serial-JTAG)
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y

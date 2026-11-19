@@ -1,0 +1,227 @@
+{
+ "summary": {
+  "task": "presence",
+  "protocol": "loso",
+  "model": "se_tcn+hybrid-all",
+  "params": 145330,
+  "latency_ms": 3.31,
+  "macro_f1_mean": 0.5958,
+  "macro_f1_std": 0.1372,
+  "bal_acc_mean": 0.7302,
+  "acc_mean": 0.7934,
+  "pooled_macro_f1": 0.5827,
+  "loss": "wce",
+  "seeds": 3,
+  "wall_s": 1209.2,
+  "presence_sens": 0.8219,
+  "presence_spec": 0.4275
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.5134,
+   "bal_acc": 0.5329,
+   "acc": 0.7255,
+   "best_epoch": 18,
+   "epochs_run": 24,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.6904,
+   "bal_acc": 0.8734,
+   "acc": 0.8344,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.6371,
+   "bal_acc": 0.8182,
+   "acc": 0.7681,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.4868,
+   "bal_acc": 0.5,
+   "acc": 0.9484,
+   "best_epoch": 11,
+   "epochs_run": 17,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.4155,
+   "bal_acc": 0.7365,
+   "acc": 0.5035,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.7586,
+   "bal_acc": 0.9515,
+   "acc": 0.9089,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 417
+  },
+  "seed1_S1": {
+   "macro_f1": 0.4732,
+   "bal_acc": 0.4946,
+   "acc": 0.6795,
+   "best_epoch": 17,
+   "epochs_run": 23,
+   "n_test": 521
+  },
+  "seed1_S2": {
+   "macro_f1": 0.7051,
+   "bal_acc": 0.8806,
+   "acc": 0.8477,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 302
+  },
+  "seed1_S3": {
+   "macro_f1": 0.6687,
+   "bal_acc": 0.8371,
+   "acc": 0.8023,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 263
+  },
+  "seed1_S4": {
+   "macro_f1": 0.4868,
+   "bal_acc": 0.5,
+   "acc": 0.9484,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 465
+  },
+  "seed1_S5": {
+   "macro_f1": 0.384,
+   "bal_acc": 0.7108,
+   "acc": 0.455,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 433
+  },
+  "seed1_S6": {
+   "macro_f1": 0.8384,
+   "bal_acc": 0.9732,
+   "acc": 0.9496,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 417
+  },
+  "seed2_S1": {
+   "macro_f1": 0.5596,
+   "bal_acc": 0.5661,
+   "acc": 0.7505,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 521
+  },
+  "seed2_S2": {
+   "macro_f1": 0.5852,
+   "bal_acc": 0.6552,
+   "acc": 0.8013,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 302
+  },
+  "seed2_S3": {
+   "macro_f1": 0.7921,
+   "bal_acc": 0.878,
+   "acc": 0.9087,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 263
+  },
+  "seed2_S4": {
+   "macro_f1": 0.4868,
+   "bal_acc": 0.5,
+   "acc": 0.9484,
+   "best_epoch": 16,
+   "epochs_run": 22,
+   "n_test": 465
+  },
+  "seed2_S5": {
+   "macro_f1": 0.4642,
+   "bal_acc": 0.777,
+   "acc": 0.5797,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 433
+  },
+  "seed2_S6": {
+   "macro_f1": 0.7792,
+   "bal_acc": 0.9579,
+   "acc": 0.9209,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.5827402196377989,
+  "accuracy": 0.7788421491045397,
+  "n": 2401,
+  "per_class": {
+   "empty": {
+    "precision": 0.22718052738336714,
+    "recall": 0.42748091603053434,
+    "f1": 0.29668874172185433,
+    "support": 262
+   },
+   "occupied": {
+    "precision": 0.9213836477987422,
+    "recall": 0.8218793828892006,
+    "f1": 0.8687916975537435,
+    "support": 2139
+   }
+  },
+  "confusion": {
+   "labels": [
+    "empty",
+    "occupied"
+   ],
+   "matrix": [
+    [
+     112,
+     150
+    ],
+    [
+     381,
+     1758
+    ]
+   ]
+  },
+  "presence_sensitivity": 0.8218793828892006,
+  "presence_specificity": 0.42748091603053434
+ },
+ "args": {
+  "task": "presence",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": true,
+  "features": "all",
+  "threads": 16
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "test_subject": "S5",
+ "params": {
+  "C": 1,
+  "gamma": "scale"
+ },
+ "inner_fall_f1": 0.38065833417719475,
+ "chosen": {
+  "theta": 0.45,
+  "k": 2,
+  "n": 3,
+  "ok": true,
+  "fall_share": 0.35294117647058826,
+  "lookalike": 4,
+  "walk_per_h": 18.618603087585015,
+  "inner_falls": 12,
+  "inner_fall_takes": 34,
+  "inner_lookalike": 4,
+  "inner_lookalike_takes": 88,
+  "inner_walk_alarms": 2,
+  "inner_walk_h": 0.1074,
+  "inner_walk_per_h": 18.618603087585015,
+  "inner_still_alarms": 1,
+  "inner_still_h": 0.2647,
+  "inner_still_per_h": 3.7780797909462525,
+  "inner_latency_median_s": NaN,
+  "fallback": false
+ },
+ "test": {
+  "falls": 5,
+  "fall_takes": 8,
+  "lookalike": 1,
+  "lookalike_takes": 21,
+  "walk_alarms": 4,
+  "walk_h": 0.0247,
+  "walk_per_h": 161.6887491578711,
+  "still_alarms": 1,
+  "still_h": 0.0495,
+  "still_per_h": 20.216768686471614,
+  "latency_median_s": 3.6549999999999994
+ },
+ "n_candidates_feasible": 30,
+ "wall_s": 16.7
+}

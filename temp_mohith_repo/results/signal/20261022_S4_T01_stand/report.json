@@ -1,0 +1,114 @@
+{
+  "run": "data/raw/20261022_S4_T01_stand",
+  "window_s": [
+    null,
+    null
+  ],
+  "receivers": {
+    "RX1": {
+      "receiver": "RX1",
+      "records": 5959,
+      "note": null,
+      "dropped_not_our_tx": 0,
+      "crc_rejected_frames": 0,
+      "other_csi_len": {},
+      "duration_s": 30.0,
+      "rate_hz": 198.6,
+      "loss_pct": 0.7,
+      "duplicates": 0,
+      "gap_ms_max": 10.0,
+      "gaps_over_20ms": 0,
+      "gaps_over_limit": 0,
+      "ht40_pct": 100.0,
+      "ht_sig_pct": 100.0,
+      "first_word_invalid_pct": 0.0,
+      "rssi_dbm": {
+        "median": -36.0,
+        "p5": -36.0,
+        "p95": -35.0
+      },
+      "noise_floor_dbm_median": -94.0,
+      "htltf_null_subcarriers": "-64..-59, -1..1, 59..63",
+      "htltf_used_count": 114,
+      "htltf_matches_80211n_ht40": true,
+      "lltf_null_bins": "0..5, 32, 59..63",
+      "csi_power_steps": [],
+      "gain_change_candidates": 0,
+      "corr_csi_power_vs_rssi": -0.009,
+      "lltf_mapping": {
+        "correlations": {
+          "bin k = HT40 sub-carrier k (upper 20 MHz)": {
+            "overlap": 52,
+            "r": 0.994
+          },
+          "bin k = HT40 sub-carrier k-64 (lower 20 MHz)": {
+            "overlap": 52,
+            "r": -0.4
+          },
+          "FFT order around the upper-20 MHz centre (+32)": {
+            "overlap": 46,
+            "r": 0.428
+          },
+          "FFT order around the lower-20 MHz centre (-32)": {
+            "overlap": 46,
+            "r": -0.381
+          }
+        },
+        "verdict": "bin k = HT40 sub-carrier k (upper 20 MHz)"
+      }
+    },
+    "RX2": {
+      "receiver": "RX2",
+      "records": 5870,
+      "note": null,
+      "dropped_not_our_tx": 0,
+      "crc_rejected_frames": 0,
+      "other_csi_len": {},
+      "duration_s": 30.01,
+      "rate_hz": 195.6,
+      "loss_pct": 2.22,
+      "duplicates": 0,
+      "gap_ms_max": 15.0,
+      "gaps_over_20ms": 0,
+      "gaps_over_limit": 0,
+      "ht40_pct": 100.0,
+      "ht_sig_pct": 100.0,
+      "first_word_invalid_pct": 0.0,
+      "rssi_dbm": {
+        "median": -36.0,
+        "p5": -37.0,
+        "p95": -36.0
+      },
+      "noise_floor_dbm_median": -94.0,
+      "htltf_null_subcarriers": "-64..-59, -1..1, 59..63",
+      "htltf_used_count": 114,
+      "htltf_matches_80211n_ht40": true,
+      "lltf_null_bins": "0..5, 32, 59..63",
+      "csi_power_steps": [],
+      "gain_change_candidates": 0,
+      "corr_csi_power_vs_rssi": -0.005,
+      "lltf_mapping": {
+        "correlations": {
+          "bin k = HT40 sub-carrier k (upper 20 MHz)": {
+            "overlap": 52,
+            "r": 0.986
+          },
+          "bin k = HT40 sub-carrier k-64 (lower 20 MHz)": {
+            "overlap": 52,
+            "r": -0.246
+          },
+          "FFT order around the upper-20 MHz centre (+32)": {
+            "overlap": 46,
+            "r": -0.65
+          },
+          "FFT order around the lower-20 MHz centre (-32)": {
+            "overlap": 46,
+            "r": -0.274
+          }
+        },
+        "verdict": "bin k = HT40 sub-carrier k (upper 20 MHz)"
+      }
+    }
+  },
+  "seen_by_both_pct": 97.41
+}

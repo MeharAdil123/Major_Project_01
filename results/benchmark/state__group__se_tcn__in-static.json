@@ -1,0 +1,149 @@
+{
+ "summary": {
+  "task": "state",
+  "protocol": "group",
+  "model": "se_tcn+in-static",
+  "params": 137780,
+  "latency_ms": 3.64,
+  "macro_f1_mean": 0.4081,
+  "macro_f1_std": 0.1754,
+  "bal_acc_mean": 0.4228,
+  "acc_mean": 0.4333,
+  "pooled_macro_f1": 0.4246,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 196.0
+ },
+ "folds": {
+  "seed0_G1": {
+   "macro_f1": 0.3048,
+   "bal_acc": 0.3198,
+   "acc": 0.2936,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 218
+  },
+  "seed0_G2": {
+   "macro_f1": 0.7483,
+   "bal_acc": 0.7832,
+   "acc": 0.7523,
+   "best_epoch": 22,
+   "epochs_run": 28,
+   "n_test": 218
+  },
+  "seed0_G3": {
+   "macro_f1": 0.2869,
+   "bal_acc": 0.2647,
+   "acc": 0.2995,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 217
+  },
+  "seed0_G4": {
+   "macro_f1": 0.2953,
+   "bal_acc": 0.2926,
+   "acc": 0.2906,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 234
+  },
+  "seed0_G5": {
+   "macro_f1": 0.405,
+   "bal_acc": 0.4536,
+   "acc": 0.5304,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 247
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.42457271474286085,
+  "accuracy": 0.43386243386243384,
+  "n": 1134,
+  "per_class": {
+   "lie": {
+    "precision": 0.1590909090909091,
+    "recall": 0.3373493975903614,
+    "f1": 0.21621621621621623,
+    "support": 166
+   },
+   "sit": {
+    "precision": 0.5369458128078818,
+    "recall": 0.3906810035842294,
+    "f1": 0.45228215767634855,
+    "support": 279
+   },
+   "stand": {
+    "precision": 0.32398753894080995,
+    "recall": 0.33548387096774196,
+    "f1": 0.329635499207607,
+    "support": 310
+   },
+   "walk": {
+    "precision": 0.8643410852713178,
+    "recall": 0.5883905013192612,
+    "f1": 0.7001569858712716,
+    "support": 379
+   }
+  },
+  "confusion": {
+   "labels": [
+    "lie",
+    "sit",
+    "stand",
+    "walk"
+   ],
+   "matrix": [
+    [
+     56,
+     23,
+     86,
+     1
+    ],
+    [
+     100,
+     109,
+     40,
+     30
+    ],
+    [
+     142,
+     60,
+     104,
+     4
+    ],
+    [
+     54,
+     11,
+     91,
+     223
+    ]
+   ]
+  }
+ },
+ "args": {
+  "task": "state",
+  "protocol": "group",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "static",
+  "rx": "both",
+  "threads": 16
+ }
+}

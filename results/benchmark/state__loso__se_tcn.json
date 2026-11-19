@@ -1,0 +1,253 @@
+{
+ "summary": {
+  "task": "state",
+  "protocol": "loso",
+  "model": "se_tcn",
+  "params": 137780,
+  "latency_ms": 3.55,
+  "macro_f1_mean": 0.4349,
+  "macro_f1_std": 0.1268,
+  "bal_acc_mean": 0.4882,
+  "acc_mean": 0.4675,
+  "pooled_macro_f1": 0.4878,
+  "loss": "wce",
+  "seeds": 3,
+  "wall_s": 751.8
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.3873,
+   "bal_acc": 0.4471,
+   "acc": 0.3967,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 184
+  },
+  "seed0_S2": {
+   "macro_f1": 0.627,
+   "bal_acc": 0.6407,
+   "acc": 0.6477,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 176
+  },
+  "seed0_S3": {
+   "macro_f1": 0.5637,
+   "bal_acc": 0.5639,
+   "acc": 0.5827,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 127
+  },
+  "seed0_S4": {
+   "macro_f1": 0.3301,
+   "bal_acc": 0.3453,
+   "acc": 0.4174,
+   "best_epoch": 11,
+   "epochs_run": 17,
+   "n_test": 218
+  },
+  "seed0_S5": {
+   "macro_f1": 0.3384,
+   "bal_acc": 0.3651,
+   "acc": 0.3194,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 216
+  },
+  "seed0_S6": {
+   "macro_f1": 0.582,
+   "bal_acc": 0.6976,
+   "acc": 0.6808,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 213
+  },
+  "seed1_S1": {
+   "macro_f1": 0.4155,
+   "bal_acc": 0.487,
+   "acc": 0.4239,
+   "best_epoch": 15,
+   "epochs_run": 21,
+   "n_test": 184
+  },
+  "seed1_S2": {
+   "macro_f1": 0.285,
+   "bal_acc": 0.3968,
+   "acc": 0.3068,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 176
+  },
+  "seed1_S3": {
+   "macro_f1": 0.5689,
+   "bal_acc": 0.6463,
+   "acc": 0.6142,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 127
+  },
+  "seed1_S4": {
+   "macro_f1": 0.3143,
+   "bal_acc": 0.3523,
+   "acc": 0.3991,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 218
+  },
+  "seed1_S5": {
+   "macro_f1": 0.2979,
+   "bal_acc": 0.4018,
+   "acc": 0.3102,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 216
+  },
+  "seed1_S6": {
+   "macro_f1": 0.5318,
+   "bal_acc": 0.6405,
+   "acc": 0.6009,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 213
+  },
+  "seed2_S1": {
+   "macro_f1": 0.3501,
+   "bal_acc": 0.4254,
+   "acc": 0.3533,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 184
+  },
+  "seed2_S2": {
+   "macro_f1": 0.3425,
+   "bal_acc": 0.4154,
+   "acc": 0.358,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 176
+  },
+  "seed2_S3": {
+   "macro_f1": 0.5599,
+   "bal_acc": 0.5638,
+   "acc": 0.5827,
+   "best_epoch": 13,
+   "epochs_run": 19,
+   "n_test": 127
+  },
+  "seed2_S4": {
+   "macro_f1": 0.3904,
+   "bal_acc": 0.4144,
+   "acc": 0.4725,
+   "best_epoch": 13,
+   "epochs_run": 19,
+   "n_test": 218
+  },
+  "seed2_S5": {
+   "macro_f1": 0.282,
+   "bal_acc": 0.269,
+   "acc": 0.2685,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 216
+  },
+  "seed2_S6": {
+   "macro_f1": 0.6616,
+   "bal_acc": 0.7144,
+   "acc": 0.6808,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 213
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.48778883200804257,
+  "accuracy": 0.4991181657848324,
+  "n": 1134,
+  "per_class": {
+   "lie": {
+    "precision": 0.28846153846153844,
+    "recall": 0.5421686746987951,
+    "f1": 0.37656903765690375,
+    "support": 166
+   },
+   "sit": {
+    "precision": 0.5568181818181818,
+    "recall": 0.5268817204301075,
+    "f1": 0.5414364640883977,
+    "support": 279
+   },
+   "stand": {
+    "precision": 0.2762237762237762,
+    "recall": 0.25483870967741934,
+    "f1": 0.2651006711409396,
+    "support": 310
+   },
+   "walk": {
+    "precision": 0.9191176470588235,
+    "recall": 0.6596306068601583,
+    "f1": 0.7680491551459293,
+    "support": 379
+   }
+  },
+  "confusion": {
+   "labels": [
+    "lie",
+    "sit",
+    "stand",
+    "walk"
+   ],
+   "matrix": [
+    [
+     90,
+     17,
+     55,
+     4
+    ],
+    [
+     57,
+     147,
+     71,
+     4
+    ],
+    [
+     147,
+     70,
+     79,
+     14
+    ],
+    [
+     18,
+     30,
+     81,
+     250
+    ]
+   ]
+  }
+ },
+ "args": {
+  "task": "state",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "threads": 16
+ }
+}

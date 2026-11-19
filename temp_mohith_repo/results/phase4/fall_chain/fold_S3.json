@@ -1,0 +1,44 @@
+{
+ "test_subject": "S3",
+ "params": {
+  "C": 1,
+  "gamma": 0.01
+ },
+ "inner_fall_f1": 0.3568207915889721,
+ "chosen": {
+  "theta": 0.5,
+  "k": 2,
+  "n": 3,
+  "ok": true,
+  "fall_share": 0.2972972972972973,
+  "lookalike": 8,
+  "walk_per_h": 25.946257612704063,
+  "inner_falls": 11,
+  "inner_fall_takes": 37,
+  "inner_lookalike": 8,
+  "inner_lookalike_takes": 97,
+  "inner_walk_alarms": 3,
+  "inner_walk_h": 0.1156,
+  "inner_walk_per_h": 25.946257612704063,
+  "inner_still_alarms": 2,
+  "inner_still_h": 0.2811,
+  "inner_still_per_h": 7.115327601541654,
+  "inner_latency_median_s": NaN,
+  "fallback": false
+ },
+ "test": {
+  "falls": 4,
+  "fall_takes": 5,
+  "lookalike": 1,
+  "lookalike_takes": 12,
+  "walk_alarms": 0,
+  "walk_h": 0.0165,
+  "walk_per_h": 0.0,
+  "still_alarms": 1,
+  "still_h": 0.0331,
+  "still_per_h": 30.243205779812662,
+  "latency_median_s": 0.915
+ },
+ "n_candidates_feasible": 27,
+ "wall_s": 19.4
+}

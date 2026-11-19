@@ -1,0 +1,99 @@
+{
+  "task": "presence",
+  "mean_accuracy": 0.5250796369536295,
+  "std_accuracy": 0.14795774700337114,
+  "mean_balanced_accuracy": 0.5866392605317974,
+  "std_balanced_accuracy": 0.13760551259972312,
+  "mean_macro_f1": 0.40198253191904426,
+  "std_macro_f1": 0.053540521213949276,
+  "pooled_accuracy": 0.5251978342357351,
+  "pooled_macro_f1": 0.4605812890206218,
+  "classes": [
+    "empty",
+    "occupied"
+  ],
+  "per_fold": {
+    "S1": {
+      "accuracy": 0.43570057581573896,
+      "balanced_accuracy": 0.6138702841790593,
+      "macro_f1": 0.43107060082011056,
+      "recalls": {
+        "empty": 0.9927536231884058,
+        "occupied": 0.2349869451697128
+      },
+      "support": 521,
+      "cross_session": false,
+      "train_time_s": 137.60993838310242
+    },
+    "S2": {
+      "accuracy": 0.37748344370860926,
+      "balanced_accuracy": 0.6606498194945849,
+      "macro_f1": 0.3482114157138265,
+      "recalls": {
+        "empty": 1.0,
+        "occupied": 0.3212996389891697
+      },
+      "support": 302,
+      "cross_session": false,
+      "train_time_s": 150.72620058059692
+    },
+    "S3": {
+      "accuracy": 0.6501901140684411,
+      "balanced_accuracy": 0.3950420168067227,
+      "macro_f1": 0.4138565891472868,
+      "recalls": {
+        "empty": 0.08,
+        "occupied": 0.7100840336134454
+      },
+      "support": 263,
+      "cross_session": false,
+      "train_time_s": 155.95376133918762
+    },
+    "S4": {
+      "accuracy": 0.7526881720430108,
+      "balanced_accuracy": 0.4165249433106576,
+      "macro_f1": 0.437821301289936,
+      "recalls": {
+        "empty": 0.041666666666666664,
+        "occupied": 0.7913832199546486
+      },
+      "support": 465,
+      "cross_session": false,
+      "train_time_s": 142.03027892112732
+    },
+    "S5": {
+      "accuracy": 0.5842956120092379,
+      "balanced_accuracy": 0.7794117647058824,
+      "macro_f1": 0.46718621821164885,
+      "recalls": {
+        "empty": 1.0,
+        "occupied": 0.5588235294117647
+      },
+      "support": 433,
+      "cross_session": true,
+      "train_time_s": 141.11350846290588
+    },
+    "S6": {
+      "accuracy": 0.3501199040767386,
+      "balanced_accuracy": 0.6543367346938775,
+      "macro_f1": 0.3137490663314569,
+      "recalls": {
+        "empty": 1.0,
+        "occupied": 0.3086734693877551
+      },
+      "support": 417,
+      "cross_session": true,
+      "train_time_s": 141.47859406471252
+    }
+  },
+  "confusion_matrix": [
+    [
+      215,
+      47
+    ],
+    [
+      1093,
+      1046
+    ]
+  ]
+}

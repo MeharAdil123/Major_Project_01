@@ -1,0 +1,241 @@
+{
+ "summary": {
+  "task": "fall",
+  "protocol": "loso",
+  "model": "cnn_bilstm+rx1+aug-strohmayer+adabn+hybrid-dynamic",
+  "params": 96610,
+  "latency_ms": 1.7,
+  "macro_f1_mean": 0.554,
+  "macro_f1_std": 0.0605,
+  "bal_acc_mean": 0.591,
+  "acc_mean": 0.7734,
+  "pooled_macro_f1": 0.5388,
+  "loss": "wce",
+  "seeds": 3,
+  "wall_s": 298.8,
+  "fall_recall": 0.4373,
+  "fall_precision": 0.1837,
+  "fall_false_alarm_rate": 0.2554,
+  "alarm": {
+   "fall_takes": 35,
+   "fall_caught": 25,
+   "lookalike_takes": 14,
+   "lookalike_alarm": 7,
+   "other_takes": 130,
+   "other_alarm": 67
+  }
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.5564,
+   "bal_acc": 0.6146,
+   "acc": 0.7409,
+   "best_epoch": 14,
+   "epochs_run": 20,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.5789,
+   "bal_acc": 0.6874,
+   "acc": 0.7748,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.4544,
+   "bal_acc": 0.4558,
+   "acc": 0.7795,
+   "best_epoch": 13,
+   "epochs_run": 19,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.5797,
+   "bal_acc": 0.5923,
+   "acc": 0.7978,
+   "best_epoch": 14,
+   "epochs_run": 20,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.4505,
+   "bal_acc": 0.5841,
+   "acc": 0.5104,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.5361,
+   "bal_acc": 0.5833,
+   "acc": 0.6835,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 417
+  },
+  "seed1_S1": {
+   "macro_f1": 0.6028,
+   "bal_acc": 0.5988,
+   "acc": 0.856,
+   "best_epoch": 22,
+   "epochs_run": 28,
+   "n_test": 521
+  },
+  "seed1_S2": {
+   "macro_f1": 0.6056,
+   "bal_acc": 0.6763,
+   "acc": 0.8245,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 302
+  },
+  "seed1_S3": {
+   "macro_f1": 0.4802,
+   "bal_acc": 0.4794,
+   "acc": 0.7719,
+   "best_epoch": 15,
+   "epochs_run": 21,
+   "n_test": 263
+  },
+  "seed1_S4": {
+   "macro_f1": 0.5369,
+   "bal_acc": 0.5335,
+   "acc": 0.8301,
+   "best_epoch": 20,
+   "epochs_run": 26,
+   "n_test": 465
+  },
+  "seed1_S5": {
+   "macro_f1": 0.6103,
+   "bal_acc": 0.6087,
+   "acc": 0.8245,
+   "best_epoch": 23,
+   "epochs_run": 29,
+   "n_test": 433
+  },
+  "seed1_S6": {
+   "macro_f1": 0.5536,
+   "bal_acc": 0.5693,
+   "acc": 0.7506,
+   "best_epoch": 13,
+   "epochs_run": 19,
+   "n_test": 417
+  },
+  "seed2_S1": {
+   "macro_f1": 0.5898,
+   "bal_acc": 0.5998,
+   "acc": 0.8292,
+   "best_epoch": 17,
+   "epochs_run": 23,
+   "n_test": 521
+  },
+  "seed2_S2": {
+   "macro_f1": 0.6338,
+   "bal_acc": 0.7061,
+   "acc": 0.8444,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 302
+  },
+  "seed2_S3": {
+   "macro_f1": 0.4665,
+   "bal_acc": 0.4957,
+   "acc": 0.8745,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 263
+  },
+  "seed2_S4": {
+   "macro_f1": 0.5781,
+   "bal_acc": 0.6124,
+   "acc": 0.7656,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 465
+  },
+  "seed2_S5": {
+   "macro_f1": 0.6582,
+   "bal_acc": 0.7131,
+   "acc": 0.7991,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 433
+  },
+  "seed2_S6": {
+   "macro_f1": 0.5,
+   "bal_acc": 0.527,
+   "acc": 0.6643,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.5388068326867795,
+  "accuracy": 0.7088713036234903,
+  "n": 2401,
+  "per_class": {
+   "fall": {
+    "precision": 0.18373493975903615,
+    "recall": 0.43727598566308246,
+    "f1": 0.25874867444326616,
+    "support": 279
+   },
+   "rest": {
+    "precision": 0.9096142774899252,
+    "recall": 0.7445805843543827,
+    "f1": 0.8188649909302929,
+    "support": 2122
+   }
+  },
+  "confusion": {
+   "labels": [
+    "fall",
+    "rest"
+   ],
+   "matrix": [
+    [
+     122,
+     157
+    ],
+    [
+     542,
+     1580
+    ]
+   ]
+  },
+  "fall_vs_rest": {
+   "sensitivity": 0.43727598566308246,
+   "precision": 0.18373493975903615,
+   "f1": 0.25874867444326616,
+   "false_alarm_rate": 0.2554194156456173
+  }
+ },
+ "args": {
+  "task": "fall",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm"
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "strohmayer",
+  "tta": "adabn",
+  "hybrid": true,
+  "features": "dynamic",
+  "input": "dyn",
+  "rx": "1",
+  "threads": 16
+ }
+}

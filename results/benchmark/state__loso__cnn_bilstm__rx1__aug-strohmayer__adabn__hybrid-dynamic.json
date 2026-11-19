@@ -1,0 +1,254 @@
+{
+ "summary": {
+  "task": "state",
+  "protocol": "loso",
+  "model": "cnn_bilstm+rx1+aug-strohmayer+adabn+hybrid-dynamic",
+  "params": 96932,
+  "latency_ms": 1.65,
+  "macro_f1_mean": 0.4901,
+  "macro_f1_std": 0.1311,
+  "bal_acc_mean": 0.525,
+  "acc_mean": 0.589,
+  "pooled_macro_f1": 0.5032,
+  "loss": "wce",
+  "seeds": 3,
+  "wall_s": 118.3
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.3297,
+   "bal_acc": 0.3844,
+   "acc": 0.4946,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 184
+  },
+  "seed0_S2": {
+   "macro_f1": 0.5573,
+   "bal_acc": 0.5606,
+   "acc": 0.5682,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 176
+  },
+  "seed0_S3": {
+   "macro_f1": 0.5493,
+   "bal_acc": 0.5908,
+   "acc": 0.6378,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 127
+  },
+  "seed0_S4": {
+   "macro_f1": 0.3587,
+   "bal_acc": 0.4083,
+   "acc": 0.5046,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 218
+  },
+  "seed0_S5": {
+   "macro_f1": 0.4475,
+   "bal_acc": 0.4856,
+   "acc": 0.5833,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 216
+  },
+  "seed0_S6": {
+   "macro_f1": 0.6698,
+   "bal_acc": 0.7113,
+   "acc": 0.6995,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 213
+  },
+  "seed1_S1": {
+   "macro_f1": 0.3608,
+   "bal_acc": 0.3905,
+   "acc": 0.4891,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 184
+  },
+  "seed1_S2": {
+   "macro_f1": 0.3694,
+   "bal_acc": 0.4796,
+   "acc": 0.5455,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 176
+  },
+  "seed1_S3": {
+   "macro_f1": 0.6366,
+   "bal_acc": 0.6464,
+   "acc": 0.6535,
+   "best_epoch": 22,
+   "epochs_run": 28,
+   "n_test": 127
+  },
+  "seed1_S4": {
+   "macro_f1": 0.4417,
+   "bal_acc": 0.4627,
+   "acc": 0.555,
+   "best_epoch": 24,
+   "epochs_run": 30,
+   "n_test": 218
+  },
+  "seed1_S5": {
+   "macro_f1": 0.3914,
+   "bal_acc": 0.4379,
+   "acc": 0.5417,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 216
+  },
+  "seed1_S6": {
+   "macro_f1": 0.6905,
+   "bal_acc": 0.7008,
+   "acc": 0.7418,
+   "best_epoch": 13,
+   "epochs_run": 19,
+   "n_test": 213
+  },
+  "seed2_S1": {
+   "macro_f1": 0.3327,
+   "bal_acc": 0.3763,
+   "acc": 0.4837,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 184
+  },
+  "seed2_S2": {
+   "macro_f1": 0.6897,
+   "bal_acc": 0.6831,
+   "acc": 0.7159,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 176
+  },
+  "seed2_S3": {
+   "macro_f1": 0.6551,
+   "bal_acc": 0.6832,
+   "acc": 0.6614,
+   "best_epoch": 23,
+   "epochs_run": 29,
+   "n_test": 127
+  },
+  "seed2_S4": {
+   "macro_f1": 0.3668,
+   "bal_acc": 0.4159,
+   "acc": 0.5138,
+   "best_epoch": 11,
+   "epochs_run": 17,
+   "n_test": 218
+  },
+  "seed2_S5": {
+   "macro_f1": 0.409,
+   "bal_acc": 0.4319,
+   "acc": 0.5139,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 216
+  },
+  "seed2_S6": {
+   "macro_f1": 0.5654,
+   "bal_acc": 0.5999,
+   "acc": 0.6995,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 213
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.5032305506220265,
+  "accuracy": 0.5793650793650794,
+  "n": 1134,
+  "per_class": {
+   "lie": {
+    "precision": 0.3262411347517731,
+    "recall": 0.27710843373493976,
+    "f1": 0.2996742671009772,
+    "support": 166
+   },
+   "sit": {
+    "precision": 0.4557823129251701,
+    "recall": 0.24014336917562723,
+    "f1": 0.3145539906103286,
+    "support": 279
+   },
+   "stand": {
+    "precision": 0.4346793349168646,
+    "recall": 0.5903225806451613,
+    "f1": 0.5006839945280438,
+    "support": 310
+   },
+   "walk": {
+    "precision": 0.8494117647058823,
+    "recall": 0.9525065963060686,
+    "f1": 0.8980099502487562,
+    "support": 379
+   }
+  },
+  "confusion": {
+   "labels": [
+    "lie",
+    "sit",
+    "stand",
+    "walk"
+   ],
+   "matrix": [
+    [
+     46,
+     22,
+     88,
+     10
+    ],
+    [
+     42,
+     67,
+     142,
+     28
+    ],
+    [
+     51,
+     50,
+     183,
+     26
+    ],
+    [
+     2,
+     8,
+     8,
+     361
+    ]
+   ]
+  }
+ },
+ "args": {
+  "task": "state",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm"
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "strohmayer",
+  "tta": "adabn",
+  "hybrid": true,
+  "features": "dynamic",
+  "input": "dyn",
+  "rx": "1",
+  "threads": 16
+ }
+}

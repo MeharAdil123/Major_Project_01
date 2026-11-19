@@ -1,0 +1,4 @@
+take_id,kind,activity,position,duration_s,cue_s,pre_delay_s,say
+G01,state,empty,none,30,,20,Everyone leave the taped area and stay still outside it.
+G02,state,walk,path2,30,,10,Walk back and forth along path 2.
+G03,state,empty,none,30,,20,Everyone leave the taped area and stay still outside it.

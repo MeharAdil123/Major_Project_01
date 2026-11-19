@@ -1,0 +1,131 @@
+{
+ "summary": {
+  "task": "presence",
+  "protocol": "loso",
+  "model": "cnn_bilstm+in-static",
+  "params": 97922,
+  "latency_ms": 1.67,
+  "macro_f1_mean": 0.5626,
+  "macro_f1_std": 0.1702,
+  "bal_acc_mean": 0.6503,
+  "acc_mean": 0.7777,
+  "pooled_macro_f1": 0.5553,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 52.5,
+  "presence_sens": 0.8186,
+  "presence_spec": 0.3511
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.4358,
+   "bal_acc": 0.4355,
+   "acc": 0.5585,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.4549,
+   "bal_acc": 0.4549,
+   "acc": 0.8344,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.621,
+   "bal_acc": 0.7508,
+   "acc": 0.7757,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.4862,
+   "bal_acc": 0.4989,
+   "acc": 0.9462,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.4598,
+   "bal_acc": 0.7733,
+   "acc": 0.5727,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.9179,
+   "bal_acc": 0.9885,
+   "acc": 0.9784,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.5552700065061809,
+  "accuracy": 0.7675968346522283,
+  "n": 2401,
+  "per_class": {
+   "empty": {
+    "precision": 0.19166666666666668,
+    "recall": 0.3511450381679389,
+    "f1": 0.24797843665768193,
+    "support": 262
+   },
+   "occupied": {
+    "precision": 0.911504424778761,
+    "recall": 0.8186068256194483,
+    "f1": 0.8625615763546798,
+    "support": 2139
+   }
+  },
+  "confusion": {
+   "labels": [
+    "empty",
+    "occupied"
+   ],
+   "matrix": [
+    [
+     92,
+     170
+    ],
+    [
+     388,
+     1751
+    ]
+   ]
+  },
+  "presence_sensitivity": 0.8186068256194483,
+  "presence_specificity": 0.3511450381679389
+ },
+ "args": {
+  "task": "presence",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "static",
+  "rx": "both",
+  "threads": 16
+ }
+}

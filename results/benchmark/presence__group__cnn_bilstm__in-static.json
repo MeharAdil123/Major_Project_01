@@ -1,0 +1,123 @@
+{
+ "summary": {
+  "task": "presence",
+  "protocol": "group",
+  "model": "cnn_bilstm+in-static",
+  "params": 97922,
+  "latency_ms": 1.39,
+  "macro_f1_mean": 0.5293,
+  "macro_f1_std": 0.1366,
+  "bal_acc_mean": 0.5834,
+  "acc_mean": 0.8768,
+  "pooled_macro_f1": 0.5352,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 46.9,
+  "presence_sens": 0.9668,
+  "presence_spec": 0.0954
+ },
+ "folds": {
+  "seed0_G1": {
+   "macro_f1": 0.4211,
+   "bal_acc": 0.4612,
+   "acc": 0.7273,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 539
+  },
+  "seed0_G2": {
+   "macro_f1": 0.4677,
+   "bal_acc": 0.4895,
+   "acc": 0.8787,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 478
+  },
+  "seed0_G3": {
+   "macro_f1": 0.4728,
+   "bal_acc": 0.5,
+   "acc": 0.8968,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 475
+  },
+  "seed0_G4": {
+   "macro_f1": 0.4858,
+   "bal_acc": 0.5,
+   "acc": 0.9449,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 454
+  },
+  "seed0_G5": {
+   "macro_f1": 0.799,
+   "bal_acc": 0.9663,
+   "acc": 0.9363,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 455
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.5351789368881023,
+  "accuracy": 0.8717201166180758,
+  "n": 2401,
+  "per_class": {
+   "empty": {
+    "precision": 0.2604166666666667,
+    "recall": 0.09541984732824428,
+    "f1": 0.13966480446927373,
+    "support": 262
+   },
+   "occupied": {
+    "precision": 0.897180043383948,
+    "recall": 0.9668069191210846,
+    "f1": 0.9306930693069307,
+    "support": 2139
+   }
+  },
+  "confusion": {
+   "labels": [
+    "empty",
+    "occupied"
+   ],
+   "matrix": [
+    [
+     25,
+     237
+    ],
+    [
+     71,
+     2068
+    ]
+   ]
+  },
+  "presence_sensitivity": 0.9668069191210846,
+  "presence_specificity": 0.09541984732824428
+ },
+ "args": {
+  "task": "presence",
+  "protocol": "group",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "static",
+  "rx": "both",
+  "threads": 16
+ }
+}

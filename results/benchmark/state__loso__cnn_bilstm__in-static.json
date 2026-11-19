@@ -1,0 +1,157 @@
+{
+ "summary": {
+  "task": "state",
+  "protocol": "loso",
+  "model": "cnn_bilstm+in-static",
+  "params": 98180,
+  "latency_ms": 1.49,
+  "macro_f1_mean": 0.2433,
+  "macro_f1_std": 0.0766,
+  "bal_acc_mean": 0.296,
+  "acc_mean": 0.3546,
+  "pooled_macro_f1": 0.2659,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 32.4
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.1647,
+   "bal_acc": 0.2566,
+   "acc": 0.3424,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 184
+  },
+  "seed0_S2": {
+   "macro_f1": 0.161,
+   "bal_acc": 0.2243,
+   "acc": 0.25,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 176
+  },
+  "seed0_S3": {
+   "macro_f1": 0.2909,
+   "bal_acc": 0.3611,
+   "acc": 0.4016,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 127
+  },
+  "seed0_S4": {
+   "macro_f1": 0.1961,
+   "bal_acc": 0.1961,
+   "acc": 0.2294,
+   "best_epoch": 11,
+   "epochs_run": 17,
+   "n_test": 218
+  },
+  "seed0_S5": {
+   "macro_f1": 0.2739,
+   "bal_acc": 0.3591,
+   "acc": 0.4583,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 216
+  },
+  "seed0_S6": {
+   "macro_f1": 0.373,
+   "bal_acc": 0.3791,
+   "acc": 0.446,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 213
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.265893727734378,
+  "accuracy": 0.3544973544973545,
+  "n": 1134,
+  "per_class": {
+   "lie": {
+    "precision": 0.05333333333333334,
+    "recall": 0.024096385542168676,
+    "f1": 0.03319502074688797,
+    "support": 166
+   },
+   "sit": {
+    "precision": 0.11846689895470383,
+    "recall": 0.12186379928315412,
+    "f1": 0.12014134275618374,
+    "support": 279
+   },
+   "stand": {
+    "precision": 0.33620689655172414,
+    "recall": 0.25161290322580643,
+    "f1": 0.2878228782287823,
+    "support": 310
+   },
+   "walk": {
+    "precision": 0.5296296296296297,
+    "recall": 0.7546174142480211,
+    "f1": 0.6224156692056583,
+    "support": 379
+   }
+  },
+  "confusion": {
+   "labels": [
+    "lie",
+    "sit",
+    "stand",
+    "walk"
+   ],
+   "matrix": [
+    [
+     4,
+     76,
+     52,
+     34
+    ],
+    [
+     35,
+     34,
+     80,
+     130
+    ],
+    [
+     35,
+     107,
+     78,
+     90
+    ],
+    [
+     1,
+     70,
+     22,
+     286
+    ]
+   ]
+  }
+ },
+ "args": {
+  "task": "state",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "static",
+  "rx": "both",
+  "threads": 16
+ }
+}

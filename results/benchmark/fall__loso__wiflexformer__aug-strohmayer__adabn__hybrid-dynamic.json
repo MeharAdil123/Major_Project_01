@@ -1,0 +1,141 @@
+{
+ "summary": {
+  "task": "fall",
+  "protocol": "loso",
+  "model": "wiflexformer+aug-strohmayer+adabn+hybrid-dynamic",
+  "params": 46146,
+  "latency_ms": 4.23,
+  "macro_f1_mean": 0.6462,
+  "macro_f1_std": 0.0641,
+  "bal_acc_mean": 0.6643,
+  "acc_mean": 0.8279,
+  "pooled_macro_f1": 0.6407,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 34799.3,
+  "fall_recall": 0.4695,
+  "fall_precision": 0.3243,
+  "fall_false_alarm_rate": 0.1287,
+  "alarm": {
+   "fall_takes": 35,
+   "fall_caught": 22,
+   "lookalike_takes": 14,
+   "lookalike_alarm": 4,
+   "other_takes": 130,
+   "other_alarm": 32
+  }
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.6543,
+   "bal_acc": 0.671,
+   "acc": 0.856,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.6991,
+   "bal_acc": 0.6731,
+   "acc": 0.9238,
+   "best_epoch": 21,
+   "epochs_run": 27,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.6247,
+   "bal_acc": 0.6375,
+   "acc": 0.8289,
+   "best_epoch": 21,
+   "epochs_run": 27,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.7172,
+   "bal_acc": 0.7105,
+   "acc": 0.8839,
+   "best_epoch": 22,
+   "epochs_run": 28,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.5196,
+   "bal_acc": 0.5478,
+   "acc": 0.6928,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.6623,
+   "bal_acc": 0.7457,
+   "acc": 0.7818,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.6406962414294789,
+  "accuracy": 0.8246563931695127,
+  "n": 2401,
+  "per_class": {
+   "fall": {
+    "precision": 0.32425742574257427,
+    "recall": 0.46953405017921146,
+    "f1": 0.383601756954612,
+    "support": 279
+   },
+   "rest": {
+    "precision": 0.9258888332498748,
+    "recall": 0.8713477851083883,
+    "f1": 0.8977907259043457,
+    "support": 2122
+   }
+  },
+  "confusion": {
+   "labels": [
+    "fall",
+    "rest"
+   ],
+   "matrix": [
+    [
+     131,
+     148
+    ],
+    [
+     273,
+     1849
+    ]
+   ]
+  },
+  "fall_vs_rest": {
+   "sensitivity": 0.46953405017921146,
+   "precision": 0.32425742574257427,
+   "f1": 0.383601756954612,
+   "false_alarm_rate": 0.1286522148916117
+  }
+ },
+ "args": {
+  "task": "fall",
+  "protocol": "loso",
+  "models": [
+   "wiflexformer"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "strohmayer",
+  "tta": "adabn",
+  "hybrid": true,
+  "features": "dynamic",
+  "threads": 16
+ }
+}

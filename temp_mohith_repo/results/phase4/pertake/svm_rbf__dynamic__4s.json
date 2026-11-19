@@ -1,0 +1,103 @@
+{
+ "model": "svm_rbf",
+ "featset": "dynamic",
+ "window": "4s",
+ "theta": 0.6,
+ "cooldown_s": 10.0,
+ "motion_gate": null,
+ "falls_total": 42,
+ "falls_detected": 18,
+ "falls_with_detected_onset": 41,
+ "falls_detected_among_onset_detected": 18,
+ "falls_detected_among_onset_missed": 0,
+ "alarm_latency_after_onset_s_median": 2.05,
+ "lookalike_takes": 109,
+ "lookalike_takes_with_alarm": 9,
+ "lookalike_by_activity": {
+  "bend_pick": {
+   "takes": 20,
+   "with_alarm": 0
+  },
+  "sit_down": {
+   "takes": 43,
+   "with_alarm": 5
+  },
+  "stand_up": {
+   "takes": 46,
+   "with_alarm": 4
+  }
+ },
+ "state_takes": 51,
+ "state_takes_with_alarm": 5,
+ "state_alarms_per_hour": 15.684273093069356,
+ "state_alarms_by_activity": {
+  "empty": 0,
+  "lie": 1,
+  "sit": 0,
+  "stand": 0,
+  "walk": 6
+ },
+ "per_fold": {
+  "S1": {
+   "falls": 8,
+   "detected": 1,
+   "lookalike_alarm_takes": 1
+  },
+  "S2": {
+   "falls": 5,
+   "detected": 2,
+   "lookalike_alarm_takes": 0
+  },
+  "S3": {
+   "falls": 5,
+   "detected": 3,
+   "lookalike_alarm_takes": 2
+  },
+  "S4": {
+   "falls": 8,
+   "detected": 3,
+   "lookalike_alarm_takes": 2
+  },
+  "S5": {
+   "falls": 8,
+   "detected": 3,
+   "lookalike_alarm_takes": 0
+  },
+  "S6": {
+   "falls": 8,
+   "detected": 6,
+   "lookalike_alarm_takes": 4
+  }
+ },
+ "features_version": "f2",
+ "theta_sweep_analysis_only": {
+  "0.3": {
+   "falls_detected": 28,
+   "lookalike_takes_with_alarm": 17
+  },
+  "0.4": {
+   "falls_detected": 22,
+   "lookalike_takes_with_alarm": 14
+  },
+  "0.5": {
+   "falls_detected": 21,
+   "lookalike_takes_with_alarm": 12
+  },
+  "0.6": {
+   "falls_detected": 18,
+   "lookalike_takes_with_alarm": 9
+  },
+  "0.7": {
+   "falls_detected": 15,
+   "lookalike_takes_with_alarm": 6
+  },
+  "0.8": {
+   "falls_detected": 14,
+   "lookalike_takes_with_alarm": 5
+  },
+  "0.9": {
+   "falls_detected": 7,
+   "lookalike_takes_with_alarm": 3
+  }
+ }
+}

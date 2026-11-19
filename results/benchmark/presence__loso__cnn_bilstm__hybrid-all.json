@@ -1,0 +1,227 @@
+{
+ "summary": {
+  "task": "presence",
+  "protocol": "loso",
+  "model": "cnn_bilstm+hybrid-all",
+  "params": 105570,
+  "latency_ms": 1.1,
+  "macro_f1_mean": 0.6101,
+  "macro_f1_std": 0.0986,
+  "bal_acc_mean": 0.7089,
+  "acc_mean": 0.8467,
+  "pooled_macro_f1": 0.6325,
+  "loss": "wce",
+  "seeds": 3,
+  "wall_s": 184.0,
+  "presence_sens": 0.907,
+  "presence_spec": 0.374
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.5625,
+   "bal_acc": 0.5687,
+   "acc": 0.7543,
+   "best_epoch": 18,
+   "epochs_run": 24,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.625,
+   "bal_acc": 0.8063,
+   "acc": 0.7781,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.5674,
+   "bal_acc": 0.5516,
+   "acc": 0.9011,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.4868,
+   "bal_acc": 0.5,
+   "acc": 0.9484,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.6166,
+   "bal_acc": 0.8897,
+   "acc": 0.7921,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.802,
+   "bal_acc": 0.9643,
+   "acc": 0.9329,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 417
+  },
+  "seed1_S1": {
+   "macro_f1": 0.5467,
+   "bal_acc": 0.5527,
+   "acc": 0.7274,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 521
+  },
+  "seed1_S2": {
+   "macro_f1": 0.6281,
+   "bal_acc": 0.7497,
+   "acc": 0.8079,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 302
+  },
+  "seed1_S3": {
+   "macro_f1": 0.6227,
+   "bal_acc": 0.5916,
+   "acc": 0.9087,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 263
+  },
+  "seed1_S4": {
+   "macro_f1": 0.4868,
+   "bal_acc": 0.5,
+   "acc": 0.9484,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 465
+  },
+  "seed1_S5": {
+   "macro_f1": 0.5912,
+   "bal_acc": 0.8738,
+   "acc": 0.7621,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 433
+  },
+  "seed1_S6": {
+   "macro_f1": 0.7973,
+   "bal_acc": 0.963,
+   "acc": 0.9305,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 417
+  },
+  "seed2_S1": {
+   "macro_f1": 0.5564,
+   "bal_acc": 0.5619,
+   "acc": 0.7409,
+   "best_epoch": 17,
+   "epochs_run": 23,
+   "n_test": 521
+  },
+  "seed2_S2": {
+   "macro_f1": 0.6253,
+   "bal_acc": 0.7917,
+   "acc": 0.7848,
+   "best_epoch": 1,
+   "epochs_run": 7,
+   "n_test": 302
+  },
+  "seed2_S3": {
+   "macro_f1": 0.6007,
+   "bal_acc": 0.5737,
+   "acc": 0.9087,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 263
+  },
+  "seed2_S4": {
+   "macro_f1": 0.4868,
+   "bal_acc": 0.5,
+   "acc": 0.9484,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 465
+  },
+  "seed2_S5": {
+   "macro_f1": 0.5626,
+   "bal_acc": 0.8542,
+   "acc": 0.7252,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 433
+  },
+  "seed2_S6": {
+   "macro_f1": 0.8169,
+   "bal_acc": 0.9681,
+   "acc": 0.94,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.6325367215369353,
+  "accuracy": 0.8488129945855893,
+  "n": 2401,
+  "per_class": {
+   "empty": {
+    "precision": 0.32996632996632996,
+    "recall": 0.37404580152671757,
+    "f1": 0.35062611806797855,
+    "support": 262
+   },
+   "occupied": {
+    "precision": 0.9220532319391636,
+    "recall": 0.9069658719027583,
+    "f1": 0.9144473250058921,
+    "support": 2139
+   }
+  },
+  "confusion": {
+   "labels": [
+    "empty",
+    "occupied"
+   ],
+   "matrix": [
+    [
+     98,
+     164
+    ],
+    [
+     199,
+     1940
+    ]
+   ]
+  },
+  "presence_sensitivity": 0.9069658719027583,
+  "presence_specificity": 0.37404580152671757
+ },
+ "args": {
+  "task": "presence",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": true,
+  "features": "all",
+  "threads": 16
+ }
+}

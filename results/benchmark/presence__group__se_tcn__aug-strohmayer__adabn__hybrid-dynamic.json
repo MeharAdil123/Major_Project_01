@@ -1,0 +1,121 @@
+{
+ "summary": {
+  "task": "presence",
+  "protocol": "group",
+  "model": "se_tcn+aug-strohmayer+adabn+hybrid-dynamic",
+  "params": 143218,
+  "latency_ms": 3.93,
+  "macro_f1_mean": 0.7656,
+  "macro_f1_std": 0.1368,
+  "bal_acc_mean": 0.7861,
+  "acc_mean": 0.914,
+  "pooled_macro_f1": 0.7742,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 452.6,
+  "presence_sens": 0.9532,
+  "presence_spec": 0.5878
+ },
+ "folds": {
+  "seed0_G1": {
+   "macro_f1": 0.767,
+   "bal_acc": 0.7242,
+   "acc": 0.8738,
+   "best_epoch": 22,
+   "epochs_run": 28,
+   "n_test": 539
+  },
+  "seed0_G2": {
+   "macro_f1": 0.9316,
+   "bal_acc": 0.9668,
+   "acc": 0.9728,
+   "best_epoch": 12,
+   "epochs_run": 18,
+   "n_test": 478
+  },
+  "seed0_G3": {
+   "macro_f1": 0.7822,
+   "bal_acc": 0.7445,
+   "acc": 0.9305,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 475
+  },
+  "seed0_G4": {
+   "macro_f1": 0.5174,
+   "bal_acc": 0.5394,
+   "acc": 0.8414,
+   "best_epoch": 11,
+   "epochs_run": 17,
+   "n_test": 454
+  },
+  "seed0_G5": {
+   "macro_f1": 0.8298,
+   "bal_acc": 0.9556,
+   "acc": 0.9516,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 455
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.7741845634063672,
+  "accuracy": 0.9133694294044148,
+  "n": 2401,
+  "per_class": {
+   "empty": {
+    "precision": 0.6062992125984252,
+    "recall": 0.5877862595419847,
+    "f1": 0.5968992248062015,
+    "support": 262
+   },
+   "occupied": {
+    "precision": 0.9496972519795063,
+    "recall": 0.9532491818606825,
+    "f1": 0.9514699020065329,
+    "support": 2139
+   }
+  },
+  "confusion": {
+   "labels": [
+    "empty",
+    "occupied"
+   ],
+   "matrix": [
+    [
+     154,
+     108
+    ],
+    [
+     100,
+     2039
+    ]
+   ]
+  },
+  "presence_sensitivity": 0.9532491818606825,
+  "presence_specificity": 0.5877862595419847
+ },
+ "args": {
+  "task": "presence",
+  "protocol": "group",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "strohmayer",
+  "tta": "adabn",
+  "hybrid": true,
+  "features": "dynamic",
+  "threads": 16
+ }
+}

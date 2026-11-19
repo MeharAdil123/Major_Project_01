@@ -1,0 +1,10 @@
+# WiFi-CSI HAR: keep the receivers' USB links out of runtime autosuspend (D-030).
+# The laptop's global default is usbcore.autosuspend=2 (s); a suspended link can drop CSI frames.
+# Install (needs sudo) - see setup/linux/README.md. Matching is on the USB *device*, so the
+# rule applies on every plug-in; it changes no board and opens no serial port.
+
+# RX1: ESP32-S3 native USB-Serial-JTAG (Espressif 303a:1001). Also matches the spare S3 board.
+ACTION=="add|bind", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="303a", ATTR{idProduct}=="1001", TEST=="power/control", ATTR{power/control}="on"
+
+# RX2: WCH CH343 USB-UART bridge (1a86:55d3) on the Sixspan board's UART port.
+ACTION=="add|bind", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1a86", ATTR{idProduct}=="55d3", TEST=="power/control", ATTR{power/control}="on"

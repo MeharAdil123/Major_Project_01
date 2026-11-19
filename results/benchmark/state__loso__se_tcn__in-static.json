@@ -1,0 +1,157 @@
+{
+ "summary": {
+  "task": "state",
+  "protocol": "loso",
+  "model": "se_tcn+in-static",
+  "params": 137780,
+  "latency_ms": 3.13,
+  "macro_f1_mean": 0.3406,
+  "macro_f1_std": 0.2465,
+  "bal_acc_mean": 0.3925,
+  "acc_mean": 0.3516,
+  "pooled_macro_f1": 0.3217,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 214.8
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.2773,
+   "bal_acc": 0.3901,
+   "acc": 0.3043,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 184
+  },
+  "seed0_S2": {
+   "macro_f1": 0.1479,
+   "bal_acc": 0.1071,
+   "acc": 0.1193,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 176
+  },
+  "seed0_S3": {
+   "macro_f1": 0.782,
+   "bal_acc": 0.8019,
+   "acc": 0.748,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 127
+  },
+  "seed0_S4": {
+   "macro_f1": 0.0363,
+   "bal_acc": 0.0557,
+   "acc": 0.0413,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 218
+  },
+  "seed0_S5": {
+   "macro_f1": 0.2801,
+   "bal_acc": 0.3861,
+   "acc": 0.3194,
+   "best_epoch": 18,
+   "epochs_run": 24,
+   "n_test": 216
+  },
+  "seed0_S6": {
+   "macro_f1": 0.5202,
+   "bal_acc": 0.6143,
+   "acc": 0.5775,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 213
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.3217112908840646,
+  "accuracy": 0.3289241622574956,
+  "n": 1134,
+  "per_class": {
+   "lie": {
+    "precision": 0.22040816326530613,
+    "recall": 0.6506024096385542,
+    "f1": 0.32926829268292684,
+    "support": 166
+   },
+   "sit": {
+    "precision": 0.25862068965517243,
+    "recall": 0.3225806451612903,
+    "f1": 0.28708133971291866,
+    "support": 279
+   },
+   "stand": {
+    "precision": 0.22556390977443608,
+    "recall": 0.0967741935483871,
+    "f1": 0.13544018058690746,
+    "support": 310
+   },
+   "walk": {
+    "precision": 0.8895705521472392,
+    "recall": 0.38258575197889183,
+    "f1": 0.5350553505535055,
+    "support": 379
+   }
+  },
+  "confusion": {
+   "labels": [
+    "lie",
+    "sit",
+    "stand",
+    "walk"
+   ],
+   "matrix": [
+    [
+     108,
+     51,
+     7,
+     0
+    ],
+    [
+     130,
+     90,
+     48,
+     11
+    ],
+    [
+     138,
+     135,
+     30,
+     7
+    ],
+    [
+     114,
+     72,
+     48,
+     145
+    ]
+   ]
+  }
+ },
+ "args": {
+  "task": "state",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "static",
+  "rx": "both",
+  "threads": 16
+ }
+}

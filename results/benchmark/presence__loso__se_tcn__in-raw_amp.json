@@ -1,0 +1,131 @@
+{
+ "summary": {
+  "task": "presence",
+  "protocol": "loso",
+  "model": "se_tcn+in-raw_amp",
+  "params": 150226,
+  "latency_ms": 3.2,
+  "macro_f1_mean": 0.4063,
+  "macro_f1_std": 0.0746,
+  "bal_acc_mean": 0.4912,
+  "acc_mean": 0.6017,
+  "pooled_macro_f1": 0.4839,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 623.3,
+  "presence_sens": 0.5881,
+  "presence_spec": 0.6183
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.4933,
+   "bal_acc": 0.6322,
+   "acc": 0.4933,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.3887,
+   "bal_acc": 0.3466,
+   "acc": 0.6358,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.4232,
+   "bal_acc": 0.4055,
+   "acc": 0.7338,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.4816,
+   "bal_acc": 0.4898,
+   "acc": 0.929,
+   "best_epoch": 16,
+   "epochs_run": 22,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.2685,
+   "bal_acc": 0.6238,
+   "acc": 0.291,
+   "best_epoch": 20,
+   "epochs_run": 26,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.3827,
+   "bal_acc": 0.4491,
+   "acc": 0.5276,
+   "best_epoch": 14,
+   "epochs_run": 20,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.48387484839221795,
+  "accuracy": 0.5914202415660141,
+  "n": 2401,
+  "per_class": {
+   "empty": {
+    "precision": 0.15532118887823587,
+    "recall": 0.6183206106870229,
+    "f1": 0.2482758620689655,
+    "support": 262
+   },
+   "occupied": {
+    "precision": 0.9263622974963182,
+    "recall": 0.5881252921926133,
+    "f1": 0.7194738347154704,
+    "support": 2139
+   }
+  },
+  "confusion": {
+   "labels": [
+    "empty",
+    "occupied"
+   ],
+   "matrix": [
+    [
+     162,
+     100
+    ],
+    [
+     881,
+     1258
+    ]
+   ]
+  },
+  "presence_sensitivity": 0.5881252921926133,
+  "presence_specificity": 0.6183206106870229
+ },
+ "args": {
+  "task": "presence",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "raw_amp",
+  "rx": "both",
+  "threads": 16
+ }
+}

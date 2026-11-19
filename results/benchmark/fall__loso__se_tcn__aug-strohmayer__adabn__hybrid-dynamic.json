@@ -1,0 +1,240 @@
+{
+ "summary": {
+  "task": "fall",
+  "protocol": "loso",
+  "model": "se_tcn+aug-strohmayer+adabn+hybrid-dynamic",
+  "params": 143218,
+  "latency_ms": 4.73,
+  "macro_f1_mean": 0.6327,
+  "macro_f1_std": 0.0636,
+  "bal_acc_mean": 0.675,
+  "acc_mean": 0.8121,
+  "pooled_macro_f1": 0.6617,
+  "loss": "wce",
+  "seeds": 3,
+  "wall_s": 1355.6,
+  "fall_recall": 0.509,
+  "fall_precision": 0.3559,
+  "fall_false_alarm_rate": 0.1211,
+  "alarm": {
+   "fall_takes": 35,
+   "fall_caught": 20,
+   "lookalike_takes": 14,
+   "lookalike_alarm": 7,
+   "other_takes": 130,
+   "other_alarm": 36
+  }
+ },
+ "folds": {
+  "seed0_S1": {
+   "macro_f1": 0.5304,
+   "bal_acc": 0.533,
+   "acc": 0.81,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 521
+  },
+  "seed0_S2": {
+   "macro_f1": 0.7304,
+   "bal_acc": 0.7938,
+   "acc": 0.9007,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 302
+  },
+  "seed0_S3": {
+   "macro_f1": 0.628,
+   "bal_acc": 0.6,
+   "acc": 0.8859,
+   "best_epoch": 14,
+   "epochs_run": 20,
+   "n_test": 263
+  },
+  "seed0_S4": {
+   "macro_f1": 0.6913,
+   "bal_acc": 0.7335,
+   "acc": 0.843,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 465
+  },
+  "seed0_S5": {
+   "macro_f1": 0.6497,
+   "bal_acc": 0.7187,
+   "acc": 0.7829,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 433
+  },
+  "seed0_S6": {
+   "macro_f1": 0.7207,
+   "bal_acc": 0.7851,
+   "acc": 0.8369,
+   "best_epoch": 6,
+   "epochs_run": 12,
+   "n_test": 417
+  },
+  "seed1_S1": {
+   "macro_f1": 0.5838,
+   "bal_acc": 0.6243,
+   "acc": 0.7869,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 521
+  },
+  "seed1_S2": {
+   "macro_f1": 0.6484,
+   "bal_acc": 0.6842,
+   "acc": 0.8742,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 302
+  },
+  "seed1_S3": {
+   "macro_f1": 0.5911,
+   "bal_acc": 0.6085,
+   "acc": 0.8023,
+   "best_epoch": 18,
+   "epochs_run": 24,
+   "n_test": 263
+  },
+  "seed1_S4": {
+   "macro_f1": 0.6648,
+   "bal_acc": 0.6861,
+   "acc": 0.8409,
+   "best_epoch": 10,
+   "epochs_run": 16,
+   "n_test": 465
+  },
+  "seed1_S5": {
+   "macro_f1": 0.6025,
+   "bal_acc": 0.6977,
+   "acc": 0.7206,
+   "best_epoch": 4,
+   "epochs_run": 10,
+   "n_test": 433
+  },
+  "seed1_S6": {
+   "macro_f1": 0.6565,
+   "bal_acc": 0.7477,
+   "acc": 0.7722,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 417
+  },
+  "seed2_S1": {
+   "macro_f1": 0.5942,
+   "bal_acc": 0.6745,
+   "acc": 0.762,
+   "best_epoch": 3,
+   "epochs_run": 9,
+   "n_test": 521
+  },
+  "seed2_S2": {
+   "macro_f1": 0.6064,
+   "bal_acc": 0.6235,
+   "acc": 0.8675,
+   "best_epoch": 5,
+   "epochs_run": 11,
+   "n_test": 302
+  },
+  "seed2_S3": {
+   "macro_f1": 0.6533,
+   "bal_acc": 0.7009,
+   "acc": 0.8175,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 263
+  },
+  "seed2_S4": {
+   "macro_f1": 0.639,
+   "bal_acc": 0.6277,
+   "acc": 0.8602,
+   "best_epoch": 21,
+   "epochs_run": 27,
+   "n_test": 465
+  },
+  "seed2_S5": {
+   "macro_f1": 0.4777,
+   "bal_acc": 0.514,
+   "acc": 0.6212,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 433
+  },
+  "seed2_S6": {
+   "macro_f1": 0.7213,
+   "bal_acc": 0.7974,
+   "acc": 0.8321,
+   "best_epoch": 9,
+   "epochs_run": 15,
+   "n_test": 417
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.66167037186453,
+  "accuracy": 0.8359017076218243,
+  "n": 2401,
+  "per_class": {
+   "fall": {
+    "precision": 0.3558897243107769,
+    "recall": 0.5089605734767025,
+    "f1": 0.41887905604719766,
+    "support": 279
+   },
+   "rest": {
+    "precision": 0.9315684315684316,
+    "recall": 0.8788878416588124,
+    "f1": 0.9044616876818623,
+    "support": 2122
+   }
+  },
+  "confusion": {
+   "labels": [
+    "fall",
+    "rest"
+   ],
+   "matrix": [
+    [
+     142,
+     137
+    ],
+    [
+     257,
+     1865
+    ]
+   ]
+  },
+  "fall_vs_rest": {
+   "sensitivity": 0.5089605734767025,
+   "precision": 0.3558897243107769,
+   "f1": 0.41887905604719766,
+   "false_alarm_rate": 0.12111215834118756
+  }
+ },
+ "args": {
+  "task": "fall",
+  "protocol": "loso",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "strohmayer",
+  "tta": "adabn",
+  "hybrid": true,
+  "features": "dynamic",
+  "threads": 16
+ }
+}

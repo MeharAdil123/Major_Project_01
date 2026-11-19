@@ -1,0 +1,147 @@
+{
+ "summary": {
+  "task": "state",
+  "protocol": "random",
+  "model": "se_tcn",
+  "params": 137780,
+  "latency_ms": 3.09,
+  "macro_f1_mean": 0.8232,
+  "macro_f1_std": 0.0596,
+  "bal_acc_mean": 0.84,
+  "acc_mean": 0.8341,
+  "pooled_macro_f1": 0.822,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 315.7
+ },
+ "folds": {
+  "seed0_R1": {
+   "macro_f1": 0.8465,
+   "bal_acc": 0.8624,
+   "acc": 0.8546,
+   "best_epoch": 21,
+   "epochs_run": 27,
+   "n_test": 227
+  },
+  "seed0_R2": {
+   "macro_f1": 0.8239,
+   "bal_acc": 0.8449,
+   "acc": 0.837,
+   "best_epoch": 21,
+   "epochs_run": 27,
+   "n_test": 227
+  },
+  "seed0_R3": {
+   "macro_f1": 0.884,
+   "bal_acc": 0.8951,
+   "acc": 0.8943,
+   "best_epoch": 24,
+   "epochs_run": 30,
+   "n_test": 227
+  },
+  "seed0_R4": {
+   "macro_f1": 0.8513,
+   "bal_acc": 0.8655,
+   "acc": 0.8678,
+   "best_epoch": 29,
+   "epochs_run": 30,
+   "n_test": 227
+  },
+  "seed0_R5": {
+   "macro_f1": 0.7104,
+   "bal_acc": 0.7321,
+   "acc": 0.7168,
+   "best_epoch": 15,
+   "epochs_run": 21,
+   "n_test": 226
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.821966276932319,
+  "accuracy": 0.8342151675485009,
+  "n": 1134,
+  "per_class": {
+   "lie": {
+    "precision": 0.5891472868217055,
+    "recall": 0.9156626506024096,
+    "f1": 0.7169811320754716,
+    "support": 166
+   },
+   "sit": {
+    "precision": 0.9327731092436975,
+    "recall": 0.7956989247311828,
+    "f1": 0.8588007736943907,
+    "support": 279
+   },
+   "stand": {
+    "precision": 0.7854785478547854,
+    "recall": 0.7677419354838709,
+    "f1": 0.7765089722675367,
+    "support": 310
+   },
+   "walk": {
+    "precision": 0.9970149253731343,
+    "recall": 0.8812664907651715,
+    "f1": 0.9355742296918768,
+    "support": 379
+   }
+  },
+  "confusion": {
+   "labels": [
+    "lie",
+    "sit",
+    "stand",
+    "walk"
+   ],
+   "matrix": [
+    [
+     152,
+     2,
+     12,
+     0
+    ],
+    [
+     39,
+     222,
+     18,
+     0
+    ],
+    [
+     63,
+     8,
+     238,
+     1
+    ],
+    [
+     4,
+     6,
+     35,
+     334
+    ]
+   ]
+  }
+ },
+ "args": {
+  "task": "state",
+  "protocol": "random",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "threads": 16
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "summary": {
+  "task": "fall",
+  "protocol": "group",
+  "model": "se_tcn+in-raw_amp",
+  "params": 150226,
+  "latency_ms": 4.83,
+  "macro_f1_mean": 0.4756,
+  "macro_f1_std": 0.119,
+  "bal_acc_mean": 0.5275,
+  "acc_mean": 0.6399,
+  "pooled_macro_f1": 0.4833,
+  "loss": "wce",
+  "seeds": 1,
+  "wall_s": 502.2,
+  "fall_recall": 0.3835,
+  "fall_precision": 0.1339,
+  "fall_false_alarm_rate": 0.3261,
+  "alarm": {
+   "fall_takes": 35,
+   "fall_caught": 14,
+   "lookalike_takes": 14,
+   "lookalike_alarm": 4,
+   "other_takes": 130,
+   "other_alarm": 54
+  }
+ },
+ "folds": {
+  "seed0_G1": {
+   "macro_f1": 0.4429,
+   "bal_acc": 0.4648,
+   "acc": 0.6096,
+   "best_epoch": 8,
+   "epochs_run": 14,
+   "n_test": 479
+  },
+  "seed0_G2": {
+   "macro_f1": 0.5217,
+   "bal_acc": 0.5653,
+   "acc": 0.6977,
+   "best_epoch": 7,
+   "epochs_run": 13,
+   "n_test": 483
+  },
+  "seed0_G3": {
+   "macro_f1": 0.3232,
+   "bal_acc": 0.499,
+   "acc": 0.3445,
+   "best_epoch": 2,
+   "epochs_run": 8,
+   "n_test": 479
+  },
+  "seed0_G4": {
+   "macro_f1": 0.4132,
+   "bal_acc": 0.3986,
+   "acc": 0.7042,
+   "best_epoch": 14,
+   "epochs_run": 20,
+   "n_test": 480
+  },
+  "seed0_G5": {
+   "macro_f1": 0.6768,
+   "bal_acc": 0.7101,
+   "acc": 0.8438,
+   "best_epoch": 28,
+   "epochs_run": 30,
+   "n_test": 480
+  }
+ },
+ "pooled": {
+  "macro_f1": 0.48325358851674644,
+  "accuracy": 0.6401499375260308,
+  "n": 2401,
+  "per_class": {
+   "fall": {
+    "precision": 0.13391739674593242,
+    "recall": 0.3835125448028674,
+    "f1": 0.19851576994434136,
+    "support": 279
+   },
+   "rest": {
+    "precision": 0.8926342072409488,
+    "recall": 0.6738925541941565,
+    "f1": 0.7679914070891515,
+    "support": 2122
+   }
+  },
+  "confusion": {
+   "labels": [
+    "fall",
+    "rest"
+   ],
+   "matrix": [
+    [
+     107,
+     172
+    ],
+    [
+     692,
+     1430
+    ]
+   ]
+  },
+  "fall_vs_rest": {
+   "sensitivity": 0.3835125448028674,
+   "precision": 0.13391739674593242,
+   "f1": 0.19851576994434136,
+   "false_alarm_rate": 0.32610744580584355
+  }
+ },
+ "args": {
+  "task": "fall",
+  "protocol": "group",
+  "models": [
+   "cnn_bilstm",
+   "se_tcn"
+  ],
+  "seeds": [
+   0
+  ],
+  "win": "4s",
+  "epochs": 30,
+  "patience": 6,
+  "lr": 0.001,
+  "batch_size": 64,
+  "loss": "wce",
+  "gamma": 2.0,
+  "aug": "default",
+  "tta": "none",
+  "hybrid": false,
+  "features": "dynamic",
+  "input": "raw_amp",
+  "rx": "both",
+  "threads": 16
+ }
+}
